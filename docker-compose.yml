@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  auth-service:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./auth:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3001:3001'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/auth?schema=public'
+      SECRET: 'secret'
+    networks:
+      - app
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - app
+
+volumes:
+  postgres:
+
+networks:
+  app:
+    driver: bridge
