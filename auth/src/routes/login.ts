@@ -1,0 +1,51 @@
+import express from "express";
+import {body, matchedData} from "express-validator";
+import {validateRequest} from "../utils/middleware";
+import {prisma} from "../utils/connections";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import {constants} from "../utils/constants";
+
+const router = express.Router();
+
+router.post("/api/auth/login",
+    body("email").isEmail().withMessage("Email must be valid"),
+    body("password").trim().notEmpty().withMessage("You must supply a password"),
+    validateRequest,
+    async (req, res) => {
+        const { email, password } = matchedData(req);
+        const user = await prisma.user.findUnique({
+            where: { email }
+        });
+        if (!user || !bcrypt.compareSync(password, user.password))
+            return res
+                .status(400)
+                .send({ errors: [{ msg: "Invalid credentials" }] });
+
+        const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt
+        };
+
+        jwt.sign(
+            payload,
+            constants.SECRET,
+            {
+                expiresIn: constants.JWT_EXPIRE ,
+                algorithm: "HS256" // debug only
+            },
+            (err, token) => {
+                if (err) {
+                    console.error(err);
+                    return res
+                        .status(500)
+                        .send({errors: [{msg: "Internal server error"}]});
+                }
+                res.send({ token });
+            }
+        );
+    });
+
+export default router;

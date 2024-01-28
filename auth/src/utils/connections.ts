@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client';
+import {constants} from "./constants";
 
 export const prisma = new PrismaClient();
 export const redis = require("redis").createClient({
-    url: process.env.REDIS_URL
+    url: constants.REDIS_URL
 });
 
 redis.connect()
