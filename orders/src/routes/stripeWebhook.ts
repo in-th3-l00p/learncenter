@@ -6,7 +6,7 @@ import {logger, prisma} from "../utils/objects";
 const router = express.Router();
 
 router.post(
-    "/api/orders/stripeWebhook",
+    "/stripeWebhook",
     validateRequest,
     async (req, res) => {
         const event = req.body as Stripe.Event;
@@ -37,6 +37,12 @@ router.post(
                     })
                     .then(() => logger.info("Updated price: " + event.data.object.id))
                     .catch((err) => logger.error(`Updating price (${event.data.object.id}):  ${err}`));
+                break;
+            case "product.deleted":
+                prisma.package.delete({ where: { id: event.data.object.id } });
+                break;
+            case "price.deleted":
+                prisma.price.delete({ where: { id: event.data.object.id } });
                 break;
         }
     });

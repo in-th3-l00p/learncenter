@@ -1,21 +1,23 @@
+if (process.env.NODE_ENV !== 'production')
+    require('dotenv').config();
+
 import express from 'express';
-import loadStripeData from "./utils/stripeLoading";
 import {logger} from "./utils/objects";
+
 import stripeWebhook from "./routes/stripeWebhook";
+import PackagesRouter from "./routes/packages";
 
 const app = express();
 
 app.use(express.json());
 
-app.use(stripeWebhook);
+app.use("/api/orders", stripeWebhook);
+app.use("/api/orders/packages", PackagesRouter);
 
-loadStripeData()
-    .then(() => {
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => {
-            logger.log({
-                level: "info",
-                message: "Server started on port: " + PORT
-            });
-        });
-    })
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    logger.log({
+        level: "info",
+        message: "Server started on port: " + PORT
+    });
+});

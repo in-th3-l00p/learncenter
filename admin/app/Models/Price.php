@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Price extends Model
 {
     use HasFactory;
+
+    protected $connection = "orders";
+    protected $table = "Price";
+    protected $casts = [
+        "id" => "string"
+    ];
+
+    const CREATED_AT = "createdAt";
+    const UPDATED_AT = "updatedAt";
+
+    protected $fillable = [
+        "id", "currency", "unitAmount", "recurringInterval"
+    ];
+
+    public function packages() {
+        return $this->belongsToMany(Package::class);
+    }
 }

@@ -16,8 +16,10 @@ model Package {
   description String?
   priceId     String
 
-  price     Price    @relation(fields: [priceId], references: [id])
+  price Price @relation(fields: [priceId], references: [id])
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Price {
@@ -26,7 +28,8 @@ model Price {
   unitAmount        Int
   recurringInterval String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  packages  Package[]
+  packages Package[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

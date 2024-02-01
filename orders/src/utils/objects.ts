@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
-import winston, {log} from "winston";
+import winston from "winston";
 import * as path from "path";
 
 export const redis = require("redis").createClient({
@@ -13,7 +13,7 @@ prisma.$connect()
         level: "debug",
         message: "Connected to Prisma"
     }))
-    .catch(err => logger.error("Failed to connect to Prisma: " + err))
+    .catch((err: any) => logger.error("Failed to connect to Prisma: " + err))
 
 redis.connect()
     .then(() => logger.log({
