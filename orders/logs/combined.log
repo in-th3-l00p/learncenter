@@ -1,0 +1,32 @@
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"error","message":"Failed to initialize AppService: TypeError: Cannot read properties of undefined (reading 'createClient')","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"debug","message":"AppService initialized successfully!","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"debug","message":"AppService initialized successfully!","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"debug","message":"AppService initialized successfully!","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
