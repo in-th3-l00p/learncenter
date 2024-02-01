@@ -36,7 +36,9 @@ router.post(
                     username: user.username,
                     email: user.email
                 };
-                redis.xAdd("auth:created", "*", `'${JSON.stringify(publicUser)}'`);
+                redis.xAdd("auth:created", "*", {
+                    "user": `'${JSON.stringify(publicUser)}'`
+                });
                 res.status(201).send(publicUser);
             })
             .catch(err => res.status(500).send(err));

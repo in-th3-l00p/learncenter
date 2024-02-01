@@ -375,3 +375,10 @@
 {"level":"debug","message":"Loading Stripe product: prod_PT9GvRxJuslDX0","service":"orders-service"}
 {"level":"debug","message":"Skipping Stripe product: prod_PT9GvRxJuslDX0","service":"orders-service"}
 {"level":"info","message":"Server started on port: 3002","service":"orders-service"}
+{"level":"debug","message":"Connected to Redis","service":"orders-service"}
+{"level":"debug","message":"Connected to Prisma","service":"orders-service"}
+{"level":"debug","message":"Loading Stripe price: price_1OeCy0DjTfVCm2IJ20MbH4Ce","service":"orders-service"}
+{"level":"debug","message":"Skipping Stripe price: price_1OeCy0DjTfVCm2IJ20MbH4Ce","service":"orders-service"}
+{"level":"debug","message":"Loading Stripe product: prod_PT9GvRxJuslDX0","service":"orders-service"}
+{"level":"debug","message":"Skipping Stripe product: prod_PT9GvRxJuslDX0","service":"orders-service"}
+{"level":"info","message":"Server started on port: 3002","service":"orders-service"}
