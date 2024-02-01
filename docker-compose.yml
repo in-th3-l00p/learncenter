@@ -17,6 +17,23 @@ services:
     networks:
       - app
 
+  orders-service:
+    build:
+      context: ./orders
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./orders:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/orders?schema=public'
+      REDIS_URL: 'redis://redis:6379'
+      STRIPE_KEY: ${STRIPE_KEY}
+      PORT: 3002
+    networks:
+      - app
+
   redis:
     image: redis
     restart: always
