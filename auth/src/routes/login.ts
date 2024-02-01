@@ -1,10 +1,11 @@
 import express from "express";
 import {body, matchedData} from "express-validator";
-import {validateRequest} from "../utils/middleware";
 import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {constants} from "../utils/constants";
+import {validateRequest} from "../middleware/validateRequest";
+import {logger} from "../utils/logger";
 
 const router = express.Router();
 
@@ -38,11 +39,12 @@ router.post("/api/auth/login",
             },
             (err, token) => {
                 if (err) {
-                    console.error(err);
+                    logger.error("Failed to sign JWT: " + err);
                     return res
                         .status(500)
                         .send({errors: [{msg: "Internal server error"}]});
                 }
+
                 res.send({ token });
             }
         );

@@ -1,3 +1,5 @@
+import {logger} from "./utils/logger";
+
 if (process.env.NODE_ENV !== 'production')
   require('dotenv').config();
 
@@ -16,5 +18,5 @@ app.use(UserRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("Server is running on port " + PORT + "...");
+  logger.info("Server is running on port " + PORT + "...");
 });

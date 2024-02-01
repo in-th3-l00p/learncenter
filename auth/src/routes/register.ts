@@ -1,8 +1,9 @@
 import express from "express";
 import {body, matchedData} from "express-validator";
-import {prisma, redis} from "../utils/connections";
-import {validateRequest} from "../utils/middleware";
+import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
+import {validateRequest} from "../middleware/validateRequest";
+import {logger} from "../utils/logger";
 
 const router = express.Router();
 
@@ -36,12 +37,13 @@ router.post(
                     username: user.username,
                     email: user.email
                 };
-                redis.xAdd("auth:created", "*", {
-                    "user": `'${JSON.stringify(publicUser)}'`
-                });
                 res.status(201).send(publicUser);
+                logger.info("Created user: " + JSON.stringify(publicUser));
             })
-            .catch(err => res.status(500).send(err));
+            .catch(err => {
+                res.status(500).send(err);
+                logger.error("Failed to create user: " + err);
+            });
     });
 
 export default router;

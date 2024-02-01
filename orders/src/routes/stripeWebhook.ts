@@ -1,7 +1,8 @@
 import express from "express";
-import {validateRequest} from "../utils/middleware";
 import Stripe from "stripe";
-import {logger, prisma} from "../utils/objects";
+import {logger} from "../utils/logger";
+import {validateRequest} from "../middleware/validateRequest";
+import {prisma} from "../utils/objects";
 
 const router = express.Router();
 
@@ -21,8 +22,12 @@ router.post(
                             description: event.data.object.description
                         }
                     })
-                    .then(() => logger.info("Updated package: " + event.data.object.id))
-                    .catch((err) => logger.error(`Updating package (${event.data.object.id}):  ${err}`));
+                    .then(() =>
+                        logger.info("Updated package: " + event.data.object.id)
+                    )
+                    .catch((err: any) =>
+                        logger.error(`Updating package (${event.data.object.id}):  ${err}`)
+                    );
                 break;
             case "price.updated":
                 prisma
@@ -35,8 +40,12 @@ router.post(
                             recurringInterval: event.data.object.recurring?.interval!
                         }
                     })
-                    .then(() => logger.info("Updated price: " + event.data.object.id))
-                    .catch((err) => logger.error(`Updating price (${event.data.object.id}):  ${err}`));
+                    .then(() =>
+                        logger.info("Updated price: " + event.data.object.id)
+                    )
+                    .catch((err: any) =>
+                        logger.error(`Updating price (${event.data.object.id}):  ${err}`)
+                    );
                 break;
             case "product.deleted":
                 prisma.package.delete({ where: { id: event.data.object.id } });
