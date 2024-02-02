@@ -4,8 +4,8 @@ import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {constants} from "../utils/constants";
-import {validateRequest} from "../middleware/validateRequest";
-import {logger} from "../utils/logger";
+import { validateRequest } from "middleware";
+import logger from "logger";
 
 const router = express.Router();
 

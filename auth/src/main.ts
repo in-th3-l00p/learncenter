@@ -1,4 +1,4 @@
-import {logger} from "./utils/logger";
+import logger from "logger";
 
 if (process.env.NODE_ENV !== 'production')
   require('dotenv').config();

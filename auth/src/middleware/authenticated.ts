@@ -1,9 +1,9 @@
-import {UserDto, UserRequest} from "../utils/types";
 import {NextFunction, Response} from "express";
 import jwt from "jsonwebtoken";
 import {constants} from "../utils/constants";
+import {UserDto, UserRequest} from "dtos";
 
-export function authenticated(req: UserRequest, res: Response, next: NextFunction) {
+export function authenticated(req: UserRequest<UserDto>, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.substring(7);
     if (!token)
         return res.status(401).send({errors: [{msg: "Unauthorized"}]});

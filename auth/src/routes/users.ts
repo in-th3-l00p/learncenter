@@ -1,13 +1,13 @@
 import express from "express";
-import {UserRequest} from "../utils/types";
 import {authenticated} from "../middleware/authenticated";
+import {UserDto, UserRequest} from "dtos";
 
 const router = express.Router();
 
 router.get(
     "/api/auth",
     authenticated,
-    (req: UserRequest, res) => {
+    (req: UserRequest<UserDto>, res) => {
         res.send(req.user);
     });
 

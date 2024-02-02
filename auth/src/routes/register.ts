@@ -2,8 +2,8 @@ import express from "express";
 import {body, matchedData} from "express-validator";
 import {nc, prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
-import {validateRequest} from "../middleware/validateRequest";
-import {logger} from "../utils/logger";
+import { validateRequest } from "middleware";
+import logger from "logger";
 
 const router = express.Router();
 
@@ -24,18 +24,24 @@ router.post(
     body("password")
         .trim()
         .isLength({ min: 8, max: 32 }).withMessage("Password must be between 8 and 32 characters."),
+    body("firstName").isString(),
+    body("lastName").isString(),
+    body("phone").isString().isMobilePhone("any", { strictMode: false }),
     validateRequest,
     (req, res) => {
-        const { username, email, password } = matchedData(req);
+        const {username, email, password, firstName, lastName, phone} = matchedData(req);
         prisma.user.create({ data: {
-                username, email,
-                password: bcrypt.hashSync(password, 10)
+            username, email, phone, firstName, lastName,
+            password: bcrypt.hashSync(password, 10)
         } })
             .then(user => {
                 const publicUser = {
                     id: user.id,
                     username: user.username,
-                    email: user.email
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    phone: user.phone
                 };
                 res.status(201).send(publicUser);
                 nc.publish("auth:userCreated", JSON.stringify(publicUser));

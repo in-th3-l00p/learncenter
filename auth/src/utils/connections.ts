@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import {constants} from "./constants";
-import {logger} from "./logger";
+import logger from "logger";
 import * as nats from "nats";
 
 export const prisma = new PrismaClient();
