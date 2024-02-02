@@ -1,6 +1,6 @@
 import express from "express";
 import {body, matchedData} from "express-validator";
-import {prisma} from "../utils/connections";
+import {nc, prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
 import {validateRequest} from "../middleware/validateRequest";
 import {logger} from "../utils/logger";
@@ -38,6 +38,7 @@ router.post(
                     email: user.email
                 };
                 res.status(201).send(publicUser);
+                nc.publish("auth:userCreated", JSON.stringify(publicUser));
                 logger.info("Created user: " + JSON.stringify(publicUser));
             })
             .catch(err => {

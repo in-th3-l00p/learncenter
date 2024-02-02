@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { PrismaClient } from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
 import {logger} from "./logger";
 
 export const redis = require("redis").createClient({
@@ -22,3 +22,4 @@ redis.connect()
     .catch((err: any) => logger.error("Failed to connect to Redis: ", err));
 
 export const stripe = new Stripe(process.env.STRIPE_KEY!);
+

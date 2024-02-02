@@ -8,7 +8,10 @@ router.get("/", (req, res) => {
         .then((packages) => res.send(packages))
         .catch(() => res
             .status(500)
-            .send({ error: "Internal server error" })
+            .send({
+                errors: [{
+                    msg: "Internal server error"
+                }]})
         );
 });
 

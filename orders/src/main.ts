@@ -3,22 +3,27 @@ if (process.env.NODE_ENV !== 'production')
 
 import express from 'express';
 import {logger} from "./utils/logger";
+import {connectNats} from "./events/nats";
 
 import stripeWebhook from "./routes/stripeWebhook";
-import PackagesRouter from "./routes/packages";
+import packagesRouter from "./routes/packages";
+import customersRouter from "./routes/customers";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/api/orders", stripeWebhook);
-app.use("/api/orders/packages", PackagesRouter);
+app.use("/api/orders/packages", packagesRouter);
+app.use("/api/orders/customers", customersRouter);
 
-logger.debug("AppService initialized successfully!");
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    logger.log({
-        level: "info",
-        message: "Server started on port: " + PORT
+connectNats()
+    .then(() => {
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            logger.log({
+                level: "info",
+                message: "Server started on port: " + PORT
+            });
+        });
     });
-});
