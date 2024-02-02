@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
 import express from 'express';
-import {logger} from "./utils/logger";
+import logger from "logger";
 import {connectNats} from "./events/nats";
 
 import stripeWebhook from "./routes/stripeWebhook";

@@ -38,5 +38,36 @@ model User {
   id         Int     @id @unique
   username   String
   email      String
+  firstName  String
+  lastName   String
+  phone      String
   customerId String? @unique
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+}
+
+model Customer {
+  id   String @id @unique
+  user User?
+
+  addressCity       String?
+  addressCountry    String?
+  addressLine1      String?
+  addressLine2      String?
+  addressPostalCode String?
+  addressState      String?
+
+  metadata Json?
+
+  shippingAddressCity       String?
+  shippingAddressCountry    String?
+  shippingAddressLine1      String?
+  shippingAddressLine2      String?
+  shippingAddressPostalCode String?
+  shippingAddressState      String?
+  shippingName              String
+  shippingPhone             String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

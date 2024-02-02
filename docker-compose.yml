@@ -7,6 +7,7 @@ services:
     volumes:
       - ./auth:/usr/src/app
       - /usr/src/app/node_modules
+      - ./shared:/usr/src/shared
     ports:
       - '3001:3001'
     environment:
@@ -29,6 +30,7 @@ services:
     volumes:
       - ./orders:/usr/src/app
       - /usr/src/app/node_modules
+      - ./shared:/usr/src/shared
     ports:
       - '3002:3002'
     environment:

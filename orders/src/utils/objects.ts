@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import {PrismaClient} from "@prisma/client";
-import {logger} from "./logger";
+import logger from "logger";
 
 export const redis = require("redis").createClient({
     url: process.env.REDIS_URL

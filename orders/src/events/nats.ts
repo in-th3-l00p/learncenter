@@ -1,6 +1,6 @@
 import * as nats from "nats";
-import {logger} from "../utils/logger";
 import userCreatedListener from "./authListener";
+import logger from "logger";
 
 export let nc: nats.NatsConnection;
 export const connectNats = async () => {

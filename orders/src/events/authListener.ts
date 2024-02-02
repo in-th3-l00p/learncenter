@@ -1,7 +1,7 @@
 import {NatsConnection} from "nats";
 import {prisma} from "../utils/objects";
-import {logger} from "../utils/logger";
 import {UserDto} from "../utils/types";
+import logger from "logger";
 
 export default async function userCreatedListener(nc: NatsConnection) {
     const sub = nc.subscribe("auth:userCreated");
@@ -10,7 +10,10 @@ export default async function userCreatedListener(nc: NatsConnection) {
         prisma.user.create({ data: {
             id: user.id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
         }})
             .then(() => {
                 logger.info("Created user: " + JSON.stringify(user));

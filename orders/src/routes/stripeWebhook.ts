@@ -1,8 +1,8 @@
 import express from "express";
 import Stripe from "stripe";
-import {logger} from "../utils/logger";
-import {validateRequest} from "../middleware/validateRequest";
 import {prisma} from "../utils/objects";
+import {validateRequest} from "middleware";
+import logger from "logger";
 
 const router = express.Router();
 
