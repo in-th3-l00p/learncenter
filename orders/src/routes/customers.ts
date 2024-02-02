@@ -9,6 +9,7 @@ import logger from "logger";
 
 import { validateRequest } from "middleware";
 import authenticate from "../middleware/authenticate";
+import customer from "../middleware/customer";
 
 const router = express.Router();
 
@@ -176,19 +177,11 @@ router.put(
     authenticate,
     customerValidation,
     validateRequest,
+    customer,
     (req: UserRequest, res: Response) => {
-        if (!req.user?.customerId)
-            return res
-                .status(404)
-                .send({
-                    errors: [{
-                        msg: "Customer not initialized"
-                    }]
-                });
-
-        const customerParams = getCustomerParams(req.user, matchedData(req));
+        const customerParams = getCustomerParams(req.user!, matchedData(req));
         stripe.customers.update(
-            req.user.customerId,
+            req.user!.customerId!,
             customerParams
         ).then(customer => {
             prisma.customer.update({
@@ -210,23 +203,15 @@ router.put(
 router.delete(
     "/",
     authenticate,
+    customer,
     (req: UserRequest, res) => {
-        if (!req.user?.customerId)
-            return res
-                .status(404)
-                .send({
-                    errors: [{
-                        msg: "Customer not initialized"
-                    }]
-                });
-
-        const customerId = req.user?.customerId;
+        const customerId = req.user!.customerId;
         stripe.customers.del(
-            req.user.customerId
+            req.user!.customerId!
         ).then(() => {
             prisma.user.update({
                 where: {
-                    id: req.user?.id
+                    id: req.user!.id
                 },
                 data: {
                     customerId: null

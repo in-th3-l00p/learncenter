@@ -1,3 +1,4 @@
+
 if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
@@ -8,6 +9,7 @@ import {connectNats} from "./events/nats";
 import stripeWebhook from "./routes/stripeWebhook";
 import packagesRouter from "./routes/packages";
 import customersRouter from "./routes/customers";
+import checkoutRouter from "./routes/checkout";
 
 const app = express();
 
@@ -16,6 +18,7 @@ app.use(express.json());
 app.use("/api/orders", stripeWebhook);
 app.use("/api/orders/packages", packagesRouter);
 app.use("/api/orders/customers", customersRouter);
+app.use("/api/orders/checkout", checkoutRouter);
 
 connectNats()
     .then(() => {
