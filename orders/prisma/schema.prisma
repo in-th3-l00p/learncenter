@@ -20,6 +20,7 @@ model Package {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User[]
 }
 
 model Price {
@@ -35,15 +36,18 @@ model Price {
 }
 
 model User {
-  id         Int     @id @unique
-  username   String
-  email      String
-  firstName  String
-  lastName   String
-  phone      String
+  id        Int    @id @unique
+  username  String
+  email     String
+  firstName String
+  lastName  String
+  phone     String
+
   customerId String? @unique
+  packageId  String?
 
   customer Customer? @relation(fields: [customerId], references: [id])
+  package  Package?  @relation(fields: [packageId], references: [id])
 }
 
 model Customer {
