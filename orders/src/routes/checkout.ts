@@ -9,11 +9,6 @@ import logger from "logger";
 
 const router = express.Router();
 
-type Item = {
-    id: string;
-    quantity: number;
-};
-
 router.post(
     "/package",
     authenticate,

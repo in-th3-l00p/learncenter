@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import {prisma} from "../utils/objects";
 import {validateRequest} from "middleware";
 import logger from "logger";
+import {nc} from "../events/nats";
 
 const router = express.Router();
 
@@ -48,10 +49,18 @@ router.post(
                     );
                 break;
             case "product.deleted":
-                prisma.package.delete({ where: { id: event.data.object.id } });
+                prisma.package.delete({ where: { id: event.data.object.id } })
+                    .then(() => logger.info("Deleted package: " + event.data.object.id))
+                    .catch((err: any) => logger.error(`Deleting package (${event.data.object.id}):  ${err}`));
                 break;
             case "price.deleted":
-                prisma.price.delete({ where: { id: event.data.object.id } });
+                prisma.price.delete({ where: { id: event.data.object.id } })
+                    .then(() => logger.info("Deleted price: " + event.data.object.id))
+                    .catch((err: any) => logger.error(`Deleting price (${event.data.object.id}):  ${err}`));
+                break;
+            case "checkout.session.completed":
+                nc.publish("ordersService:checkoutCompleted", JSON.stringify(event.data));
+                logger.info("Checkout completed: " + event.data.object.id);
                 break;
         }
     });
