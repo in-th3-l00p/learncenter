@@ -25,7 +25,11 @@ export function authenticate<T>(
                 where: {id: userDto.data.id}
             });
             if (!user)
-                return res.status(401).send("Unauthorized");
+                return res.status(401).send({
+                    errors: [{
+                        msg: "Unauthorized"
+                    }]
+                });
 
             req.user = user;
             next();

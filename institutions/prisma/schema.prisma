@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Institution {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  usersOnInstitutions UsersOnInstitutions[]
+  users               User[]                @relation("UserToInstitution")
+
+  classrooms Classroom[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UsersOnInstitutions {
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  institutionId Int
+  user          User        @relation(fields: [userId], references: [id])
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        Int    @id
+  username  String @unique
+  email     String @unique
+  firstName String @unique
+  lastName  String @unique
+  phone     String @unique
+
+  ownedInstitutions Institution[]
+
+  usersOnInstitutions UsersOnInstitutions[]
+  institutions        Institution[]         @relation("UserToInstitution")
+
+  classrooms        Classroom[]
+  usersOnClassrooms UsersOnClassrooms[]
+}
+
+model Classroom {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+
+  institutionId Int
+  institution   Institution @relation(fields: [institutionId], references: [id])
+
+  usersOnClassrooms UsersOnClassrooms[]
+  users             User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UsersOnClassrooms {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  classroomId Int
+  user        User      @relation(fields: [userId], references: [id])
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

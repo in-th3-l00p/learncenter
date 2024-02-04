@@ -17,3 +17,10 @@ export type UserDto = {
 export interface UserRequest<T> extends Request {
     user?: T;
 }
+
+export type InstitutionDto = {
+    id: number;
+    name: string;
+    description?: string;
+    createdAt: Date;
+}

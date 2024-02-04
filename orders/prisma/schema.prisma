@@ -14,13 +14,14 @@ model Package {
   id          String  @id @unique
   name        String  @unique
   description String?
-  priceId     String
 
-  price Price @relation(fields: [priceId], references: [id])
+  priceId String
+  price   Price  @relation(fields: [priceId], references: [id])
+
+  institutions Institution[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User[]
 }
 
 model Price {
@@ -44,10 +45,8 @@ model User {
   phone     String
 
   customerId String? @unique
-  packageId  String?
 
   customer Customer? @relation(fields: [customerId], references: [id])
-  package  Package?  @relation(fields: [packageId], references: [id])
 }
 
 model Customer {
@@ -74,4 +73,14 @@ model Customer {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Institution {
+  id          Int      @id @unique
+  name        String
+  description String?
+  createdAt   DateTime
+
+  packageId String?
+  package   Package? @relation(fields: [packageId], references: [id])
 }

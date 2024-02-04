@@ -48,22 +48,21 @@ services:
       - nats
       - auth-service
 
-  subscriptions-service:
+  institutions-service:
     build:
-      context: ./subscriptions
+      context: ./institutions
       dockerfile: Dockerfile.dev
     volumes:
-      - ./subscriptions:/usr/src/app
+      - ./institutions:/usr/src/app
       - /usr/src/app/node_modules
       - ./shared:/usr/src/shared
     ports:
       - '3003:3003'
     environment:
       AUTH_URL: 'http://auth-service:3001'
-      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/subscriptions?schema=public'
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/institutions?schema=public'
       REDIS_URL: 'redis://redis:6379'
       NATS_URL: 'nats://nats:4222'
-      STRIPE_KEY: ${STRIPE_KEY}
       PORT: 3003
     networks:
       - app

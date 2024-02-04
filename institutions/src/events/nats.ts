@@ -1,7 +1,6 @@
 import * as nats from "nats";
-import logger from "logger";
 import userCreatedListener from "./authListener";
-import institutionListener from "./institutionListener";
+import logger from "logger";
 
 export let nc: nats.NatsConnection;
 export const connectNats = async () => {
@@ -18,5 +17,4 @@ export const connectNats = async () => {
 
 function listen(nc: nats.NatsConnection) {
     userCreatedListener(nc);
-    institutionListener(nc);
 }
