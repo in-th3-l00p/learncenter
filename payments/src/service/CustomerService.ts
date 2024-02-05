@@ -1,8 +1,9 @@
-import CustomerDto, {ServiceError, stripeCustomerToDto, UserDto} from "../utils/types";
+import CustomerDto, {stripeCustomerToDto, UserDto} from "../utils/types";
 import {body} from "express-validator";
 import {prisma, stripe} from "../utils/objects";
 import logger from "logger";
 import {nc} from "../events/nats";
+import {ServiceError} from "dtos";
 
 export const customerValidation = [
     body("address.city"),
