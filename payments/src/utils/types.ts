@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { UserDto as GlobalUserDto } from "dtos";
 import Stripe from "stripe";
 
@@ -29,4 +29,32 @@ export function stripeCustomerToDto(customer: Stripe.Customer): CustomerDto {
         address: customer.address,
         shipping: customer.shipping
     };
+}
+
+export class ServiceError extends Error {
+    private readonly _body: {
+        msg: string;
+    }[];
+
+    constructor(
+        private _status: number,
+        errors: string[]
+    ) {
+        super();
+        this._body = errors.map(error => ({
+            msg: error
+        }));
+    }
+
+    get status(): number {
+        return this._status;
+    }
+
+    get body(): any {
+        return this._body;
+    }
+}
+
+export function handleServiceError(res: Response) {
+    // todo
 }

@@ -23,19 +23,19 @@ services:
       - redis
       - nats
 
-  orders-service:
+  payments-service:
     build:
-      context: ./orders
+      context: payments
       dockerfile: Dockerfile.dev
     volumes:
-      - ./orders:/usr/src/app
+      - ./payments:/usr/src/app
       - /usr/src/app/node_modules
       - ./shared:/usr/src/shared
     ports:
       - '3002:3002'
     environment:
       AUTH_URL: 'http://auth-service:3001'
-      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/orders?schema=public'
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/payments?schema=public'
       REDIS_URL: 'redis://redis:6379'
       NATS_URL: 'nats://nats:4222'
       STRIPE_KEY: ${STRIPE_KEY}
