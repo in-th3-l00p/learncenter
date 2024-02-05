@@ -50,5 +50,9 @@ export class ServiceError extends Error {
 }
 
 export function handleServiceError(res: Response, err: any) {
-    // todo
+    if (err instanceof ServiceError) {
+        res.status(err.status).send(err.body);
+    } else {
+        res.status(500).send([{ msg: "Internal server error" }]);
+    }
 }

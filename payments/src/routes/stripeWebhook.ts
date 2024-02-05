@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
     "/stripeWebhook",
     validateRequest,
-    async (req, res) => {
+    async (req) => {
         const event = req.body as Stripe.Event;
         switch (event.type) {
             case "product.updated":
