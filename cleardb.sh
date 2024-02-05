@@ -1,6 +1,6 @@
 #!/bin/bash
 
-services=("auth" "orders" "institutions")
+services=("auth" "payments" "institutions")
 for service in "${services[@]}"
 do
   docker-compose stop $service-service

@@ -9,7 +9,7 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $connection = "orders";
+    protected $connection = "payments";
     protected $table = "Price";
     protected $casts = [
         "id" => "string"

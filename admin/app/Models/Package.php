@@ -9,7 +9,7 @@ class Package extends Model
 {
     use HasFactory;
 
-    protected $connection = 'orders';
+    protected $connection = 'payments';
     protected $table = 'Package';
     protected $casts = [
         "id" => "string"
