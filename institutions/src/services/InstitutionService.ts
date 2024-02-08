@@ -1,6 +1,7 @@
 import {prisma} from "../utils/objects";
 import {ServiceError} from "dtos";
 import {nc} from "../events/nats";
+import logger from "logger";
 
 class InstitutionService {
     public async getInstitution(id: number, userId: number) {
@@ -44,6 +45,21 @@ class InstitutionService {
         });
 
         nc.publish("institution:created", JSON.stringify(institution));
+        logger.info("Created institution " + institution.id + ".");
+
+        await prisma.usersOnInstitutions.create({
+            data: {
+                user: {connect: {id: userId}},
+                institution: {connect: {id: institution.id}},
+                role: "OWNER"
+            }
+        });
+        nc.publish("user:joined", JSON.stringify({
+            userId,
+            institutionId: institution.id,
+            role: "OWNER"
+        }));
+
         return institution;
     }
 
@@ -66,6 +82,7 @@ class InstitutionService {
         if (!institution)
             throw new ServiceError(404, ["Institution not found"]);
         nc.publish("institution:updated", JSON.stringify(institution));
+        logger.info("Updated institution " + institution.id + ".");
         return institution;
     }
 
@@ -88,6 +105,7 @@ class InstitutionService {
             }
         });
         nc.publish("institution:deleted", JSON.stringify({id}));
+        logger.info("Deleted institution " + id + ".");
     }
 }
 

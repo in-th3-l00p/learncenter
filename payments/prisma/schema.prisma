@@ -15,6 +15,9 @@ model Package {
   name        String  @unique
   description String?
 
+  newClassroomsAmount Int
+  newUsersAmount      Int
+
   priceId String
   price   Price  @relation(fields: [priceId], references: [id])
 

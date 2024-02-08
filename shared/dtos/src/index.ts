@@ -25,6 +25,15 @@ export type InstitutionDto = {
     createdAt: Date;
 }
 
+export type PackageDto = {
+    id: string;
+    name: string;
+    description?: string;
+
+    newClassroomsAmount: number;
+    newUsersAmount: number;
+}
+
 export class ServiceError extends Error {
     private readonly _body: {
         msg: string;

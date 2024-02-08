@@ -4,7 +4,7 @@ import {prisma} from "../utils/objects";
 import {validateRequest} from "middleware";
 import logger from "logger";
 import {nc} from "../events/nats";
-import {CheckoutType} from "dtos";
+import {CheckoutType, PackageDto} from "dtos";
 
 const router = express.Router();
 
@@ -115,7 +115,16 @@ router.post(
                             "payments:institutionUpdated",
                             JSON.stringify({
                                 institutionId: institution.id,
-                                package: selectedPackage
+                                package: {
+                                    id: selectedPackage.id,
+                                    name: selectedPackage.name,
+                                    description: selectedPackage.description,
+                                    newClassroomsAmount: selectedPackage.newClassroomsAmount,
+                                    newUsersAmount: selectedPackage.newUsersAmount
+                                }
+                            } as {
+                                institutionId: number;
+                                package: PackageDto
                             })
                         );
                     }

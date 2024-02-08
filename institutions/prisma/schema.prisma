@@ -25,6 +25,23 @@ model Institution {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  classroomsAmount Int            @default(1)
+  usersAmount      Int            @default(10)
+  pendingUpdateId  Int?
+  pendingUpdate    PendingUpdate? @relation(fields: [pendingUpdateId], references: [id])
+}
+
+model PendingUpdate {
+  id Int @id @default(autoincrement())
+
+  newClassroomsAmount Int
+  newUsersAmount      Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Institution Institution[]
 }
 
 model UsersOnInstitutions {
@@ -36,6 +53,18 @@ model UsersOnInstitutions {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  role UserRole
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  USER
+  GUEST
+  PENDING
+  BANNED
+  DELETED
 }
 
 model User {
