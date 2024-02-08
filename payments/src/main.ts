@@ -15,10 +15,10 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/orders", stripeWebhook);
-app.use("/api/orders/packages", packagesRouter);
-app.use("/api/orders/customers", customersRouter);
-app.use("/api/orders/checkout", checkoutRouter);
+app.use("/api/payments", stripeWebhook);
+app.use("/api/payments/packages", packagesRouter);
+app.use("/api/payments/customers", customersRouter);
+app.use("/api/payments/checkout", checkoutRouter);
 
 connectNats()
     .then(() => {
