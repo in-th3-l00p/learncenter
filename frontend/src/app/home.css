@@ -1,0 +1,7 @@
+.padding {
+    @apply px-4 sm:px-8 md:px-32 lg:px-48;
+}
+
+.responsive-grid {
+    @apply grid grid-cols-1 lg:grid-cols-2 items-center;
+}

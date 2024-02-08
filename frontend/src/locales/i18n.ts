@@ -1,0 +1,16 @@
+import i18next from "i18next";
+import * as enCommon from "./en/common.json";
+
+i18next.init({
+    lng: "en",
+    debug: true,
+    ns: ["common"],
+    defaultNS: "common",
+    resources: {
+        en: {
+            common: enCommon
+        }
+    }
+})
+
+export default i18next;
