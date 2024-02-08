@@ -56,3 +56,7 @@ export function handleServiceError(res: Response, err: any) {
         res.status(500).send([{ msg: "Internal server error" }]);
     }
 }
+
+export enum CheckoutType {
+    INSTITUTION_SUBSCRIPTION
+}
