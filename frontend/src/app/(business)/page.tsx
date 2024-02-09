@@ -4,7 +4,7 @@ import "./home.css";
 import React from "react";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
     return (
         <>
             <section className={"py-32 padding responsive-grid"}>

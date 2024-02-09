@@ -18,8 +18,6 @@ export default function Register() {
     const [loading, setLoading] = useState<boolean>(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    console.log(errors);
-
     if (loading)
         return <Loading />
     return (
@@ -54,20 +52,21 @@ export default function Register() {
                             method: "POST",
                             headers: {"Content-Type": "application/json"},
                             body: JSON.stringify({firstName, lastName, username, email, phone, password})
-                        });
+                        })
                     if (res.status === 400) {
                         setErrors(handleExpressValidatorErrors(await res.json()));
                         setLoading(false);
                         return;
                     }
 
-                    if (res.status !== 200) {
+                    if (res.status !== 201) {
                         setErrors({ server: "Internal Server Error" });
                         setLoading(false);
                         return;
                     }
 
-                    await router.push("/login?registered");
+                    localStorage.removeItem("registerData");
+                    router.push("/login?registered");
                 }}
             >
                 <h1 className={"text-4xl font-bold text-center mb-8"}>Register</h1>
