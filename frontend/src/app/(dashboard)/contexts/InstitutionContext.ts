@@ -3,12 +3,12 @@ import {createContext} from "react";
 
 interface IInstitutionContext {
     institution?: InstitutionDto;
-    loading: boolean;
+    institutionLoading: boolean;
 }
 
 const InstitutionContext = createContext<IInstitutionContext>({
     institution: undefined,
-    loading: true
+    institutionLoading: true
 });
 
 export default InstitutionContext;

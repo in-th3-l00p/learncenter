@@ -3,12 +3,12 @@ import {UserDto} from "dtos";
 
 interface IAuthContext {
     user?: UserDto;
-    loading: boolean;
+    userLoading: boolean;
 }
 
 const AuthContext = React.createContext<IAuthContext>({
     user: undefined,
-    loading: true
+    userLoading: true
 });
 
 export default AuthContext;

@@ -17,7 +17,7 @@ export default function AuthContextProvider({ children }: { children: React.Reac
     );
 
     return (
-        <AuthContext.Provider value={{ user: data, loading: isLoading }}>
+        <AuthContext.Provider value={{ user: data, userLoading: isLoading }}>
             {children}
         </AuthContext.Provider>
     );

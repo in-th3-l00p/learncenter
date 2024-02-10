@@ -17,7 +17,7 @@ export default function InstitutionContextProvider({ children }: { children: Rea
     );
 
     return (
-        <InstitutionContext.Provider value={{ institution: data, loading: isLoading }}>
+        <InstitutionContext.Provider value={{ institution: data, institutionLoading: isLoading }}>
             {children}
         </InstitutionContext.Provider>
     );

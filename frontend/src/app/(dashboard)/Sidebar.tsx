@@ -8,6 +8,7 @@ import "./layout.scss";
 import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
 import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
+import AuthContext from "@/app/(dashboard)/contexts/AuthContext";
 
 function ToggleButton({ setOpened, className }: {
     setOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -72,9 +73,95 @@ function SidebarLink({ href, icon, iconAlt, children }: {
     );
 }
 
+function InstitutionDisplay() {
+    const { institution, institutionLoading } = useContext(InstitutionContext);
+
+    return (
+        <div className={"inline-flex justify-between items-center py-4 px-8 gap-4"}>
+            <div className={"inline-flex items-center gap-4"}>
+                <Image
+                    src={"/icons/institution.svg"}
+                    alt={"institution"}
+                    width={30}
+                    height={30}
+                />
+                {institutionLoading ?
+                    <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
+                    <p>{institution?.name}</p>
+                }
+            </div>
+
+            <button
+                type="button"
+                className={
+                    "w-12 aspect-square p-2 flex justify-center items-center rounded-lg shadow-md" +
+                    " hover:sha dow-lg hover:bg-gray-100 transition-all "
+                }
+                title={"change institution"}
+                onClick={() => {
+                    Cookie.remove(constants.INSTITUTION_STORAGE_KEY);
+                    window.location.href = "/institutions";
+                }}
+            >
+                <Image
+                    src={"/icons/logout.svg"}
+                    alt={"logout"}
+                    width={40}
+                    height={40}
+                />
+            </button>
+        </div>
+    );
+}
+
+function UserDisplay() {
+    const { user, userLoading } = useContext(AuthContext);
+    const [opened, setOpened] = useState(false);
+
+    return (
+        <>
+            <button
+                type={"button"}
+                className={
+                    "inline-flex justify-between items-center py-4 px-8 gap-4 " +
+                    "hover:bg-mid-blue hover:text-white transition-all " +
+                    (opened ? "bg-mid-blue text-white" : "bg-white")
+                }
+                onClick={() => {
+                    setOpened(opened => !opened);
+                }}
+            >
+                <div className={"inline-flex items-center gap-4"}>
+                    <Image
+                        src={"/demo/demopfp.jpeg"}
+                        alt={"profile"}
+                        width={40}
+                        height={40}
+                        className={"aspect-square rounded-full"}
+                    />
+                    {userLoading ?
+                        <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
+                        <p>{user?.firstName + " " + user?.lastName}</p>
+                    }
+                </div>
+            </button>
+            {opened && (
+                <div className={"userAppearAnimation"}>
+                    <SidebarLink
+                        href={"/logout"}
+                        icon={"/icons/logout.svg"}
+                        iconAlt={"logout"}
+                    >
+                        Logout
+                    </SidebarLink>
+                </div>
+            )}
+        </>
+    );
+}
+
 export default function Sidebar() {
     const [opened, setOpened] = useState(true);
-    const { institution, loading } = useContext(InstitutionContext);
 
     if (!opened)
         return (
@@ -111,40 +198,8 @@ export default function Sidebar() {
                 </SidebarLink>
             </div>
 
-            <div className={"inline-flex justify-between items-center py-4 px-8 gap-4"}>
-                <div className={"inline-flex items-center gap-4"}>
-                    <Image
-                        src={"/icons/institution.svg"}
-                        alt={"institution"}
-                        width={30}
-                        height={30}
-                    />
-                    {loading ?
-                        <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
-                        <p>{institution?.name}</p>
-                    }
-                </div>
-
-                <button
-                    type="button"
-                    className={
-                        "w-12 aspect-square p-2 flex justify-center items-center rounded-lg shadow-md" +
-                        " hover:sha dow-lg hover:bg-gray-100 transition-all "
-                    }
-                    title={"change institution"}
-                    onClick={() => {
-                        Cookie.remove(constants.INSTITUTION_STORAGE_KEY);
-                        window.location.href = "/institutions";
-                    }}
-                >
-                    <Image
-                        src={"/icons/logout.svg"}
-                        alt={"logout"}
-                        width={40}
-                        height={40}
-                    />
-                </button>
-            </div>
+            <InstitutionDisplay />
+            <UserDisplay />
         </SidebarBase>
     );
 }
