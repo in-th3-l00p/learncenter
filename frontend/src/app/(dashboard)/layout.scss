@@ -1,0 +1,12 @@
+.invert {
+    filter: invert(100%);
+}
+
+.sidebar-link {
+    &:hover {
+        > img {
+            @apply transition-all;
+            filter: invert(100%);
+        }
+    }
+}

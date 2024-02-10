@@ -3,9 +3,9 @@ import * as enCommon from "./en/common.json";
 
 i18next.init({
     lng: "en",
-    debug: true,
     ns: ["common"],
     defaultNS: "common",
+    initImmediate: false,
     resources: {
         en: {
             common: enCommon

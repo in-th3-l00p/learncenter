@@ -13,7 +13,7 @@ function HeaderLink({
 }) {
     return (
         <Link
-            className={"text-xl hover:text-mid-blue transition-colors"}
+            className={"hover:text-mid-blue transition-colors"}
             href={href}
         >
             {children}
@@ -122,14 +122,12 @@ export default function RootLayout({
 }>) {
 
     return (
-        <html lang="en" className={"h-full min-h-screen"}>
-            <body className={"h-full min-h-screen"}>
-                <main className="min-h-screen flex flex-col">
-                    <Header />
-                    {children}
-                </main>
-                <Footer />
-            </body>
-        </html>
+        <>
+            <main className="min-h-screen flex flex-col">
+                <Header />
+                {children}
+            </main>
+            <Footer />
+        </>
     );
 }

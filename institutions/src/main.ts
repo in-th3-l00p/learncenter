@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
 import express from "express";
+import cors from "cors";
 import logger from "logger";
 
 import InstitutionsRouter from "./routes/institutions";
@@ -11,6 +12,7 @@ import InstitutionsRouter from "./routes/institutions";
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use("/api/institutions", InstitutionsRouter);
 
 connectNats()

@@ -5,12 +5,7 @@ import Loading from "@/components/Loading";
 import handleExpressValidatorErrors from "@/utils/handleExpressValidatorErrors";
 import {useRouter} from "next/navigation";
 import {constants} from "@/utils/constants";
-
-function ErrorMessage({ error }: { error?: string }) {
-    if (!error)
-        return <></>
-    return <p className={"text-red-600 mt-2"}>{ error }</p>
-}
+import ErrorMessage from "@/app/components/errorMessage";
 
 export default function Register() {
     const cached = JSON.parse(localStorage.getItem("registerData") || "{}");
