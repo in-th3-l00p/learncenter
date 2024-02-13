@@ -10,3 +10,11 @@ export default function Loading() {
         </section>
     );
 }
+
+export function LoadingPage() {
+    return (
+        <section className={"w-screen h-screen flex justify-center items-center"}>
+            <Loading />
+        </section>
+    )
+}

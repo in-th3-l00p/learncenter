@@ -9,6 +9,7 @@ import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
 import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
 import AuthContext from "@/app/(dashboard)/contexts/AuthContext";
+import {getLimitedText} from "@/utils/utils";
 
 function ToggleButton({ setOpened, className }: {
     setOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,6 +52,7 @@ function SidebarBase({ children }: { children: React.ReactNode }) {
 function SidebarLink({ href, icon, iconAlt, children }: {
     href: string, icon: string, iconAlt: string, children: React.ReactNode
 }) {
+    "use client";
     const current = window.location.pathname === href;
 
     return (
@@ -87,7 +89,7 @@ function InstitutionDisplay() {
                 />
                 {institutionLoading ?
                     <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
-                    <p>{institution?.name}</p>
+                    <p className={"text-wrap"}>{getLimitedText(institution?.name!)}</p>
                 }
             </div>
 
@@ -189,12 +191,44 @@ export default function Sidebar() {
             </div>
 
             <div className={"mb-auto"}>
-                <SidebarLink href={"/dashboard"} icon={"/icons/dashboard.svg"} iconAlt={"dashboard"}>
+                <SidebarLink
+                    href={"/dashboard"}
+                    icon={"/icons/dashboard.svg"}
+                    iconAlt={"dashboard"}
+                >
                     Dashboard
                 </SidebarLink>
 
-                <SidebarLink href={"/billing"} icon={"/icons/billing.svg"} iconAlt={"billing"}>
-                    Biling
+                <SidebarLink
+                    href={"/dashboard/classrooms"}
+                    icon={"/icons/whiteboard.svg"}
+                    iconAlt={"whiteboard"}
+                >
+                    Classrooms
+                </SidebarLink>
+
+                <SidebarLink
+                    href={"/dashboard/chat"}
+                    icon={"/icons/chat.svg"}
+                    iconAlt={"chat"}
+                >
+                    Chat
+                </SidebarLink>
+
+                <SidebarLink
+                    href={"/dashboard/billing"}
+                    icon={"/icons/billing.svg"}
+                    iconAlt={"billing"}
+                >
+                    Billing
+                </SidebarLink>
+
+                <SidebarLink
+                    href={"/dashboard/settings"}
+                    icon={"/icons/settings.svg"}
+                    iconAlt={"settings"}
+                >
+                    Settings
                 </SidebarLink>
             </div>
 

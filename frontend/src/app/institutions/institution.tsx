@@ -4,6 +4,7 @@ import Link from "next/link";
 import {constants} from "@/utils/constants";
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
+import {getLimitedText} from "@/utils/utils";
 
 export function Institution({institution, children, href}: {
     institution?: InstitutionDto,
@@ -58,9 +59,9 @@ export function Institution({institution, children, href}: {
                     "hover:shadow-xl hover:cursor-pointer hover:bg-mid-blue hover:text-white"
                 }
             >
-                <div className="text-center">
-                    <h1 className={"text-xl"}>{institution.name}</h1>
-                    <h2>{institution.description?.substring(0, 20)}</h2>
+                <div className="text-center overflow-hidden">
+                    <h1 className={"text-xl text-wrap"}>{getLimitedText(institution.name)}</h1>
+                    <h2>{getLimitedText(institution.name)}</h2>
                 </div>
             </button>
         </form>

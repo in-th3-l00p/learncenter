@@ -7,6 +7,7 @@
         bg-mid-blue text-white
         p-4 rounded-lg shadow-md
         hover:bg-last-blue hover:shadow-xl
+        disabled:bg-light-blue disabled:shadow-none disabled:cursor-not-allowed
         transition-all;
 }
 
