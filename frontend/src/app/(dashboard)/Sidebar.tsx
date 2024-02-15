@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
 import AuthContext from "@/app/(dashboard)/contexts/AuthContext";
 import {getLimitedText} from "@/utils/utils";
+import {usePathname} from "next/navigation";
 
 function ToggleButton({ setOpened, className }: {
     setOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,7 +54,15 @@ function SidebarLink({ href, icon, iconAlt, children }: {
     href: string, icon: string, iconAlt: string, children: React.ReactNode
 }) {
     "use client";
-    const current = window.location.pathname === href;
+
+    const pathname = usePathname();
+    const [current, setCurrent] = useState<boolean>(
+        window.location.pathname === href
+    );
+
+    useEffect(() => {
+        setCurrent(pathname === href);
+    }, [pathname]);
 
     return (
         <Link href={href} className={
