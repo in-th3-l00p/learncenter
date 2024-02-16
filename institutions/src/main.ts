@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
 import express from "express";
+import "express-async-errors";
 import cors from "cors";
 import logger from "logger";
 

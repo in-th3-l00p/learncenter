@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
 
 import express from 'express';
+import "express-async-errors";
 import logger from "logger";
 import {connectNats} from "./events/nats";
 

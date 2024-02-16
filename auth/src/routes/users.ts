@@ -1,6 +1,6 @@
 import express from "express";
 import {authenticated} from "../middleware/authenticated";
-import {UserDto, UserRequest} from "../../../shared/types";
+import {UserDto, UserRequest} from "types";
 import {prisma} from "../utils/connections";
 import logger from "logger";
 import {matchedData, query} from "express-validator";
@@ -33,7 +33,7 @@ router.get(
             })
             .catch(err => {
                 logger.error("Error getting user", err);
-                res.status(500).send({
+                return res.status(500).send({
                     errors: [{
                         msg: "Internal server error"
                     }]
