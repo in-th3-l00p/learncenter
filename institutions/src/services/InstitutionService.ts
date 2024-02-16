@@ -1,5 +1,5 @@
 import {prisma} from "../utils/objects";
-import {ServiceError} from "dtos";
+import {ServiceError} from "types";
 import {nc} from "../events/nats";
 import logger from "logger";
 
@@ -51,13 +51,13 @@ class InstitutionService {
             data: {
                 user: {connect: {id: userId}},
                 institution: {connect: {id: institution.id}},
-                role: "OWNER"
+                role: "ADMIN"
             }
         });
         nc.publish("user:joined", JSON.stringify({
             userId,
             institutionId: institution.id,
-            role: "OWNER"
+            role: "ADMIN"
         }));
 
         return institution;
@@ -106,6 +106,51 @@ class InstitutionService {
         });
         nc.publish("institution:deleted", JSON.stringify({id}));
         logger.info("Deleted institution " + id + ".");
+    }
+
+    public async inviteUser(
+        institutionId: number,
+        userId: number
+    ) {
+        const user = await prisma.user.findUnique({
+            where: {id: userId}
+        });
+        if (!user)
+            throw new ServiceError(404, ["User not found"]);
+
+        const institution = await prisma.institution.findUnique({
+            where: {id: institutionId}
+        });
+        if (!institution)
+            throw new ServiceError(404, ["Institution not found"]);
+
+        if (await prisma.usersOnInstitutions.count({
+            where: {
+                userId: user.id,
+                institutionId
+            }
+        }) > 0)
+            throw new ServiceError(400, ["User already in institution"]);
+
+        await prisma.usersOnInstitutions.create({
+            data: {
+                user: {connect: {id: user.id}},
+                institution: {connect: {id: institution.id}},
+                role: "PENDING"
+            }
+        });
+
+        nc.publish("user:invited", JSON.stringify({
+            institutionId,
+            userId
+        }));
+        return user;
+    }
+
+    public async getUsers(institutionId: number) {
+        return prisma.usersOnInstitutions.findMany({
+            where: {institutionId}
+        });
     }
 }
 

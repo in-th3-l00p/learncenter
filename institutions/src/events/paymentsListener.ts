@@ -1,5 +1,5 @@
 import {NatsConnection} from "nats";
-import {PackageDto} from "dtos";
+import {PackageDto} from "../../../shared/types";
 import {prisma} from "../utils/objects";
 import logger from "logger";
 export default async function paymentsInstitutionUpdateListener(nc: NatsConnection) {

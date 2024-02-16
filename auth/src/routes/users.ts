@@ -1,6 +1,6 @@
 import express from "express";
 import {authenticated} from "../middleware/authenticated";
-import {UserDto, UserRequest} from "dtos";
+import {UserDto, UserRequest} from "../../../shared/types";
 import {prisma} from "../utils/connections";
 import logger from "logger";
 import {matchedData, query} from "express-validator";

@@ -1,7 +1,7 @@
 import {NatsConnection} from "nats";
 import {prisma} from "../utils/objects";
 import logger from "logger";
-import {UserDto} from "dtos";
+import {UserDto} from "../../../shared/types";
 
 export default async function userCreatedListener(nc: NatsConnection) {
     const sub = nc.subscribe("auth:userCreated");

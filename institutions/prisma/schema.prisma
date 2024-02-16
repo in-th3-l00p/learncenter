@@ -58,7 +58,6 @@ model UsersOnInstitutions {
 }
 
 enum UserRole {
-  OWNER
   ADMIN
   USER
   GUEST

@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
-import {InstitutionDto} from "dtos";
+import {InstitutionDto} from "../../../../shared/types";
 
 export default function InstitutionContextProvider({ children }: { children: React.ReactNode }) {
     const [institution, setInstitution] = React.useState<InstitutionDto>();

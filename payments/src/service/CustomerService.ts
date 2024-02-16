@@ -3,7 +3,7 @@ import {body} from "express-validator";
 import {prisma, stripe} from "../utils/objects";
 import logger from "logger";
 import {nc} from "../events/nats";
-import {ServiceError} from "dtos";
+import {ServiceError} from "../../../shared/types";
 
 export const customerValidation = [
     body("address.city"),

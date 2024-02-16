@@ -3,8 +3,7 @@ import {body, matchedData, param} from "express-validator";
 import {authenticate, validateRequest} from "middleware";
 import logger from "logger";
 import {prisma} from "../utils/objects";
-import {UserDto, UserRequest} from "dtos";
-import { handleServiceError } from "dtos";
+import {UserDto, UserRequest, handleServiceError} from "types";
 import institutionService from "../services/InstitutionService";
 
 const router = express.Router();

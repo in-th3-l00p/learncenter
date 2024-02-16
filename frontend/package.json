@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "dtos": "file:../shared/dtos",
+    "types": "file:../shared/types",
     "i18next": "^23.8.2",
     "js-cookie": "^3.0.5",
     "next": "14.1.0",

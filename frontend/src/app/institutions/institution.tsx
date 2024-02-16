@@ -1,4 +1,4 @@
-import {InstitutionDto} from "dtos";
+import {InstitutionDto} from "../../../../shared/types";
 import React from "react";
 import Link from "next/link";
 import {constants} from "@/utils/constants";

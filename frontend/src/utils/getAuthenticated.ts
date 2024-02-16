@@ -1,4 +1,4 @@
-import {UserDto} from "dtos";
+import {UserDto} from "types";
 import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
 import {cookies} from "next/headers";

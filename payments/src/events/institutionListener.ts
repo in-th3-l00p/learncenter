@@ -1,6 +1,6 @@
 import nats from "nats";
 import logger from "logger";
-import {InstitutionDto} from "dtos";
+import {InstitutionDto} from "../../../shared/types";
 import {prisma} from "../utils/objects";
 
 async function institutionCreatedListener(nc: nats.NatsConnection) {

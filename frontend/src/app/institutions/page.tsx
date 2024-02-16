@@ -1,7 +1,7 @@
 "use server";
 
 import {constants} from "@/utils/constants";
-import {InstitutionDto} from "dtos";
+import {InstitutionDto} from "../../../../shared/types";
 import {cookies} from "next/headers";
 import React from "react";
 import getAuthenticated from "@/utils/getAuthenticated";

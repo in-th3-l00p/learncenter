@@ -4,7 +4,7 @@ import {prisma} from "../utils/objects";
 import {validateRequest} from "middleware";
 import logger from "logger";
 import {nc} from "../events/nats";
-import {CheckoutType, PackageDto} from "dtos";
+import {CheckoutType, PackageDto} from "../../../shared/types";
 
 const router = express.Router();
 

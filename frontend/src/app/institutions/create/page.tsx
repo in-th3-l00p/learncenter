@@ -5,7 +5,7 @@ import Loading from "@/components/Loading";
 import {constants} from "@/utils/constants";
 import handleExpressValidatorErrors from "@/utils/handleExpressValidatorErrors";
 import Cookie from "js-cookie";
-import {InstitutionDto} from "dtos";
+import {InstitutionDto} from "../../../../../shared/types";
 import ErrorMessage from "@/app/components/errorMessage";
 
 export default function CreateInstitution() {

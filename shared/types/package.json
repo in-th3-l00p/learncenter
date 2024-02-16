@@ -1,7 +1,7 @@
 {
-  "name": "dtos",
+  "name": "types",
   "version": "1.0.0",
-  "description": "place to store dtos used throughout the app",
+  "description": "place to store types used throughout the app",
   "main": "src/index.ts",
   "scripts": {},
   "keywords": [],
