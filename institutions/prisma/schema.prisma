@@ -60,7 +60,6 @@ model UsersOnInstitutions {
 enum UserRole {
   ADMIN
   USER
-  GUEST
   PENDING
   BANNED
   DELETED

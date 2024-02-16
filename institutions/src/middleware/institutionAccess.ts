@@ -5,6 +5,49 @@ import {Prisma} from "@prisma/client";
 
 export interface InstitutionRequest<T> extends UserRequest<T> {
     institution?: Prisma.InstitutionGetPayload<{}>;
+    role?: "ADMIN" | "USER";
+}
+
+export async function institutionNoAccess(
+    req: InstitutionRequest<UserDto>,
+    res: Response,
+    next: NextFunction
+) {
+    const { institutionId } = req.params;
+    const institution = await prisma.institution.findUnique({
+        where: { id: parseInt(institutionId) }
+    });
+    if (!institution) {
+        return res.status(404).send({
+            errors: [{
+                msg: "Institution not found"
+            }]
+        });
+    }
+
+    const { user } = req;
+    if (!user)
+        return res.status(401).send({
+            errors: [{
+                msg: "Unauthorized"
+            }]
+        });
+
+    if (await prisma.usersOnInstitutions.count({
+        where: {
+            institutionId: institution.id,
+            userId: user.id
+        }
+    }) === 0) {
+        return res.status(403).send({
+            errors: [{
+                msg: "You are not a member of this institution"
+            }]
+        });
+    }
+
+    req.institution = institution;
+    next();
 }
 
 export async function institutionAccess(
@@ -31,12 +74,21 @@ export async function institutionAccess(
             }]
         });
 
-    if (await prisma.usersOnInstitutions.count({
+    const roleWrapper = await prisma.usersOnInstitutions.findFirst({
         where: {
             institutionId: institution.id,
             userId: user.id
+        },
+        select: {
+            role: true
         }
-    }) === 0) {
+    });
+    if (
+        !roleWrapper ||
+        roleWrapper.role === "PENDING" ||
+        roleWrapper.role === "BANNED" ||
+        roleWrapper.role === "DELETED"
+    ) {
         return res.status(403).send({
             errors: [{
                 msg: "You are not a member of this institution"
@@ -45,6 +97,7 @@ export async function institutionAccess(
     }
 
     req.institution = institution;
+    req.role = roleWrapper.role;
     next();
 }
 export async function institutionAdminAccess(
@@ -53,27 +106,13 @@ export async function institutionAdminAccess(
     next: NextFunction
 ) {
     await institutionAccess(req, res, async () => {
-        const { user, institution } = req;
-        if (!user)
-            return res.status(401).send({
-                errors: [{
-                    msg: "Unauthorized"
-                }]
-            });
-
-        if (await prisma.usersOnInstitutions.count({
-            where: {
-                institutionId: institution!.id,
-                userId: user.id,
-                role: "ADMIN"
-            }
-        }) === 0) {
+        const { role } = req;
+        if (role !== "ADMIN")
             return res.status(403).send({
                 errors: [{
                     msg: "You are not an admin of this institution"
                 }]
             });
-        }
 
         next();
     });

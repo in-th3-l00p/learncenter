@@ -11,6 +11,12 @@ router.get(
     "/api/auth",
     authenticated,
     (req: UserRequest<UserDto>, res) => {
+        if (!req.user)
+            return res.status(401).send({
+                errors: [{
+                    msg: "Unauthorized"
+                }]
+            });
         prisma.user.findUnique({ where: { id: req.user?.id } })
             .then(user => {
                 if (!user) {

@@ -93,6 +93,14 @@ services:
     networks:
       - app
 
+  nats-web:
+    image: sphqxe/nats-webui
+    restart: always
+    ports:
+      - '8001:80'
+    networks:
+      - app
+
   redis:
     image: redis
     restart: always
