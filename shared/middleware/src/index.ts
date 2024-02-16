@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
-import {UserRequest} from "../../types";
+import {UserRequest} from "types";
 import axios, {AxiosError} from "axios";
 import {PrismaClient} from "prisma/prisma-client/scripts/default-index";
 import {Logger} from "winston";
