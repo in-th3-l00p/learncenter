@@ -1,7 +1,8 @@
 import {NatsConnection} from "nats";
-import {PackageDto} from "../../../shared/types";
+import {PackageDto} from "types";
 import {prisma} from "../utils/objects";
 import logger from "logger";
+
 export default async function paymentsInstitutionUpdateListener(nc: NatsConnection) {
     const sub = nc.subscribe("payments:institutionUpdated");
     for await (const message of sub) {

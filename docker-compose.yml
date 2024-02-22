@@ -24,9 +24,11 @@ services:
     ports:
       - '3001:3001'
     environment:
+      APP_NAME: 'auth-service'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/auth?schema=public'
       REDIS_URL: 'redis://redis:6379'
       NATS_URL: 'nats://nats:4222'
+      NATS_STREAM_NAME: 'learncenter'
       SECRET: 'jfdsakjfbdsakjfndsalkjlkdsahlkdsj'
       PORT: 3001
     networks:
@@ -72,10 +74,12 @@ services:
     ports:
       - '3003:3003'
     environment:
+      APP_NAME: 'institutions-service'
       AUTH_URL: 'http://auth-service:3001'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/institutions?schema=public'
       REDIS_URL: 'redis://redis:6379'
       NATS_URL: 'nats://nats:4222'
+      NATS_STREAM_NAME: 'learncenter'
       PORT: 3003
     networks:
       - app

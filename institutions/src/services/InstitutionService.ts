@@ -1,7 +1,7 @@
 import {prisma} from "../utils/objects";
 import {ServiceError} from "types";
-import {nc} from "../events/nats";
 import logger from "logger";
+import NatsStreaming from "streaming";
 
 class InstitutionService {
     public async getInstitution(id: number, userId: number) {
@@ -44,7 +44,9 @@ class InstitutionService {
             }
         });
 
-        nc.publish("institution:created", JSON.stringify(institution));
+        await NatsStreaming
+            .getInstance()
+            .publish("institution:created", JSON.stringify(institution));
         logger.info("Created institution " + institution.id + ".");
 
         await prisma.usersOnInstitutions.create({
@@ -54,7 +56,7 @@ class InstitutionService {
                 role: "ADMIN"
             }
         });
-        nc.publish("user:joined", JSON.stringify({
+        await NatsStreaming.getInstance().publish("user:joined", JSON.stringify({
             userId,
             institutionId: institution.id,
             role: "ADMIN"
@@ -81,7 +83,9 @@ class InstitutionService {
 
         if (!institution)
             throw new ServiceError(404, ["Institution not found"]);
-        nc.publish("institution:updated", JSON.stringify(institution));
+        await NatsStreaming
+            .getInstance()
+            .publish("institution:updated", JSON.stringify(institution));
         logger.info("Updated institution " + institution.id + ".");
         return institution;
     }
@@ -104,7 +108,9 @@ class InstitutionService {
                 }
             }
         });
-        nc.publish("institution:deleted", JSON.stringify({id}));
+        await NatsStreaming
+            .getInstance()
+            .publish("institution:deleted", JSON.stringify({id}));
         logger.info("Deleted institution " + id + ".");
     }
 
@@ -140,7 +146,7 @@ class InstitutionService {
             }
         });
 
-        nc.publish("user:invited", JSON.stringify({
+        await NatsStreaming.getInstance().publish("user:invited", JSON.stringify({
             institutionId,
             userId
         }));
