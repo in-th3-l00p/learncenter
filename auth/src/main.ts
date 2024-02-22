@@ -6,11 +6,11 @@ if (process.env.NODE_ENV !== 'production')
 import express from 'express';
 import "express-async-errors";
 import cors from "cors";
-import {connectNats} from "./utils/connections";
 
 import RegisterRouter from "./routes/register";
 import LoginRouter from "./routes/login";
 import UserRouter from "./routes/users";
+import NatsStreaming from "streaming";
 
 const app = express();
 
@@ -21,10 +21,10 @@ app.use(RegisterRouter);
 app.use(LoginRouter);
 app.use(UserRouter);
 
-connectNats()
-    .then(() => {
-      const PORT = process.env.PORT || 3000;
-      app.listen(PORT, () => {
+(async () => {
+    await NatsStreaming.initializeFromEnv(logger);
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
         logger.info("Server is running on port " + PORT + "...");
-      });
     });
+})();

@@ -1,9 +1,10 @@
 import express from "express";
 import {body, matchedData} from "express-validator";
-import {nc, prisma} from "../utils/connections";
+import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
 import { validateRequest } from "middleware";
 import logger from "logger";
+import NatsStreaming from "streaming";
 
 const router = express.Router();
 
@@ -44,7 +45,7 @@ router.post(
                     phone: user.phone
                 };
                 res.status(201).send(publicUser);
-                nc.publish("auth:userCreated", JSON.stringify(publicUser));
+                NatsStreaming.getInstance().publish("auth:userCreated", JSON.stringify(publicUser));
                 logger.info("Created user: " + JSON.stringify(publicUser));
             })
             .catch(err => {
