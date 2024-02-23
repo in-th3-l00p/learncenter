@@ -27,8 +27,6 @@ services:
       APP_NAME: 'auth-service'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/auth?schema=public'
       REDIS_URL: 'redis://redis:6379'
-      NATS_URL: 'nats://nats:4222'
-      NATS_STREAM_NAME: 'learncenter'
       SECRET: 'jfdsakjfbdsakjfndsalkjlkdsahlkdsj'
       PORT: 3001
     networks:
@@ -36,7 +34,6 @@ services:
     depends_on:
       - postgres
       - redis
-      - nats
 
   payments-service:
     build:
@@ -49,10 +46,10 @@ services:
     ports:
       - '3002:3002'
     environment:
+      APP_NAME: 'payments-service'
       AUTH_URL: 'http://auth-service:3001'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/payments?schema=public'
       REDIS_URL: 'redis://redis:6379'
-      NATS_URL: 'nats://nats:4222'
       STRIPE_KEY: ${STRIPE_KEY}
       PORT: 3002
     networks:
@@ -60,7 +57,6 @@ services:
     depends_on:
       - postgres
       - redis
-      - nats
       - auth-service
 
   institutions-service:
@@ -78,32 +74,13 @@ services:
       AUTH_URL: 'http://auth-service:3001'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/institutions?schema=public'
       REDIS_URL: 'redis://redis:6379'
-      NATS_URL: 'nats://nats:4222'
-      NATS_STREAM_NAME: 'learncenter'
       PORT: 3003
     networks:
       - app
     depends_on:
       - postgres
       - redis
-      - nats
       - auth-service
-
-  nats:
-    image: nats
-    restart: always
-    ports:
-      - '4222:4222'
-    networks:
-      - app
-
-  nats-web:
-    image: sphqxe/nats-webui
-    restart: always
-    ports:
-      - '8001:80'
-    networks:
-      - app
 
   redis:
     image: redis

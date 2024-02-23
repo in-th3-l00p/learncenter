@@ -27,8 +27,6 @@
     "express-validator": "^7.0.1",
     "logger": "file:../shared/logger",
     "middleware": "file:../shared/middleware",
-    "nats": "^2.19.0",
-    "streaming": "file:../shared/streaming",
     "types": "file:../shared/types"
   }
 }

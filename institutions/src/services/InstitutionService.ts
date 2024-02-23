@@ -1,7 +1,6 @@
 import {prisma} from "../utils/objects";
 import {ServiceError} from "types";
 import logger from "logger";
-import NatsStreaming from "streaming";
 
 class InstitutionService {
     public async getInstitution(id: number, userId: number) {
@@ -44,11 +43,6 @@ class InstitutionService {
             }
         });
 
-        await NatsStreaming
-            .getInstance()
-            .publish("institution:created", JSON.stringify(institution));
-        logger.info("Created institution " + institution.id + ".");
-
         await prisma.usersOnInstitutions.create({
             data: {
                 user: {connect: {id: userId}},
@@ -56,11 +50,6 @@ class InstitutionService {
                 role: "ADMIN"
             }
         });
-        await NatsStreaming.getInstance().publish("user:joined", JSON.stringify({
-            userId,
-            institutionId: institution.id,
-            role: "ADMIN"
-        }));
 
         return institution;
     }
@@ -83,9 +72,6 @@ class InstitutionService {
 
         if (!institution)
             throw new ServiceError(404, ["Institution not found"]);
-        await NatsStreaming
-            .getInstance()
-            .publish("institution:updated", JSON.stringify(institution));
         logger.info("Updated institution " + institution.id + ".");
         return institution;
     }
@@ -108,9 +94,6 @@ class InstitutionService {
                 }
             }
         });
-        await NatsStreaming
-            .getInstance()
-            .publish("institution:deleted", JSON.stringify({id}));
         logger.info("Deleted institution " + id + ".");
     }
 
@@ -146,10 +129,6 @@ class InstitutionService {
             }
         });
 
-        await NatsStreaming.getInstance().publish("user:invited", JSON.stringify({
-            institutionId,
-            userId
-        }));
         return user;
     }
 

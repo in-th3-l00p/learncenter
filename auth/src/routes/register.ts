@@ -4,7 +4,6 @@ import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
 import { validateRequest } from "middleware";
 import logger from "logger";
-import NatsStreaming from "streaming";
 
 const router = express.Router();
 
@@ -45,7 +44,6 @@ router.post(
                     phone: user.phone
                 };
                 res.status(201).send(publicUser);
-                NatsStreaming.getInstance().publish("auth:userCreated", JSON.stringify(publicUser));
                 logger.info("Created user: " + JSON.stringify(publicUser));
             })
             .catch(err => {

@@ -5,7 +5,6 @@ if (process.env.NODE_ENV !== 'production')
 import express from 'express';
 import "express-async-errors";
 import logger from "logger";
-import {connectNats} from "./events/nats";
 
 import stripeWebhook from "./routes/stripeWebhook";
 import packagesRouter from "./routes/packages";
@@ -21,13 +20,10 @@ app.use("/api/payments/packages", packagesRouter);
 app.use("/api/payments/customers", customersRouter);
 app.use("/api/payments/checkout", checkoutRouter);
 
-connectNats()
-    .then(() => {
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => {
-            logger.log({
-                level: "info",
-                message: "Server started on port: " + PORT
-            });
-        });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    logger.log({
+        level: "info",
+        message: "Server started on port: " + PORT
     });
+});

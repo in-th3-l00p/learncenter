@@ -33,9 +33,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "middleware": "file:../shared/middleware",
-    "nats": "^2.19.0",
     "redis": "^4.6.12",
-    "streaming": "file:../shared/streaming",
     "types": "file:../shared/types",
     "winston": "^3.11.0"
   }
