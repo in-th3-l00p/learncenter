@@ -2,8 +2,7 @@ import CustomerDto, {stripeCustomerToDto, UserDto} from "../utils/types";
 import {body} from "express-validator";
 import {prisma, stripe} from "../utils/objects";
 import logger from "logger";
-import {nc} from "../events/nats";
-import {ServiceError} from "../../../shared/types";
+import {ServiceError} from "types";
 
 export const customerValidation = [
     body("address.city"),
@@ -99,7 +98,6 @@ class CustomerService {
         logger.info("Customer created: " + JSON.stringify(stripeCustomer));
 
         const dto = stripeCustomerToDto(stripeCustomer);
-        nc.publish("payments:customerCreated", JSON.stringify(dto));
 
         const customer = await prisma.customer.create({
             data: {
@@ -136,7 +134,6 @@ class CustomerService {
             });
             logger.info(`Customer ${stripeCustomer.id} updated!`);
             const dto = stripeCustomerToDto(stripeCustomer);
-            nc.publish("payments:customerUpdated", JSON.stringify(dto));
             return dto;
         } catch (err: any) {
             logger.error("Error updating customer: " + err);

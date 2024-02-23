@@ -6,7 +6,7 @@ import customer from "../middleware/customer";
 import {validateRequest} from "middleware";
 import {UserRequest} from "../utils/types";
 import logger from "logger";
-import {CheckoutType} from "../../../shared/types";
+import {CheckoutType} from "types";
 
 const router = express.Router();
 

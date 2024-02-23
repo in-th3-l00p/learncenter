@@ -3,8 +3,7 @@ import Stripe from "stripe";
 import {prisma} from "../utils/objects";
 import {validateRequest} from "middleware";
 import logger from "logger";
-import {nc} from "../events/nats";
-import {CheckoutType, PackageDto} from "../../../shared/types";
+import {CheckoutType, PackageDto} from "types";
 
 const router = express.Router();
 
@@ -68,7 +67,6 @@ router.post(
                     );
                 break;
             case "checkout.session.completed":
-                nc.publish("payments:checkoutCompleted", JSON.stringify(event.data));
                 logger.info("Checkout completed: " + event.data.object.id);
 
                 try {
@@ -110,23 +108,6 @@ router.post(
                                 }
                             }
                         });
-
-                        nc.publish(
-                            "payments:institutionUpdated",
-                            JSON.stringify({
-                                institutionId: institution.id,
-                                package: {
-                                    id: selectedPackage.id,
-                                    name: selectedPackage.name,
-                                    description: selectedPackage.description,
-                                    newClassroomsAmount: selectedPackage.newClassroomsAmount,
-                                    newUsersAmount: selectedPackage.newUsersAmount
-                                }
-                            } as {
-                                institutionId: number;
-                                package: PackageDto
-                            })
-                        );
                     }
                 } catch (err: any) {
                     logger.error(
