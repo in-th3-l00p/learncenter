@@ -1,6 +1,8 @@
 import {prisma} from "../utils/objects";
 import {ServiceError} from "types";
 import logger from "logger";
+import Amqp from "streaming";
+import {EventType} from "streaming/src/event";
 
 class InstitutionService {
     public async getInstitution(id: number, userId: number) {
@@ -42,6 +44,10 @@ class InstitutionService {
                 }
             }
         });
+        Amqp.getInstance().publish({
+            type: EventType.INSTITUTION_CREATED,
+            data: institution
+        })
 
         await prisma.usersOnInstitutions.create({
             data: {
@@ -50,7 +56,16 @@ class InstitutionService {
                 role: "ADMIN"
             }
         });
+        Amqp.getInstance().publish({
+            type: EventType.USER_JOINED_INSTITUTION,
+            data: {
+                user: userId,
+                institution: institution.id,
+                role: "ADMIN"
+            }
+        });
 
+        logger.info("Created institution " + institution.id + ".");
         return institution;
     }
 
@@ -69,9 +84,13 @@ class InstitutionService {
             },
             data: {name, description}
         });
-
         if (!institution)
             throw new ServiceError(404, ["Institution not found"]);
+
+        Amqp.getInstance().publish({
+            type: EventType.INSTITUTION_UPDATED,
+            data: institution
+        });
         logger.info("Updated institution " + institution.id + ".");
         return institution;
     }
@@ -93,6 +112,10 @@ class InstitutionService {
                     some: {id: userId}
                 }
             }
+        });
+        Amqp.getInstance().publish({
+            type: EventType.INSTITUTION_DELETED,
+            data: {id}
         });
         logger.info("Deleted institution " + id + ".");
     }
@@ -128,6 +151,15 @@ class InstitutionService {
                 role: "PENDING"
             }
         });
+
+        Amqp.getInstance().publish({
+            type: EventType.USER_INVITED,
+            data: {
+                user: user.id,
+                institution: institution.id
+            }
+        });
+        logger.info("Invited user " + user.id + " to institution " + institution.id + ".");
 
         return user;
     }

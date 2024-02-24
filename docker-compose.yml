@@ -60,6 +60,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - rabbitmq
       - auth-service
 
   institutions-service:
@@ -85,6 +86,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - rabbitmq
       - auth-service
 
   rabbitmq:
