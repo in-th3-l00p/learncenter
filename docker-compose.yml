@@ -25,8 +25,10 @@ services:
       - '3001:3001'
     environment:
       APP_NAME: 'auth-service'
+      RABBITMQ_URL: 'amqp://rabbitmq'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/auth?schema=public'
       REDIS_URL: 'redis://redis:6379'
+
       SECRET: 'jfdsakjfbdsakjfndsalkjlkdsahlkdsj'
       PORT: 3001
     networks:
@@ -34,6 +36,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - rabbitmq
 
   payments-service:
     build:
@@ -71,9 +74,11 @@ services:
       - '3003:3003'
     environment:
       APP_NAME: 'institutions-service'
-      AUTH_URL: 'http://auth-service:3001'
+      RABBITMQ_URL: 'amqp://rabbitmq'
       DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/institutions?schema=public'
       REDIS_URL: 'redis://redis:6379'
+
+      AUTH_URL: 'http://auth-service:3001'
       PORT: 3003
     networks:
       - app

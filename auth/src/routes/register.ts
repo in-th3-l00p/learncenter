@@ -2,8 +2,10 @@ import express from "express";
 import {body, matchedData} from "express-validator";
 import {prisma} from "../utils/connections";
 import bcrypt from "bcrypt";
-import { validateRequest } from "middleware";
+import {validateRequest} from "middleware";
 import logger from "logger";
+import Amqp from "streaming";
+import {EventType} from "streaming/src/event";
 
 const router = express.Router();
 
@@ -45,6 +47,11 @@ router.post(
                 };
                 res.status(201).send(publicUser);
                 logger.info("Created user: " + JSON.stringify(publicUser));
+
+                Amqp.getInstance().publish({
+                    type: EventType.USER_CREATED,
+                    data: publicUser
+                })
             })
             .catch(err => {
                 res.status(500).send(err);

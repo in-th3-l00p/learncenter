@@ -10,6 +10,7 @@ import cors from "cors";
 import RegisterRouter from "./routes/register";
 import LoginRouter from "./routes/login";
 import UserRouter from "./routes/users";
+import Amqp from "streaming";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(LoginRouter);
 app.use(UserRouter);
 
 (async () => {
+    await Amqp.initializeFromEnv(logger);
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         logger.info("Server is running on port " + PORT + "...");

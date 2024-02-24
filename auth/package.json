@@ -36,6 +36,7 @@
     "lodash": "^4.17.21",
     "middleware": "file:../shared/middleware",
     "redis": "^4.6.12",
+    "streaming": "file:../shared/streaming",
     "types": "file:../shared/types",
     "winston": "^3.11.0"
   }
