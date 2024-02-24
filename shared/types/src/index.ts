@@ -29,6 +29,16 @@ export type InstitutionDto = {
     name: string;
     description?: string;
     createdAt: Date;
+    usersAmount: number;
+    ownerId: number;
+}
+
+export type UserInstitutionDto = {
+    id: number;
+    user: UserDto;
+    institutionId: number;
+    role: string;
+    createdAt: Date;
 }
 
 export type PackageDto = {

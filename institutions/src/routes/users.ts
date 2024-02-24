@@ -40,10 +40,17 @@ router.get(
     institutionAccess,
     async (req: InstitutionRequest<UserDto>, res) => {
         const users = await prisma.usersOnInstitutions.findMany({
-            where: { institutionId: req.institution!.id }
+            where: { institutionId: req.institution!.id },
+            include: { user: true }
         });
 
-        return res.send(users);
+        return res.send(users.map(user => ({
+            id: user.id,
+            user: user.user,
+            institutionId: user.institutionId,
+            role: user.role,
+            createdAt: user.createdAt
+        })));
     });
 
 router.post(

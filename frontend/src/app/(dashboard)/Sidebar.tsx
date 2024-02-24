@@ -209,6 +209,14 @@ export default function Sidebar() {
                 </SidebarLink>
 
                 <SidebarLink
+                    href={"/dashboard/users"}
+                    icon={"/icons/users.svg"}
+                    iconAlt={"users"}
+                >
+                    Users
+                </SidebarLink>
+
+                <SidebarLink
                     href={"/dashboard/classrooms"}
                     icon={"/icons/whiteboard.svg"}
                     iconAlt={"whiteboard"}
