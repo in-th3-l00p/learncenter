@@ -2,11 +2,11 @@ import express from "express";
 import "express-async-errors";
 import cors from "cors";
 import Amqp from "streaming";
+import setupConsumers from "./events/setupConsumers";
 import logger from "logger";
 
 import InstitutionsRouter from "./routes/institutions";
 import UsersRouter from "./routes/users";
-import {EventType} from "streaming/src/event";
 
 if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
@@ -20,9 +20,7 @@ app.use("/api/institutions/users", UsersRouter);
 
 (async () => {
     await Amqp.initializeFromEnv(logger);
-    Amqp.getInstance().addConsumer(EventType.USER_CREATED, async (event) => {
-        console.log("User created: ", event);
-    });
+    setupConsumers();
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
