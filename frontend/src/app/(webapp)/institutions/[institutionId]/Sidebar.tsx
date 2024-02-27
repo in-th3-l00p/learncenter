@@ -5,12 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import "./layout.scss";
-import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
-import Cookie from "js-cookie";
-import {constants} from "@/utils/constants";
-import AuthContext from "@/app/(dashboard)/contexts/AuthContext";
+import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
+import AuthContext from "@/app/(webapp)/institutions/[institutionId]/contexts/AuthContext";
 import {getLimitedText} from "@/utils/utils";
 import {usePathname} from "next/navigation";
+import i18n from "@/locales/i18n";
 
 function ToggleButton({ setOpened, className }: {
     setOpened: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,11 +26,11 @@ function ToggleButton({ setOpened, className }: {
                 " hover:shadow-lg hover:bg-gray-100 transition-all " +
                 className
             }
-            title={"toggle sidebar"}
+            title={i18n.t("toggle sidebar")}
         >
             <Image
                 src={"/icons/sidebar.svg"}
-                alt={"toggle sidebar"}
+                alt={i18n.t("toggle sidebar")}
                 width={40}
                 height={40}
             />
@@ -85,7 +84,7 @@ function SidebarLink({ href, icon, iconAlt, children }: {
 }
 
 function InstitutionDisplay() {
-    const { institution, institutionLoading } = useContext(InstitutionContext);
+    const { institution } = useContext(InstitutionContext);
 
     return (
         <div className={"inline-flex justify-between items-center py-4 px-8 gap-4"}>
@@ -96,10 +95,7 @@ function InstitutionDisplay() {
                     width={30}
                     height={30}
                 />
-                {institutionLoading ?
-                    <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
-                    <p className={"text-wrap"}>{getLimitedText(institution?.name!)}</p>
-                }
+                <p className={"text-wrap"}>{getLimitedText(institution?.name!)}</p>
             </div>
 
             <button
@@ -108,9 +104,8 @@ function InstitutionDisplay() {
                     "w-12 aspect-square p-2 flex justify-center items-center rounded-lg shadow-md" +
                     " hover:sha dow-lg hover:bg-gray-100 transition-all "
                 }
-                title={"change institution"}
+                title={i18n.t("change institution")}
                 onClick={() => {
-                    Cookie.remove(constants.INSTITUTION_STORAGE_KEY);
                     window.location.href = "/institutions";
                 }}
             >
@@ -163,7 +158,7 @@ function UserDisplay() {
                         icon={"/icons/logout.svg"}
                         iconAlt={"logout"}
                     >
-                        Logout
+                        {i18n.t("Logout")}
                     </SidebarLink>
                 </div>
             )}
@@ -172,6 +167,7 @@ function UserDisplay() {
 }
 
 export default function Sidebar() {
+    const { institution } = useContext(InstitutionContext);
     const [opened, setOpened] = useState(true);
 
     if (!opened)
@@ -201,51 +197,51 @@ export default function Sidebar() {
 
             <div className={"mb-auto"}>
                 <SidebarLink
-                    href={"/dashboard"}
-                    icon={"/icons/dashboard.svg"}
-                    iconAlt={"dashboard"}
+                    href={`/institutions/${institution?.id}`}
+                    icon={"/icons/institution.svg"}
+                    iconAlt={"institutions"}
                 >
-                    Dashboard
+                    {i18n.t("Dashboard")}
                 </SidebarLink>
 
                 <SidebarLink
-                    href={"/dashboard/users"}
+                    href={`/institutions/${institution?.id}/users`}
                     icon={"/icons/users.svg"}
                     iconAlt={"users"}
                 >
-                    Users
+                    {i18n.t("Users")}
                 </SidebarLink>
 
                 <SidebarLink
-                    href={"/dashboard/classrooms"}
+                    href={`/institutions/${institution?.id}/classrooms`}
                     icon={"/icons/whiteboard.svg"}
                     iconAlt={"whiteboard"}
                 >
-                    Classrooms
+                    {i18n.t("Classrooms")}
                 </SidebarLink>
 
                 <SidebarLink
-                    href={"/dashboard/chat"}
+                    href={`/institutions/${institution?.id}/chat`}
                     icon={"/icons/chat.svg"}
                     iconAlt={"chat"}
                 >
-                    Chat
+                    {i18n.t("Chat")}
                 </SidebarLink>
 
                 <SidebarLink
-                    href={"/dashboard/billing"}
+                    href={`/institutions/${institution?.id}/billing`}
                     icon={"/icons/billing.svg"}
                     iconAlt={"billing"}
                 >
-                    Billing
+                    {i18n.t("Billing")}
                 </SidebarLink>
 
                 <SidebarLink
-                    href={"/dashboard/settings"}
+                    href={`/institutions/${institution?.id}/settings`}
                     icon={"/icons/settings.svg"}
                     iconAlt={"settings"}
                 >
-                    Settings
+                    {i18n.t("Settings")}
                 </SidebarLink>
             </div>
 

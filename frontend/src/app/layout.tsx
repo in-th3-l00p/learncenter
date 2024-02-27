@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: "LearnCenter Web Application, designed for handling educational institutions online",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={"h-full min-h-screen"}>
             <body className={inter.className + " bg-zinc-100"}>

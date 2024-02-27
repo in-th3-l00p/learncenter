@@ -3,7 +3,7 @@
 import React from "react";
 import useSWR from "swr";
 import {constants} from "@/utils/constants";
-import AuthContext from "@/app/(dashboard)/contexts/AuthContext";
+import AuthContext from "@/app/(webapp)/institutions/[institutionId]/contexts/AuthContext";
 import Cookie from "js-cookie";
 
 export default function AuthContextProvider({ children }: { children: React.ReactNode }) {

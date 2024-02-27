@@ -1,12 +1,13 @@
 "use server";
 
 import {constants} from "@/utils/constants";
-import {InstitutionDto} from "../../../../shared/types";
+import {InstitutionDto} from "types";
 import {cookies} from "next/headers";
 import React from "react";
 import getAuthenticated from "@/utils/getAuthenticated";
 import {redirect} from "next/navigation";
-import {Institution} from "@/app/institutions/institution";
+import {Institution} from "@/app/(webapp)/institutions/institution";
+import i18n from "@/locales/i18n";
 
 export default async function Institutions() {
     const user = await getAuthenticated();
@@ -22,8 +23,8 @@ export default async function Institutions() {
 
     return (
         <section className={"p-8"}>
-            <h1 className={"text-4xl bold mb-4"}>Institutions</h1>
-            <h2 className={"text-xl mb-8"}>Select an institution, or create one</h2>
+            <h1 className={"text-4xl bold mb-4"}>{i18n.t("Institutions")}</h1>
+            <h2 className={"text-xl mb-8"}>{i18n.t("Select an institution, or create one")}</h2>
 
             <div className={"flex flex-wrap gap-8"}>
                 {institutions.map((institution, index) => (

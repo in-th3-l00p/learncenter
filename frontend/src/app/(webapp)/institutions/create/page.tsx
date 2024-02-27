@@ -5,8 +5,9 @@ import Loading from "@/components/Loading";
 import {constants} from "@/utils/constants";
 import handleExpressValidatorErrors from "@/utils/handleExpressValidatorErrors";
 import Cookie from "js-cookie";
-import {InstitutionDto} from "../../../../../shared/types";
+import {InstitutionDto} from "types";
 import ErrorMessage from "@/app/components/errorMessage";
+import i18n from "@/locales/i18n";
 
 export default function CreateInstitution() {
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -60,31 +61,34 @@ export default function CreateInstitution() {
 
                     const institution: InstitutionDto = await resp.json();
                     Cookie.set(constants.INSTITUTION_STORAGE_KEY, institution.id.toString());
-                    window.location.href = "/dashboard";
+                    window.location.href = "/institutions";
                 }}
             >
-                <h1 className={"text-4xl font-bold text-center mb-8"}>Create an institution</h1>
+                <h1 className={"text-4xl font-bold text-center mb-8"}>{i18n.t("Create an institution")}</h1>
 
                 <div className={"mb-8"}>
-                    <label htmlFor="name">Name:</label>
+                    <label htmlFor="name">{i18n.t("Name:")}</label>
                     <input
                         type="text" name="name"
                         id="name" className={"input"}
                         required
                     />
-                    <ErrorMessage error={errors.name} />
+                    <ErrorMessage error={i18n.t(errors.name)} />
                 </div>
 
                 <div className={"mb-4 pb-8 border-b"}>
-                    <label htmlFor="description">Description:</label>
+                    <label htmlFor="description">{i18n.t("Description:")}</label>
                     <textarea
                         name="description" id="description"
                         className={"input"}
                     />
-                    <ErrorMessage error={errors.description} />
+                    <ErrorMessage error={i18n.t(errors.description)} />
                 </div>
 
-                <button type="submit" className="btn block mx-auto">Create</button>
+                <button
+                    type="submit"
+                    className="btn block mx-auto"
+                >{i18n.t("Create")}</button>
             </form>
         </section>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import {UserDto} from "../../../../../shared/types";
+import {UserDto} from "types";
 
 interface IAuthContext {
     user?: UserDto;

@@ -6,6 +6,8 @@ i18next.init({
     ns: ["common"],
     defaultNS: "common",
     initImmediate: false,
+    nsSeparator: false,
+    keySeparator: false,
     resources: {
         en: {
             common: enCommon

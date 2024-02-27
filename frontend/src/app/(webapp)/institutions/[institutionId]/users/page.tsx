@@ -1,11 +1,12 @@
 "use client";
 
 import {useContext, useEffect, useState} from "react";
-import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
+import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
 import {LoadingPage} from "@/components/Loading";
 import {UserInstitutionDto} from "types";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
+import i18n from "@/locales/i18n";
 
 function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto }) {
     return (
@@ -26,13 +27,13 @@ function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto 
 
                 <div>
                     <h2>{userInstitution.user.firstName + " " + userInstitution.user.lastName}</h2>
-                    <p>Role: {userInstitution.role}</p>
+                    <p>{i18n.t("Role")}: {userInstitution.role}</p>
                 </div>
             </div>
             <div>
                 <button
                     className="btn"
-                    title={"settings"}
+                    title={i18n.t("settings")}
                 >
                     <img
                         src="/icons/settings.svg" alt="settings"
@@ -46,9 +47,8 @@ function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto 
 }
 
 export default function Users() {
-    const { institution, setInstitution, institutionLoading } = useContext(InstitutionContext);
+    const { institution, institutionLoading } = useContext(InstitutionContext);
     const [userInstitutions, setUserInstitutions] = useState<UserInstitutionDto[]>();
-    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         if (institutionLoading)
@@ -70,10 +70,10 @@ export default function Users() {
     return (
         <section className={"p-8 min-h-full h-full"}>
             <div className="mb-8 flex justify-between items-center">
-                <h1 className={"text-4xl"}>Users</h1>
+                <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
                 <button
                     className={"btn"}
-                    title={"Add user"}
+                    title={i18n.t("Add user")}
                 >
                     <img
                         src="/icons/add.svg" alt="add"
@@ -86,7 +86,7 @@ export default function Users() {
 
             {userInstitutions.length === 0 ? (
                 <div className="h-[60%] w-full flex justify-center items-center">
-                    <p className="text-2xl">There are no users in this institution.</p>
+                    <p className="text-2xl">{i18n.t("There are no users in this institution.")}</p>
                 </div>
             ): (
                 <div className="flex flex-col gap-8 max-w-[800px]">

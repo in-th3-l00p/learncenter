@@ -6,6 +6,7 @@ import handleExpressValidatorErrors from "@/utils/handleExpressValidatorErrors";
 import {useRouter} from "next/navigation";
 import {constants} from "@/utils/constants";
 import ErrorMessage from "@/app/components/errorMessage";
+import i18n from "@/locales/i18n";
 
 export default function Register() {
     const cached = JSON.parse(localStorage.getItem("registerData") || "{}");
@@ -64,86 +65,86 @@ export default function Register() {
                     router.push("/login?registered");
                 }}
             >
-                <h1 className={"text-4xl font-bold text-center mb-8"}>Register</h1>
+                <h1 className={"text-4xl font-bold text-center mb-8"}>{i18n.t("Register")}</h1>
 
                 <div className="w-full grid sm:grid-cols-2 gap-8 mb-8">
                     <div>
-                        <label htmlFor="firstName">First name:</label>
+                        <label htmlFor="firstName">{i18n.t("First name:")}"</label>
                         <input
                             type="text" className={"input"}
                             name={"firstName"} id={"firstName"}
                             required
                             defaultValue={cached.firstName || ""}
                         />
-                        <ErrorMessage error={errors["firstName"]} />
+                        <ErrorMessage error={i18n.t(errors["firstName"])} />
                     </div>
 
                     <div>
-                        <label htmlFor="lastName">Last name:</label>
+                        <label htmlFor="lastName">{i18n.t("Last name:")}"</label>
                         <input
                             type="text" className={"input"}
                             name={"lastName"} id={"lastName"}
                             required
                             defaultValue={cached.lastName || ""}
                         />
-                        <ErrorMessage error={errors["lastName"]} />
+                        <ErrorMessage error={i18n.t(errors["lastName"])} />
                     </div>
                 </div>
 
                 <div className={"mb-8"}>
-                    <label htmlFor="phone">Phone number:</label>
+                    <label htmlFor="phone">{i18n.t("Phone number:")}</label>
                     <input
                         type="tel" name="phone"
                         id="phone" className={"input"}
                         required
                         defaultValue={cached.phone || ""}
                     />
-                    <ErrorMessage error={errors["phone"]} />
+                    <ErrorMessage error={i18n.t(errors["phone"])} />
                 </div>
 
                 <div className={"mb-4 pb-8 border-b"}>
-                    <label htmlFor="username">Username:</label>
+                    <label htmlFor="username">{i18n.t("Username:")}</label>
                     <input
                         type="text" name="username"
                         id="username" className={"input"}
                         required
                         defaultValue={cached.username || ""}
                     />
-                    <ErrorMessage error={errors["username"]} />
+                    <ErrorMessage error={i18n.t(errors["username"])} />
                 </div>
 
                 <div className={"mb-8"}>
-                    <label htmlFor="email">Email address:</label>
+                    <label htmlFor="email">{i18n.t("Email address:")}</label>
                     <input
                         type="email" name="email"
                         id="email" className={"input"}
                         required
                         defaultValue={cached.email || ""}
                     />
-                    <ErrorMessage error={errors["email"]} />
+                    <ErrorMessage error={i18n.t(errors["email"])} />
                 </div>
 
                 <div className={"mb-8"}>
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">{i18n.t("Password:")}</label>
                     <input
                         type="password" name="password"
                         id="password" className={"input"}
                         required
                     />
-                    <ErrorMessage error={errors["password"]} />
+                    <ErrorMessage error={i18n.t(errors["password"])} />
                 </div>
 
                 <div className={"pb-8 mb-8 border-b"}>
-                    <label htmlFor="passwordConfirmed">Confirm password:</label>
+                    <label htmlFor="passwordConfirmed">{i18n.t("Confirm password:")}</label>
                     <input
                         type="password" name="passwordConfirmed"
                         id="passwordConfirmed" className={"input"}
                         required
                     />
-                    <ErrorMessage error={errors["passwordConfirmed"]} />
+                    <ErrorMessage error={i18n.t(errors["passwordConfirmed"])} />
                 </div>
 
-                <button type="submit" className="btn block mx-auto">Register</button>
+                <button type="submit" className="btn block mx-auto">{i18n.t("Register")}</button>
             </form>
         </section>
     );

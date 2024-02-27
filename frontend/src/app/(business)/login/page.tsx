@@ -6,6 +6,7 @@ import Link from "next/link";
 import {constants} from "@/utils/constants";
 import {useRouter} from "next/navigation";
 import Cookie from "js-cookie";
+import i18n from "@/locales/i18n";
 
 export default function Login() {
     const [error, setError] = useState<boolean>(false);
@@ -38,23 +39,23 @@ export default function Login() {
                     router.push("/dashboard");
                 }}
             >
-                <h1 className={"text-4xl font-bold text-center mb-8"}>Login</h1>
+                <h1 className={"text-4xl font-bold text-center mb-8"}>{i18n.t("Login")}</h1>
 
                 {error && (
-                    <p className={"text-red-600 mb-4 text-center"}>Email or password are incorrect.</p>
+                    <p className={"text-red-600 mb-4 text-center"}>{i18n.t("Email or password are incorrect.")}</p>
                 )}
 
                 <div className={"mb-8"}>
-                    <label className={"block"} htmlFor="email">Email:</label>
+                    <label className={"block"} htmlFor="email">{i18n.t("Email:")}</label>
                     <input type="email" name={"email"} id={"email"} className={"input"} />
                 </div>
 
                 <div className={"mb-8"}>
-                    <label className={"block"} htmlFor="password">Password:</label>
+                    <label className={"block"} htmlFor="password">{i18n.t("Password:")}</label>
                     <input type="password" name={"password"} id={"password"} className={"input"} />
                 </div>
 
-                <button type="submit" className="btn block mx-auto">Login</button>
+                <button type="submit" className="btn block mx-auto">{i18n.t("Login")}</button>
             </form>
             <div className={"hidden xl:flex flex-col bg-mid-blue rounded-lg justify-center items-center shadow-md"}>
                 <Image
@@ -66,11 +67,11 @@ export default function Login() {
                     className={"mb-4"}
                 />
                 <h2 className={"text-white text-xl"}>
-                    If you don't have an account,
+                    {i18n.t("If you don't have an account,")}
                     <Link
                         href={"/register"}
                         className={"font-bold hover:italic hover:underline"}
-                    > press here
+                    >{i18n.t(" press here")}
                     </Link>.
                 </h2>
             </div>

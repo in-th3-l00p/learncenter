@@ -1,4 +1,4 @@
-import {InstitutionDto} from "../../../../../shared/types";
+import {InstitutionDto} from "types";
 import {createContext} from "react";
 
 interface IInstitutionContext {

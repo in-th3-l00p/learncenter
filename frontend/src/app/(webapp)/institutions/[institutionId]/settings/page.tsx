@@ -1,10 +1,11 @@
 "use client";
 
 import {useContext, useState} from "react";
-import InstitutionContext from "@/app/(dashboard)/contexts/InstitutionContext";
+import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import { LoadingPage } from "@/components/Loading";
+import i18n from "@/locales/i18n";
 
 async function saveInstitution(
     id: number,
@@ -34,7 +35,7 @@ export default function Settings() {
         return <LoadingPage />
     return (
         <section className={"p-8"}>
-            <h1 className={"text-4xl mb-8"}>Settings</h1>
+            <h1 className={"text-4xl mb-8"}>{i18n.t("Settings")}</h1>
 
             <div className="max-w-[800px]">
                 <form
@@ -51,13 +52,15 @@ export default function Settings() {
                     }}
                 >
                 <span className="block mb-4">
-                    <label htmlFor="name" className={"text-xl"}>Institution name:</label>
-                    <p>Make sure the name represents your institution</p>
+                    <label htmlFor="name" className={"text-xl"}>{i18n.t("Institution name:")}</label>
+                    <p>{i18n.t("Make sure the name represents your institution")}</p>
                 </span>
                     <div className="flex gap-4">
                         <input
-                            type="text" defaultValue={institution?.name}
-                            id={"name"} name={"name"}
+                            type="text"
+                            defaultValue={institution?.name}
+                            id={"name"}
+                            name={"name"}
                             className={"input"}
                             required
                         />
@@ -67,7 +70,7 @@ export default function Settings() {
                             className={"btn"}
                             disabled={saving}
                         >
-                            Save
+                            {i18n.t("Save")}
                         </button>
                     </div>
                 </form>
@@ -85,8 +88,8 @@ export default function Settings() {
                     }}
                 >
                 <span className="block mb-4">
-                    <label htmlFor="description" className={"text-xl"}>Description</label>
-                    <p>Describe your institution's values and objectives</p>
+                    <label htmlFor="description" className={"text-xl"}>{i18n.t("Description")}</label>
+                    <p>{i18n.t("Describe your institution's values and objectives")}</p>
                 </span>
                     <textarea
                         name="description" id="description"
@@ -98,7 +101,7 @@ export default function Settings() {
                         className={"btn"}
                         disabled={saving}
                     >
-                        Save
+                        {i18n.t("Save")}
                     </button>
                 </form>
             </div>
