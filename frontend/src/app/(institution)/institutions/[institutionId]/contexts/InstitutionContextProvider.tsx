@@ -3,7 +3,7 @@
 import React, {useEffect} from "react";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
-import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
+import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import {InstitutionDto} from "types";
 import {useParams} from "next/navigation";
 import {LoadingPage} from "@/components/Loading";

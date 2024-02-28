@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import "./layout.scss";
-import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
-import AuthContext from "@/app/(webapp)/institutions/[institutionId]/contexts/AuthContext";
+import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
+import AuthContext from "@/app/contexts/AuthContext";
 import {getLimitedText} from "@/utils/utils";
 import {usePathname} from "next/navigation";
 import i18n from "@/locales/i18n";

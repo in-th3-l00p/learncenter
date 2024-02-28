@@ -1,5 +1,5 @@
 import React from "react";
-import AuthContextProvider from "@/app/(webapp)/AuthContextProvider";
+import AuthContextProvider from "@/app/contexts/AuthContextProvider";
 import {Header} from "@/app/(webapp)/Header";
 import getAuthenticated from "@/utils/getAuthenticated";
 import {redirect} from "next/navigation";

@@ -19,6 +19,15 @@
         transition-all;
 }
 
+.danger-btn {
+    @apply
+        bg-red-600 text-white
+        p-4 rounded-lg shadow-md
+        hover:bg-red-800 hover:shadow-xl
+        disabled:bg-red-500 disabled:shadow-none disabled:cursor-not-allowed
+        transition-all;
+}
+
 label {
     @apply block;
 }

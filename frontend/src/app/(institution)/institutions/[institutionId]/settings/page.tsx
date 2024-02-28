@@ -1,7 +1,7 @@
 "use client";
 
 import {useContext, useState} from "react";
-import InstitutionContext from "@/app/(webapp)/institutions/[institutionId]/contexts/InstitutionContext";
+import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import { LoadingPage } from "@/components/Loading";

@@ -69,7 +69,7 @@ export default function Register() {
 
                 <div className="w-full grid sm:grid-cols-2 gap-8 mb-8">
                     <div>
-                        <label htmlFor="firstName">{i18n.t("First name:")}"</label>
+                        <label htmlFor="firstName">{i18n.t("First name:")}</label>
                         <input
                             type="text" className={"input"}
                             name={"firstName"} id={"firstName"}
@@ -80,7 +80,7 @@ export default function Register() {
                     </div>
 
                     <div>
-                        <label htmlFor="lastName">{i18n.t("Last name:")}"</label>
+                        <label htmlFor="lastName">{i18n.t("Last name:")}</label>
                         <input
                             type="text" className={"input"}
                             name={"lastName"} id={"lastName"}

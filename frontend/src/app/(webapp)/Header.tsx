@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import getAuthenticated from "@/utils/getAuthenticated";
 import Image from "next/image";
-import { headers } from "next/headers";
 
 async function HeaderLink({
     href, children,
@@ -10,13 +9,12 @@ async function HeaderLink({
     href: string,
     children: React.ReactNode
 }) {
-    const url = new URL(headers().get("referer")!);
+    // const url = new URL(headers().get("referer")!);
 
     return (
         <Link
             className={
-                "hover:text-mid-blue transition-colors border-b-2 border-b-mid-blue " +
-                url.pathname === href ? "border-b-2 border-b-mid-blue" : ""
+                "hover:text-mid-blue transition-colors border-b-2 border-b-mid-blue "
             }
             href={href}
         >

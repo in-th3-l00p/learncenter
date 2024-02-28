@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "@/app/(webapp)/institutions/[institutionId]/Sidebar";
+import Sidebar from "@/app/(institution)/institutions/[institutionId]/Sidebar";
 
 export default function SidebarContainer({children}: {
     children: React.ReactNode
