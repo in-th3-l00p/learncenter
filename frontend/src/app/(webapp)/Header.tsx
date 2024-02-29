@@ -2,26 +2,7 @@ import React from "react";
 import Link from "next/link";
 import getAuthenticated from "@/utils/getAuthenticated";
 import Image from "next/image";
-
-async function HeaderLink({
-    href, children,
-}: {
-    href: string,
-    children: React.ReactNode
-}) {
-    // const url = new URL(headers().get("referer")!);
-
-    return (
-        <Link
-            className={
-                "hover:text-mid-blue transition-colors border-b-2 border-b-mid-blue "
-            }
-            href={href}
-        >
-            {children}
-        </Link>
-    );
-}
+import {HeaderLink} from "@/app/(webapp)/HeaderLink";
 
 export async function Header() {
     const user = await getAuthenticated();

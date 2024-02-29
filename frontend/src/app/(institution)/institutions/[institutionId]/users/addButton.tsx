@@ -15,8 +15,7 @@ export function AddButton() {
     useEffect(() => {
         searchSignal.current.abort("stopped");
         fetch(
-            `${constants.API}/api/auth/search?query=${search}`,
-            // { signal: searchSignal.current.signal }
+            `${constants.API}/api/auth/search?query=${search}`
         )
             .then(resp => {
                 console.log(resp);
