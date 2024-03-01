@@ -4,6 +4,16 @@ import React from "react";
 import Image from "next/image";
 import i18n from "@/locales/i18n";
 
+export function ModalFooter({ children }: {
+    children?: React.ReactNode;
+}) {
+    return (
+        <div className={"flex justify-end gap-4"}>
+            {children}
+        </div>
+    );
+}
+
 export default function Modal({
     title,
     open,

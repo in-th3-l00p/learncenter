@@ -38,33 +38,33 @@ export default function Users() {
         return <LoadingPage />
     return (
         <section className={"p-8 min-h-full h-full"}>
-            <div className="mb-8 flex justify-between items-center">
-                <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
 
-                <UserInstitutionsContext.Provider value={{
-                    userInstitutions,
-                    changed: userInstitutionsLoading,
-                    setChanged: setUserInstitutionsLoading,
-                }}>
+            <UserInstitutionsContext.Provider value={{
+                userInstitutions,
+                changed: userInstitutionsLoading,
+                setChanged: setUserInstitutionsLoading,
+            }}>
+                <div className="mb-8 flex justify-between items-center">
+                    <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
                     <AddButton disabled={userInstitutionsLoading} />
-                </UserInstitutionsContext.Provider>
-            </div>
+                </div>
 
 
-            {userInstitutions.length === 0 ? (
-                <div className="h-[60%] w-full flex justify-center items-center">
-                    <p className="text-2xl">{i18n.t("There are no users in this institution.")}</p>
-                </div>
-            ): (
-                <div className="flex flex-col gap-8 max-w-[800px]">
-                    {userInstitutions.map(userInstitution => (
-                        <UserDisplay
-                            key={userInstitution.id}
-                            userInstitution={userInstitution}
-                        />
-                    ))}
-                </div>
-            )}
+                {userInstitutions.length === 0 ? (
+                    <div className="h-[60%] w-full flex justify-center items-center">
+                        <p className="text-2xl">{i18n.t("There are no users in this institution.")}</p>
+                    </div>
+                ): (
+                    <div className="flex flex-col gap-8 max-w-[800px]">
+                        {userInstitutions.map(userInstitution => (
+                            <UserDisplay
+                                key={userInstitution.id}
+                                userInstitution={userInstitution}
+                            />
+                        ))}
+                    </div>
+                )}
+            </UserInstitutionsContext.Provider>
         </section>
     );
 }

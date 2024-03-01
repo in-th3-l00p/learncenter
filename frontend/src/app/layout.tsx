@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" className={"h-full min-h-screen"}>
+        <html lang="en" className={"h-full min-h-screen overflow-x-hidden"}>
             <body className={inter.className + " bg-zinc-100"}>
                 {children}
             </body>

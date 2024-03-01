@@ -1,17 +1,31 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {constants} from "@/utils/constants";
 import {useRouter} from "next/navigation";
 import Cookie from "js-cookie";
 import i18n from "@/locales/i18n";
+import AuthContext from "@/app/contexts/AuthContext";
+import {LoadingPage} from "@/components/Loading";
 
 export default function Login() {
+    const { user, userLoading } = useContext(AuthContext);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const router = useRouter();
 
+    useEffect(() => {
+        if (userLoading)
+            return;
+        if (user)
+            router.push("/dashboard");
+        setLoading(false);
+    }, [userLoading]);
+
+    if (loading)
+        return <LoadingPage />
     return (
         <section className={"flex-grow grid gap-16 xl:grid-cols-2 sm:p-8 md:p-16 lg:py-32 xl:px-48"}>
             <form
@@ -22,6 +36,7 @@ export default function Login() {
                     const email = data.get("email");
                     const password = data.get("password");
 
+                    setLoading(true);
                     const login = await fetch(constants.API + "/api/auth/login", {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
@@ -29,6 +44,7 @@ export default function Login() {
                     });
 
                     if (login.status !== 200) {
+                        setLoading(false);
                         setError(true);
                         return;
                     }

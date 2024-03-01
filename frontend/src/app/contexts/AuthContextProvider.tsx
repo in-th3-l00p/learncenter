@@ -13,7 +13,13 @@ export default function AuthContextProvider({ children }: { children: React.Reac
                 headers: {
                     Authorization: `Bearer ${Cookie.get(constants.TOKEN_STORAGE_KEY)}`
                 }
-            }).then(res => res.json())
+            }).then(res => {
+                if (!res.ok) {
+                    Cookie.remove(constants.TOKEN_STORAGE_KEY);
+                    return undefined;
+                }
+                return res.json();
+            })
     );
 
     return (

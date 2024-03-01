@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import getAuthenticated from "@/utils/getAuthenticated";
+import AuthContextProvider from "@/app/contexts/AuthContextProvider";
 
 function HeaderLink({
     href, children,
@@ -122,12 +123,12 @@ export default function RootLayout({
 }>) {
 
     return (
-        <>
+        <AuthContextProvider>
             <main className="min-h-screen flex flex-col">
                 <Header />
                 {children}
             </main>
             <Footer />
-        </>
+        </AuthContextProvider>
     );
 }

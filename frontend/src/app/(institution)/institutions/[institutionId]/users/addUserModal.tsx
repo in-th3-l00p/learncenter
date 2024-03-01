@@ -5,7 +5,7 @@ import {UserDto} from "types";
 import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 import {constants} from "@/utils/constants";
-import Modal from "@/app/components/Modal";
+import Modal, {ModalFooter} from "@/app/components/Modal";
 import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import Cookie from "js-cookie";
 
@@ -223,7 +223,7 @@ export function AddUserModal({open, setOpen}: {
                     ))}
                 </div>
 
-                <div className="flex justify-end gap-4">
+                <ModalFooter>
                     <button
                         type={"submit"}
                         className="btn"
@@ -237,7 +237,7 @@ export function AddUserModal({open, setOpen}: {
                     >
                         Cancel
                     </button>
-                </div>
+                </ModalFooter>
             </form>
         </Modal>
     );
