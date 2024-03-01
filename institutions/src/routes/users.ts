@@ -10,6 +10,7 @@ import {
     institutionNoAccess,
     InstitutionRequest
 } from "../middleware/institutionAccess";
+import {UserRole} from "@prisma/client";
 
 const router = express.Router();
 
@@ -17,8 +18,18 @@ router.get(
     "/",
     authenticate(prisma, logger),
     (req: UserRequest<UserDto>, res) => {
+        const { role } = req.query;
+
         prisma.usersOnInstitutions.findMany({
-            where: { userId: req.user!.id }
+            where: {
+                userId: req.user!.id,
+                role: (
+                    role &&
+                    typeof role === "string" &&
+                    role in UserRole
+                )   ? role as UserRole
+                    : undefined
+            }
         })
             .then(users => {
                 res.send(users);

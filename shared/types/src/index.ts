@@ -33,11 +33,13 @@ export type InstitutionDto = {
     ownerId: number;
 }
 
+export type UserInstitutionRole = "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
+
 export type UserInstitutionDto = {
     id: number;
     user: UserDto;
     institutionId: number;
-    role: "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
+    role: UserInstitutionRole;
     createdAt: Date;
 }
 

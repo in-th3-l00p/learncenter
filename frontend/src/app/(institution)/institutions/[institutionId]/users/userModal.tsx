@@ -8,6 +8,7 @@ import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
+import i18n from "@/locales/i18n";
 
 function PendingBody({ userInstitution }: {
     userInstitution: UserInstitutionDto
@@ -22,8 +23,8 @@ function PendingBody({ userInstitution }: {
                 />
                 <div className={"flex-grow"}>
                     <h2 className={"font-semibold text-lg"}>{userInstitution.user.firstName + " " + userInstitution.user.lastName}</h2>
-                    <p>Username: {userInstitution.user.username}</p>
-                    <p>Pending invitation, sent on: {new Date(userInstitution.createdAt).toDateString()}</p>
+                    <p>{i18n.t("Username")}: {userInstitution.user.username}</p>
+                    <p>{i18n.t("Pending invitation, sent on")}: {new Date(userInstitution.createdAt).toDateString()}</p>
                 </div>
             </div>
         </div>
@@ -43,8 +44,8 @@ function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto 
                 />
                 <div className={"flex-grow"}>
                     <h2 className={"font-semibold text-lg"}>{userInstitution.user.firstName + " " + userInstitution.user.lastName}</h2>
-                    <p>Username: {userInstitution.user.username}</p>
-                    <p>Member since: {new Date(userInstitution.createdAt).toDateString()}</p>
+                    <p>{i18n.t("Username")}: {userInstitution.user.username}</p>
+                    <p>{i18n.t("Member since")}: {new Date(userInstitution.createdAt).toDateString()}</p>
                 </div>
             </div>
 
@@ -64,7 +65,7 @@ function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto 
                             });
                     }}
                 >
-                    Remove
+                    {i18n.t("Remove")}
                 </button>
             </ModalFooter>
         </div>
@@ -78,7 +79,7 @@ export default function UserModal({ open, setOpen, userInstitution }: {
 }) {
     return (
         <Modal
-            title={"User \"" + userInstitution.user.username + "\""}
+            title={i18n.t("User") + " \"" + userInstitution.user.username + "\""}
             open={open}
             setOpen={setOpen}
         >
