@@ -9,10 +9,13 @@ import Cookie from "js-cookie";
 import i18n from "@/locales/i18n";
 import {AddButton} from "@/app/(institution)/institutions/[institutionId]/users/addButton";
 import {UserDisplay} from "@/app/(institution)/institutions/[institutionId]/users/userDisplay";
+import UserInstitutionsContext
+    from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 
 export default function Users() {
     const { institution, institutionLoading } = useContext(InstitutionContext);
     const [userInstitutions, setUserInstitutions] = useState<UserInstitutionDto[]>();
+    const [userInstitutionsLoading, setUserInstitutionsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (institutionLoading)
@@ -22,12 +25,14 @@ export default function Users() {
             {
                 headers: {
                     "Authorization": `Bearer ${Cookie.get("token")}`
-                }
+                },
+                cache: "no-cache"
             }
         )
             .then(resp => resp.json())
-            .then(setUserInstitutions);
-    }, [institutionLoading]);
+            .then(setUserInstitutions)
+            .finally(() => setUserInstitutionsLoading(false));
+    }, [institutionLoading, userInstitutionsLoading]);
 
     if (institutionLoading || userInstitutions === undefined)
         return <LoadingPage />
@@ -35,7 +40,14 @@ export default function Users() {
         <section className={"p-8 min-h-full h-full"}>
             <div className="mb-8 flex justify-between items-center">
                 <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
-                <AddButton />
+
+                <UserInstitutionsContext.Provider value={{
+                    userInstitutions,
+                    changed: userInstitutionsLoading,
+                    setChanged: setUserInstitutionsLoading,
+                }}>
+                    <AddButton disabled={userInstitutionsLoading} />
+                </UserInstitutionsContext.Provider>
             </div>
 
 

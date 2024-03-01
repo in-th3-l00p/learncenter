@@ -27,7 +27,7 @@ router.get(
                     });
                 }
 
-                res.json({
+                const userDto = {
                     id: user!.id,
                     username: user!.username,
                     email: user!.email,
@@ -35,7 +35,9 @@ router.get(
                     lastName: user!.lastName,
                     phone: user!.phone,
                     createdAt: user!.createdAt
-                });
+                }
+
+                res.json(userDto);
             })
             .catch(err => {
                 logger.error("Error getting user", err);

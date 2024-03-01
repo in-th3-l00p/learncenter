@@ -8,12 +8,14 @@ export default function Modal({
     title,
     open,
     setOpen,
-    children
+    children,
+    onClose
 }: {
-    title: string,
-    open: boolean,
-    setOpen: (open: boolean) => void,
-    children?: React.ReactNode
+    title: string;
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    children?: React.ReactNode;
+    onClose?: () => void;
 }) {
     if (!open)
         return <></>;
@@ -25,7 +27,10 @@ export default function Modal({
             }
             onClick={(e) => {
                 if (e.target === e.currentTarget)
-                    setOpen(false);
+                    setOpen(() => {
+                        onClose && onClose();
+                        return false;
+                    });
             }}
         >
             <div
@@ -38,7 +43,10 @@ export default function Modal({
                 <div className="flex justify-between items-center gap-8 mb-8">
                     <h2 className={"text-xl"}>{title}</h2>
                     <button
-                        onClick={() => setOpen(false)}
+                        onClick={() => setOpen(() => {
+                            onClose && onClose();
+                            return false;
+                        })}
                         className={"danger-btn !p-2 !rounded-full"}
                         title={i18n.t("close")}
                     >

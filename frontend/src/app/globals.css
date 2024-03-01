@@ -38,3 +38,15 @@ label {
         hover:border-mid-blue hover:shadow-xl hover:bg-white
         transition-all;
 }
+
+/* totally not stolen from the internet (yes it is) */
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

@@ -37,7 +37,7 @@ export type UserInstitutionDto = {
     id: number;
     user: UserDto;
     institutionId: number;
-    role: string;
+    role: "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
     createdAt: Date;
 }
 
