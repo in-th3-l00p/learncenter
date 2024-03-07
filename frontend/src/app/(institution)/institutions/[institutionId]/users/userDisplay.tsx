@@ -31,7 +31,7 @@ export function UserDisplay({userInstitution}: { userInstitution: UserInstitutio
                     />
 
                     <div>
-                        <h2>{userInstitution.user.firstName + " " + userInstitution.user.lastName}</h2>
+                        <h2>{userInstitution.user!.firstName + " " + userInstitution.user!.lastName}</h2>
                         <p>{i18n.t("Role")}: {userInstitution.role}</p>
                     </div>
                 </div>

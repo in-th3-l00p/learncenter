@@ -5,26 +5,42 @@ import Amqp from "streaming";
 import {EventType} from "streaming/src/event";
 
 class InstitutionService {
-    public async getInstitution(id: number, userId: number) {
-        const institution = await prisma.institution.findUnique({
+    public async checkUserInInstitution(
+        userId: number,
+        institutionId: number
+    ) {
+        if (await prisma.usersOnInstitutions.count({
             where: {
-                id,
-                users: {
-                    some: { id: userId }
+                userId,
+                institutionId,
+                role: {
+                    notIn: ["PENDING", "BANNED", "DELETED"]
                 }
             }
+        }) === 0)
+            throw new ServiceError(403, ["User not in institution"]);
+    }
+
+    public async getInstitution(id: number, userId: number) {
+        const institution = await prisma.institution.findUnique({
+            where: { id }
         });
         if (!institution)
             throw new ServiceError(404, ["Institution not found"]);
+        await this.checkUserInInstitution(userId, institution.id);
         return institution;
     }
 
     public async getInstitutions(userId: number) {
-        return prisma.institution.findMany({
+        return (await prisma.usersOnInstitutions.findMany({
+            include: { institution: true },
             where: {
-                users: { some: { id: userId } }
+                userId: userId,
+                role: {
+                    notIn: ["PENDING", "BANNED", "DELETED"]
+                }
             }
-        });
+        })).map(u => u.institution);
     }
 
     public async createInstitution(

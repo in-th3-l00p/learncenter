@@ -54,7 +54,7 @@ function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto 
                     type={"button"}
                     className={"danger-btn"}
                     onClick={() => {
-                        fetch(`${constants.API}/api/institutions/users/${userInstitution.institutionId}?userId=${userInstitution.user.id}`, {
+                        fetch(`${constants.API}/api/institutions/users/${userInstitution.institution}?userId=${userInstitution.user.id}`, {
                             method: "DELETE",
                             headers: {
                                 "Authorization": `Bearer ${Cookie.get("token")}`,

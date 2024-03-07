@@ -10,7 +10,6 @@ export function Institution({institution, children, href}: {
     children?: React.ReactNode,
     href?: string
 }) {
-
     if (!institution)
         return (
             <Link

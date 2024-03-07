@@ -2,7 +2,7 @@ import express from "express";
 import {prisma} from "../utils/objects";
 import logger from "logger";
 import {authenticate} from "middleware";
-import {UserDto, UserRequest} from "types";
+import {handleServiceError, UserDto, UserRequest} from "types";
 import {matchedData, param, query, validationResult} from "express-validator";
 import {
     institutionAccess,
@@ -11,6 +11,7 @@ import {
     InstitutionRequest
 } from "../middleware/institutionAccess";
 import {UserRole} from "@prisma/client";
+import institutionService from "../services/InstitutionService";
 
 const router = express.Router();
 
@@ -29,6 +30,9 @@ router.get(
                     role in UserRole
                 )   ? role as UserRole
                     : undefined
+            },
+            include: {
+                institution: true
             }
         })
             .then(users => {
@@ -52,7 +56,7 @@ router.get(
     async (req: InstitutionRequest<UserDto>, res) => {
         const users = await prisma.usersOnInstitutions.findMany({
             where: { institutionId: req.institution!.id },
-            include: { user: true }
+            include: { user: true, institution: true }
         });
 
         return res.send(users.map(user => ({
@@ -75,52 +79,17 @@ router.post(
         if (!errors.isEmpty())
             return res.status(400).send(errors);
 
-        const { userId } = matchedData(req);
-        const user = await prisma.user.findUnique({
-            where: { id: parseInt(userId) }
-        });
-        if (!user)
-            return res.status(404).send({
-                errors: [{
-                    msg: "User not found"
-                }]
+        const data = matchedData(req);
+        const userId = parseInt(data.userId);
+        const institutionId = parseInt(req.params.institutionId);
+        try {
+            await institutionService.inviteUser(institutionId, userId);
+            res.send({
+                msg: "User invited to institution"
             });
-
-        if (await prisma.usersOnInstitutions.findFirst({
-            where: {
-                institutionId: req.institution!.id,
-                userId: user.id
-            }
-        }))
-            return res.status(400).send({
-                errors: [{
-                    msg: "User is already part of this institution"
-                }]
-            })
-
-        prisma.usersOnInstitutions.create({
-            data: {
-                role: "PENDING",
-                institution: {
-                    connect: { id: req.institution!.id }
-                },
-                user: {
-                    connect: {id: user.id}
-                }
-            }
-        })
-            .then(result => {
-                logger.info(`User invited into institution ${req.institution!.id}.`);
-                res.status(201).send(result);
-            })
-            .catch(err => {
-                logger.error("Error adding user to institution", err);
-                res.status(500).send({
-                    errors: [{
-                        msg: "Internal server error"
-                    }]
-                });
-            });
+        } catch (err) {
+            handleServiceError(res, err);
+        }
     });
 
 router.post(
