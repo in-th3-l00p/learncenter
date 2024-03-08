@@ -10,8 +10,15 @@ import logger from "logger";
 const router = express.Router();
 
 router.post("/api/auth/login",
-    body("email").isEmail().withMessage("Email must be valid"),
-    body("password").trim().notEmpty().withMessage("You must supply a password"),
+    body("email")
+        .isEmail()
+        .withMessage("Email must be valid")
+        .isLength({ max: 255 }),
+    body("password")
+        .trim()
+        .notEmpty()
+        .withMessage("You must supply a password")
+        .isLength({ min: 8, max: 255 }),
     validateRequest,
     async (req, res) => {
         const { email, password } = matchedData(req);
