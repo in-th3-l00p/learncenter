@@ -131,7 +131,7 @@ function UserDisplay() {
                 type={"button"}
                 className={
                     "inline-flex justify-between items-center py-4 px-8 gap-4 " +
-                    "hover:bg-mid-blue hover:text-white transition-all " +
+                    "hover:bg-mid-blue hover:text-white transition-all group " +
                     (opened ? "bg-mid-blue text-white" : "bg-white")
                 }
                 onClick={() => {
@@ -150,7 +150,12 @@ function UserDisplay() {
                         <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
                         <div>
                             <p className={"font-semibold"}>{user?.firstName + " " + user?.lastName}</p>
-                            <p className={"text-start font-light text-slate-600 text-sm"}>{role}</p>
+                            <p className={
+                                "text-start font-light text-slate-600 text-sm" +
+                                " group-hover:text-white transition-all"
+                            }>
+                                {role}
+                            </p>
                         </div>
                     }
                 </div>
