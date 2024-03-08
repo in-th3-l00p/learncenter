@@ -51,11 +51,17 @@ router.get(
 router.get(
     "/:institutionId",
     param("institutionId").notEmpty().isInt({min: 1}),
+    query("userId").optional(),
     authenticate(prisma, logger),
     institutionAccess,
     async (req: InstitutionRequest<UserDto>, res) => {
         const users = await prisma.usersOnInstitutions.findMany({
-            where: { institutionId: req.institution!.id },
+            where: {
+                institutionId: req.institution!.id,
+                userId: typeof req.query.userId === "string" ?
+                    parseInt(req.query.userId) :
+                    undefined
+            },
             include: { user: true, institution: true }
         });
 

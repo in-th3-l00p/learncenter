@@ -13,12 +13,13 @@ import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 
 export default function Users() {
-    const { institution, institutionLoading } = useContext(InstitutionContext);
+    const { institution, institutionLoading} = useContext(InstitutionContext);
     const [userInstitutions, setUserInstitutions] = useState<UserInstitutionDto[]>();
     const [userInstitutionsLoading, setUserInstitutionsLoading] = useState<boolean>(true);
 
+    // todo: review logics, that userInstitutionsLoading seems buggy
     useEffect(() => {
-        if (institutionLoading)
+        if (institutionLoading || !userInstitutionsLoading)
             return;
         fetch(
             `${constants.API}/api/institutions/users/${institution?.id}`,
@@ -32,13 +33,15 @@ export default function Users() {
             .then(resp => resp.json())
             .then(setUserInstitutions)
             .finally(() => setUserInstitutionsLoading(false));
-    }, [institutionLoading, userInstitutionsLoading]);
+    }, [
+        institutionLoading,
+        userInstitutionsLoading
+    ]);
 
-    if (institutionLoading || userInstitutions === undefined)
+    if (institutionLoading || userInstitutionsLoading || !userInstitutions)
         return <LoadingPage />
     return (
         <section className={"p-8 min-h-full h-full"}>
-
             <UserInstitutionsContext.Provider value={{
                 userInstitutions,
                 changed: userInstitutionsLoading,
@@ -48,7 +51,6 @@ export default function Users() {
                     <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
                     <AddButton disabled={userInstitutionsLoading} />
                 </div>
-
 
                 {userInstitutions.length === 0 ? (
                     <div className="h-[60%] w-full flex justify-center items-center">
