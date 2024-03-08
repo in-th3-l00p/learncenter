@@ -18,6 +18,7 @@ export default function Users() {
     const [userInstitutionsLoading, setUserInstitutionsLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        console.log("userInstitutionsLoading", userInstitutionsLoading);
         if (!userInstitutionsLoading)
             return;
         fetch(

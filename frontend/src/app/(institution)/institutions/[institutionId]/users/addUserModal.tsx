@@ -137,7 +137,7 @@ export function AddUserModal({open, setOpen}: {
             .then((users: UserDto[]) => setResults(users.filter(
                 user => !userInstitutions.some(
                     userInstitution =>
-                        userInstitution.user.id === user.id
+                        userInstitution.user!.id === user.id
                 ) && (
                     selected === null || (
                         selected.id !== user.id
@@ -173,7 +173,7 @@ export function AddUserModal({open, setOpen}: {
                         }
                     })
                         .then(resp => {
-                            if (resp.status !== 201)
+                            if (!resp.ok)
                                 return;
                             setSearch("");
                             setSelected(null);
