@@ -11,7 +11,7 @@ import {
     InstitutionRequest
 } from "../middleware/institutionAccess";
 import {UserRole} from "@prisma/client";
-import institutionService from "../services/InstitutionService";
+import userInstitutionService from "../services/UserInstitutionService";
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.get(
     async (req: UserRequest<UserDto>, res) => {
         try {
             const {role} = req.query;
-            res.send(await institutionService.getUsers(
+            res.send(await userInstitutionService.getUsers(
                 undefined,
                 req.user!.id,
                 typeof role === "string" ? role as UserRole : undefined
@@ -40,7 +40,7 @@ router.get(
     institutionAccess,
     async (req: InstitutionRequest<UserDto>, res) => {
         try {
-            res.send(await institutionService.getUsers(
+            res.send(await userInstitutionService.getUsers(
                 req.institution!.id,
                 typeof req.query.userId === "string" ?
                     parseInt(req.query.userId) :
@@ -67,7 +67,7 @@ router.post(
         const userId = parseInt(data.userId);
         const institutionId = parseInt(req.params.institutionId);
         try {
-            await institutionService.inviteUser(institutionId, userId);
+            await userInstitutionService.inviteUser(institutionId, userId);
             res.send({
                 msg: "User invited to institution"
             });
@@ -81,39 +81,20 @@ router.post(
     "/accept/:institutionId",
     authenticate(prisma, logger),
     institutionNoAccess,
-    (req: InstitutionRequest<UserDto>, res) => {
+    async (req: InstitutionRequest<UserDto>, res) => {
         const { institution } = req;
         const { user } = req;
-        prisma.usersOnInstitutions.updateMany({
-            where: {
-                institutionId: institution!.id,
-                userId: user!.id,
-                role: "PENDING"
-            },
-            data: {
-                role: "USER"
-            }
-        })
-            .then(relation => {
-                if (relation.count === 0)
-                    return res.status(404).send({
-                        errors: [{
-                            msg: "Invitation not found"
-                        }]
-                    });
-                logger.info(`User accepted institution ${institution!.id} invite.`);
-                res.send({
-                    msg: "User accepted into institution"
-                });
-            })
-            .catch(err => {
-                logger.error("Error accepting user into institution", err);
-                res.status(500).send({
-                    errors: [{
-                        msg: "Internal server error"
-                    }]
-                });
+        try {
+            await userInstitutionService.acceptUser(
+                institution!.id, user!.id
+            );
+            res.send({
+                msg: "User accepted into institution"
             });
+        } catch (err) {
+            logger.error("Error accepting user into institution", err);
+            handleServiceError(res, err);
+        }
     });
 
 router.delete(
@@ -130,7 +111,7 @@ router.delete(
         const data = matchedData(req);
         const userId = parseInt(data["userId"]);
         try {
-            await institutionService.removeUser(institution!.id, userId);
+            await userInstitutionService.removeUser(institution!.id, userId);
             res.send({
                 msg: "User removed from institution"
             });
