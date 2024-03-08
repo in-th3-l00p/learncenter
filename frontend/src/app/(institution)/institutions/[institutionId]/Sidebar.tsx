@@ -151,7 +151,8 @@ function UserDisplay() {
                         <div>
                             <p className={"font-semibold"}>{user?.firstName + " " + user?.lastName}</p>
                             <p className={
-                                "text-start font-light text-slate-600 text-sm" +
+                                "text-start font-light  text-sm" +
+                                (opened ? " text-white" : " text-slate-600") +
                                 " group-hover:text-white transition-all"
                             }>
                                 {role}

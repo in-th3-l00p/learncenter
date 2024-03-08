@@ -5,6 +5,9 @@ import {EventType} from "streaming/src/event";
 import logger from "logger";
 import {UserRole} from "@prisma/client";
 
+const EXCLUDED_ROLES: UserRole[] = ["PENDING", "BANNED", "DELETED"];
+const DELETED_ROLES: UserRole[] = ["DELETED", "BANNED"];
+
 class UserInstitutionService {
     public async checkUserInInstitution(
         userId: number,
@@ -15,7 +18,7 @@ class UserInstitutionService {
                 userId,
                 institutionId,
                 role: {
-                    notIn: ["PENDING", "BANNED", "DELETED"]
+                    notIn: EXCLUDED_ROLES
                 }
             }
         }) === 0)
@@ -43,16 +46,32 @@ class UserInstitutionService {
                 userId: user.id,
                 institutionId
             }
-        }) > 0)
-            throw new ServiceError(400, ["User already in institution"]);
-
-        await prisma.usersOnInstitutions.create({
-            data: {
-                user: {connect: {id: user.id}},
-                institution: {connect: {id: institution.id}},
-                role: "PENDING"
+        }) > 0) {
+            const userInstitution = await prisma.usersOnInstitutions.findFirst({
+                where: {
+                    userId: user.id,
+                    institutionId
+                }
+            });
+            if (DELETED_ROLES.find(role => role === userInstitution!.role)) {
+                await prisma.usersOnInstitutions.update({
+                    where: { id: userInstitution!.id },
+                    data: {
+                        role: "PENDING"
+                    }
+                });
+            } else {
+                throw new ServiceError(400, ["User already in institution"]);
             }
-        });
+        } else {
+            await prisma.usersOnInstitutions.create({
+                data: {
+                    user: {connect: {id: user.id}},
+                    institution: {connect: {id: institution.id}},
+                    role: "PENDING"
+                }
+            });
+        }
 
         Amqp.getInstance().publish({
             type: EventType.USER_INVITED,
@@ -104,7 +123,9 @@ class UserInstitutionService {
             where: {
                 institutionId: institutionId,
                 userId: userId,
-                role: role
+                role: role ? role : {
+                    notIn: DELETED_ROLES
+                }
             },
             include: { user: true, institution: true }
         });
@@ -117,15 +138,24 @@ class UserInstitutionService {
         if (await prisma.usersOnInstitutions.count({
             where: {
                 userId,
-                institutionId
+                institutionId,
+                role: {
+                    notIn: DELETED_ROLES
+                }
             }
         }) === 0)
             throw new ServiceError(404, ["User not in institution"]);
 
-        await prisma.usersOnInstitutions.deleteMany({
+        await prisma.usersOnInstitutions.updateMany({
             where: {
                 userId,
-                institutionId
+                institutionId,
+                role: {
+                    notIn: DELETED_ROLES
+                }
+            },
+            data: {
+                role: "DELETED"
             }
         });
         Amqp.getInstance().publish({

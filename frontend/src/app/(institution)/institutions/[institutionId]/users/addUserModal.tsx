@@ -163,6 +163,7 @@ export function AddUserModal({open, setOpen}: {
                         setOpen(false);
                     }
 
+                    // invite endpoint
                     fetch(
                         `${constants.API}/api/institutions/users/${institution?.id}?userId=${selected?.id}`,
                     {
