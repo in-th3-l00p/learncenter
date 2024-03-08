@@ -3,9 +3,11 @@
 import {UserInstitutionDto} from "types";
 import i18n from "@/locales/i18n";
 import UserModal from "@/app/(institution)/institutions/[institutionId]/users/userModal";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 
 export function UserDisplay({userInstitution}: { userInstitution: UserInstitutionDto }) {
+    const { role } = useContext(InstitutionContext);
     const [modalOpen, setModalOpen] = useState(false);
 
     return (
@@ -35,19 +37,21 @@ export function UserDisplay({userInstitution}: { userInstitution: UserInstitutio
                         <p>{i18n.t("Role")}: {userInstitution.role}</p>
                     </div>
                 </div>
-                <div>
-                    <button
-                        className="btn"
-                        title={i18n.t("settings")}
-                        onClick={() => setModalOpen(true)}
-                    >
-                        <img
-                            src="/icons/settings.svg" alt="settings"
-                            className={"invert"}
-                            width={30} height={30}
-                        />
-                    </button>
-                </div>
+                {role === "ADMIN" && (
+                    <div>
+                        <button
+                            className="btn"
+                            title={i18n.t("settings")}
+                            onClick={() => setModalOpen(true)}
+                        >
+                            <img
+                                src="/icons/settings.svg" alt="settings"
+                                className={"invert"}
+                                width={30} height={30}
+                            />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );

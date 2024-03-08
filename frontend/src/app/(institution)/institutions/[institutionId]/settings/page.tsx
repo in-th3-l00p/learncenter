@@ -1,11 +1,12 @@
 "use client";
 
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import { LoadingPage } from "@/components/Loading";
 import i18n from "@/locales/i18n";
+import {useRouter} from "next/navigation";
 
 async function saveInstitution(
     id: number,
@@ -28,11 +29,15 @@ async function saveInstitution(
 }
 
 export default function Settings() {
-    const { institution, setInstitution, institutionLoading } = useContext(InstitutionContext);
+    const router = useRouter();
+    const { institution, setInstitution, role } = useContext(InstitutionContext);
     const [saving, setSaving] = useState(false);
 
-    if (institutionLoading)
-        return <LoadingPage />
+    useEffect(() => {
+        if (role !== "ADMIN")
+            router.push("/");
+    });
+
     return (
         <section className={"p-8"}>
             <h1 className={"text-4xl mb-8"}>{i18n.t("Settings")}</h1>

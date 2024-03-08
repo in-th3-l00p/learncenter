@@ -121,6 +121,7 @@ function InstitutionDisplay() {
 }
 
 function UserDisplay() {
+    const { role } = useContext(InstitutionContext);
     const { user, userLoading } = useContext(AuthContext);
     const [opened, setOpened] = useState(false);
 
@@ -147,7 +148,10 @@ function UserDisplay() {
                     />
                     {userLoading ?
                         <div className={"w-20 rounded-md p-2 bg-slate-300 animate-pulse"} /> :
-                        <p>{user?.firstName + " " + user?.lastName}</p>
+                        <div>
+                            <p className={"font-semibold"}>{user?.firstName + " " + user?.lastName}</p>
+                            <p className={"text-start font-light text-slate-600 text-sm"}>{role}</p>
+                        </div>
                     }
                 </div>
             </button>
@@ -167,7 +171,7 @@ function UserDisplay() {
 }
 
 export default function Sidebar() {
-    const { institution } = useContext(InstitutionContext);
+    const { institution, role } = useContext(InstitutionContext);
     const [opened, setOpened] = useState(true);
 
     if (!opened)
@@ -228,21 +232,25 @@ export default function Sidebar() {
                     {i18n.t("Chat")}
                 </SidebarLink>
 
-                <SidebarLink
-                    href={`/institutions/${institution?.id}/billing`}
-                    icon={"/icons/billing.svg"}
-                    iconAlt={"billing"}
-                >
-                    {i18n.t("Billing")}
-                </SidebarLink>
+                {role === "ADMIN" && (
+                    <SidebarLink
+                        href={`/institutions/${institution?.id}/billing`}
+                        icon={"/icons/billing.svg"}
+                        iconAlt={"billing"}
+                    >
+                        {i18n.t("Billing")}
+                    </SidebarLink>
+                )}
 
-                <SidebarLink
-                    href={`/institutions/${institution?.id}/settings`}
-                    icon={"/icons/settings.svg"}
-                    iconAlt={"settings"}
-                >
-                    {i18n.t("Settings")}
-                </SidebarLink>
+                {role === "ADMIN" && (
+                    <SidebarLink
+                        href={`/institutions/${institution?.id}/settings`}
+                        icon={"/icons/settings.svg"}
+                        iconAlt={"settings"}
+                    >
+                        {i18n.t("Settings")}
+                    </SidebarLink>
+                )}
             </div>
 
             <InstitutionDisplay />

@@ -13,13 +13,12 @@ import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 
 export default function Users() {
-    const { institution, institutionLoading} = useContext(InstitutionContext);
+    const { institution, role} = useContext(InstitutionContext);
     const [userInstitutions, setUserInstitutions] = useState<UserInstitutionDto[]>();
     const [userInstitutionsLoading, setUserInstitutionsLoading] = useState<boolean>(true);
 
-    // todo: review logics, that userInstitutionsLoading seems buggy
     useEffect(() => {
-        if (institutionLoading || !userInstitutionsLoading)
+        if (!userInstitutionsLoading)
             return;
         fetch(
             `${constants.API}/api/institutions/users/${institution?.id}`,
@@ -33,12 +32,9 @@ export default function Users() {
             .then(resp => resp.json())
             .then(setUserInstitutions)
             .finally(() => setUserInstitutionsLoading(false));
-    }, [
-        institutionLoading,
-        userInstitutionsLoading
-    ]);
+    }, [userInstitutionsLoading]);
 
-    if (institutionLoading || userInstitutionsLoading || !userInstitutions)
+    if (userInstitutionsLoading || !userInstitutions)
         return <LoadingPage />
     return (
         <section className={"p-8 min-h-full h-full"}>
@@ -49,7 +45,7 @@ export default function Users() {
             }}>
                 <div className="mb-8 flex justify-between items-center">
                     <h1 className={"text-4xl"}>{i18n.t("Users")}</h1>
-                    <AddButton disabled={userInstitutionsLoading} />
+                    {role === "ADMIN" && <AddButton disabled={userInstitutionsLoading} />}
                 </div>
 
                 {userInstitutions.length === 0 ? (
