@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import i18n from "@/locales/i18n";
 import Image from "next/image";
-import {UserDto} from "types";
 import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 import {constants} from "@/utils/constants";
 import Modal, {ModalFooter} from "@/app/components/Modal";
 import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import Cookie from "js-cookie";
+import {UserDto} from "types/src/dtos";
 
 function NotFound() {
     return (

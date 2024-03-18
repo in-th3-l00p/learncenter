@@ -1,58 +1,12 @@
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-export type UserDto = {
-    id: number;
-
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-
-    createdAt: Date;
-}
 export interface UserRequest<T> extends Request {
     user?: T;
 }
 
-export type PublicUserDto = {
-    id: number;
-    username: string;
-    firstName: string;
-    lastName: string;
-}
-
-export type InstitutionDto = {
-    id: number;
-    name: string;
-    description?: string;
-    createdAt: Date;
-    usersAmount: number;
-    ownerId: number;
-}
-
 export type UserInstitutionRole = "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
-
-export type UserInstitutionDto = {
-    id: number;
-    user?: UserDto;
-    institution?: InstitutionDto;
-    userId?: number;
-    institutionId?: number;
-    role: UserInstitutionRole;
-    createdAt: Date;
-}
-
-export type PackageDto = {
-    id: string;
-    name: string;
-    description?: string;
-
-    newClassroomsAmount: number;
-    newUsersAmount: number;
-}
 
 export class ServiceError extends Error {
     private readonly _body: {

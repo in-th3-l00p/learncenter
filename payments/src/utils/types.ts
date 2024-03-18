@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { UserDto as GlobalUserDto } from "../../../shared/types";
 import Stripe from "stripe";
+import {UserDto as GlobalUserDto} from "types/src/dtos";
 
 type ExcludedDateUserDto = Omit<GlobalUserDto, "createdAt">;
 export interface UserDto extends ExcludedDateUserDto {

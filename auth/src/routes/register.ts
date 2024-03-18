@@ -1,11 +1,10 @@
 import express from "express";
 import {body, matchedData} from "express-validator";
 import {prisma} from "../utils/connections";
-import bcrypt from "bcrypt";
 import {validateRequest} from "middleware";
-import logger from "logger";
-import Amqp from "streaming";
-import {EventType} from "streaming/src/event";
+import UserService from "../services/UserService";
+import {handleServiceError} from "types";
+import {userToPublicUserDto} from "types/src/dtos";
 
 const router = express.Router();
 
@@ -41,32 +40,27 @@ router.post(
         .isLength({ max: 255 }),
     validateRequest,
     (req, res) => {
-        const {username, email, password, firstName, lastName, phone} = matchedData(req);
-        prisma.user.create({ data: {
-            username, email, phone, firstName, lastName,
-            password: bcrypt.hashSync(password, 10)
-        } })
+        const {
+            username,
+            email,
+            password,
+            firstName,
+            lastName,
+            phone
+        } = matchedData(req);
+        UserService
+            .createUser(
+                username,
+                email,
+                password,
+                firstName,
+                lastName,
+                phone
+            )
             .then(user => {
-                const publicUser = {
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    phone: user.phone
-                };
-                res.status(201).send(publicUser);
-                logger.info("Created user: " + JSON.stringify(publicUser));
-
-                Amqp.getInstance().publish({
-                    type: EventType.USER_CREATED,
-                    data: publicUser
-                })
+                res.send(userToPublicUserDto(user));
             })
-            .catch(err => {
-                res.status(500).send(err);
-                logger.error("Failed to create user: " + err);
-            });
+            .catch(err => handleServiceError(res, err));
     });
 
 export default router;

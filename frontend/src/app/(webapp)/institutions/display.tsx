@@ -1,9 +1,9 @@
 import {constants} from "@/utils/constants";
 import {cookies} from "next/headers";
-import {InstitutionDto} from "types";
 import i18n from "@/locales/i18n";
 import {Institution} from "@/app/(webapp)/institutions/institution";
 import React from "react";
+import {InstitutionDto} from "types/src/dtos";
 
 export default async function InstitutionsDisplay() {
     const institutionsResp = await fetch(constants.API + "/api/institutions", {

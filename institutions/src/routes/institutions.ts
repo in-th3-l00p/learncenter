@@ -3,8 +3,9 @@ import {body, matchedData, param} from "express-validator";
 import {authenticate, validateRequest} from "middleware";
 import logger from "logger";
 import {prisma} from "../utils/objects";
-import {UserDto, UserRequest, handleServiceError} from "types";
+import {UserRequest, handleServiceError} from "types";
 import institutionService from "../services/InstitutionService";
+import {UserDto} from "types/src/dtos";
 
 const router = express.Router();
 
@@ -22,7 +23,10 @@ router.get(
 
 router.get(
     "/:id",
-    param("id").notEmpty(),
+    param("id")
+        .isLength({ max: 255 })
+        .isNumeric()
+        .notEmpty(),
     authenticate(prisma, logger),
     async (req: UserRequest<UserDto>, res) => {
         try {
@@ -38,8 +42,12 @@ router.get(
 router.post(
     "/",
     authenticate(prisma, logger),
-    body("name").notEmpty(),
-    body("description").notEmpty(),
+    body("name")
+        .notEmpty()
+        .isLength({ max: 255 }),
+    body("description")
+        .notEmpty()
+        .isLength({ max: 255 }),
     validateRequest,
     async (req: UserRequest<UserDto>, res) => {
         const {name, description} = req.body;
@@ -51,9 +59,15 @@ router.post(
 router.put(
     "/:id",
     authenticate(prisma, logger),
-    param("id").notEmpty(),
-    body("name").notEmpty(),
-    body("description").notEmpty(),
+    param("id")
+        .notEmpty()
+        .isLength({ max: 255 }),
+    body("name")
+        .notEmpty()
+        .isLength({ max: 255 }),
+    body("description")
+        .notEmpty()
+        .isLength({ max: 255 }),
     validateRequest,
     async (req: UserRequest<UserDto>, res) => {
         try {
@@ -69,7 +83,9 @@ router.put(
 
 router.delete(
     "/:id",
-    param("id").notEmpty(),
+    param("id")
+        .notEmpty()
+        .isLength({ max: 255 }),
     authenticate(prisma, logger),
     async (req: UserRequest<UserDto>, res) => {
         try {

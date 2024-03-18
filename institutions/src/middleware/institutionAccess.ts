@@ -1,7 +1,8 @@
 import {Response, NextFunction} from "express";
-import {UserDto, UserRequest} from "types";
+import {UserRequest} from "types";
 import {prisma} from "../utils/objects";
 import {Prisma} from "@prisma/client";
+import {UserDto} from "types/src/dtos";
 
 export interface InstitutionRequest<T> extends UserRequest<T> {
     institution?: Prisma.InstitutionGetPayload<{}>;

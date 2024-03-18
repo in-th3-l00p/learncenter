@@ -1,5 +1,6 @@
 import React, {createContext} from "react";
-import {UserInstitutionDto} from "types";
+
+import {UserInstitutionDto} from "types/src/dtos";
 
 interface UserInstitutionContextProps {
     userInstitutions: UserInstitutionDto[];

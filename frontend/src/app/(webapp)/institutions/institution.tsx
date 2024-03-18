@@ -1,9 +1,9 @@
-import {InstitutionDto} from "types";
 import React from "react";
 import Link from "next/link";
 import {getLimitedText} from "@/utils/utils";
 import i18n from "@/locales/i18n";
 import Image from "next/image";
+import {InstitutionDto} from "types/src/dtos";
 
 export function Institution({institution, children, href}: {
     institution?: InstitutionDto,

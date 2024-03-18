@@ -1,8 +1,8 @@
 import Amqp from "streaming";
 import logger from "logger";
 import {prisma} from "../utils/objects";
-import {UserDto} from "types";
 import {EventType} from "streaming/src/event";
+import {UserDto} from "types/src/dtos";
 
 export default function userCreatedConsumer() {
     Amqp.getInstance().addConsumer(EventType.USER_CREATED, async (msg) => {

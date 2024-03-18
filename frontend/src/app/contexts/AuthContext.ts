@@ -1,5 +1,6 @@
 import React from "react";
-import {UserDto} from "types";
+
+import {UserDto} from "types/src/dtos";
 
 interface IAuthContext {
     user?: UserDto;

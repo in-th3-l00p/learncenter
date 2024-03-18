@@ -3,7 +3,6 @@
 import {useContext, useEffect, useState} from "react";
 import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
 import {LoadingPage} from "@/components/Loading";
-import {UserInstitutionDto} from "types";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import i18n from "@/locales/i18n";
@@ -11,6 +10,7 @@ import {AddButton} from "@/app/(institution)/institutions/[institutionId]/users/
 import {UserDisplay} from "@/app/(institution)/institutions/[institutionId]/users/userDisplay";
 import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
+import {UserInstitutionDto} from "types/src/dtos";
 
 export default function Users() {
     const { institution, role} = useContext(InstitutionContext);

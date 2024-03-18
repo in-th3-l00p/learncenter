@@ -1,5 +1,5 @@
-import {InstitutionDto} from "types";
 import {createContext} from "react";
+import {InstitutionDto} from "types/src/dtos";
 
 export type InstitutionRole = "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
 

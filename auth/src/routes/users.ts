@@ -1,9 +1,9 @@
 import express from "express";
 import {authenticated} from "../middleware/authenticated";
-import {UserDto, UserRequest} from "types";
-import {prisma} from "../utils/connections";
-import logger from "logger";
-import {matchedData, query} from "express-validator";
+import {handleServiceError, UserRequest} from "types";
+import {query} from "express-validator";
+import {UserDto, userToPublicUserDto} from "types/src/dtos";
+import UserService from "../services/UserService";
 
 const router = express.Router();
 
@@ -17,68 +17,18 @@ router.get(
                     msg: "Unauthorized"
                 }]
             });
-        prisma.user.findUnique({ where: { id: req.user?.id } })
-            .then(user => {
-                if (!user) {
-                    res.status(404).send({
-                        errors: [{
-                            msg: "User not found"
-                        }]
-                    });
-                }
-
-                const userDto = {
-                    id: user!.id,
-                    username: user!.username,
-                    email: user!.email,
-                    firstName: user!.firstName,
-                    lastName: user!.lastName,
-                    phone: user!.phone,
-                    createdAt: user!.createdAt
-                }
-
-                res.json(userDto);
-            })
-            .catch(err => {
-                logger.error("Error getting user", err);
-                return res.status(500).send({
-                    errors: [{
-                        msg: "Internal server error"
-                    }]
-                });
-            });
+        UserService.getUserById(req.user.id)
+            .then(user => res.send(user))
+            .catch(err => handleServiceError(res, err))
     });
 
 router.get(
     "/api/auth/search",
     query("query").notEmpty().isLength({ min: 1, max: 255 }),
     (req, res) => {
-        const { query } = matchedData(req);
-        prisma.user.findMany({
-            where: {
-                OR: [
-                    { username: { contains: query, mode: "insensitive" } },
-                    { firstName: { contains: query, mode: "insensitive" } },
-                    { lastName: { contains: query, mode: "insensitive" } },
-                ]
-            }
-        })
-            .then(users => {
-                res.json(users.map(user => ({
-                    id: user.id,
-                    username: user.username,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                })));
-            })
-            .catch(err => {
-                logger.error("Error searching for users", err);
-                res.status(500).send({
-                    errors: [{
-                        msg: "Internal server error"
-                    }]
-                });
-            });
+        UserService.searchUsers(req.query!.query)
+            .then(users => res.send(users.map(userToPublicUserDto)))
+            .catch(err => handleServiceError(res, err));
     });
 
 export default router;

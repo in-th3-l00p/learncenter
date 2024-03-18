@@ -5,9 +5,9 @@ import Loading from "@/components/Loading";
 import {constants} from "@/utils/constants";
 import handleExpressValidatorErrors from "@/utils/handleExpressValidatorErrors";
 import Cookie from "js-cookie";
-import {InstitutionDto} from "types";
 import ErrorMessage from "@/app/components/errorMessage";
 import i18n from "@/locales/i18n";
+import {InstitutionDto} from "types/src/dtos";
 
 export default function CreateInstitution() {
     const [errors, setErrors] = useState<Record<string, string>>({});

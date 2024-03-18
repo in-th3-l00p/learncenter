@@ -1,9 +1,9 @@
 import i18n from "@/locales/i18n";
 import React from "react";
 import {constants} from "@/utils/constants";
-import {UserInstitutionDto} from "types";
 import {cookies} from "next/headers";
 import {InstitutionInvite} from "@/app/(webapp)/institutions/institutionInvite";
+import {UserInstitutionDto} from "types/src/dtos";
 
 export default async function InstitutionsInvitations() {
     const invitationsResp = await fetch(

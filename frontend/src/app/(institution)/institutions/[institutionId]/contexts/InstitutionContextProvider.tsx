@@ -4,10 +4,10 @@ import React, {useContext, useEffect} from "react";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import InstitutionContext, {InstitutionRole} from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
-import {InstitutionDto, UserInstitutionDto} from "types";
 import {useParams} from "next/navigation";
 import {LoadingPage} from "@/components/Loading";
 import AuthContext from "@/app/contexts/AuthContext";
+import {InstitutionDto, UserInstitutionDto} from "types/src/dtos";
 
 export default function InstitutionContextProvider({ children }: { children: React.ReactNode }) {
     const { user } = useContext(AuthContext);

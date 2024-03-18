@@ -1,14 +1,14 @@
 "use client";
 
-import { UserInstitutionDto } from "types";
 import Modal, {ModalFooter} from "@/app/components/Modal";
-import React, {useEffect} from "react";
+import React from "react";
 import Image from "next/image";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import UserInstitutionsContext
     from "@/app/(institution)/institutions/[institutionId]/users/contexts/InstitutionUsersContext";
 import i18n from "@/locales/i18n";
+import {UserInstitutionDto} from "types/src/dtos";
 
 function DeleteButton({ userInstitution }: {
     userInstitution: UserInstitutionDto
@@ -67,8 +67,6 @@ function PendingBody({ userInstitution }: {
 }
 
 function UserDisplay({ userInstitution }: { userInstitution: UserInstitutionDto }) {
-    const { setChanged } = React.useContext(UserInstitutionsContext);
-
     if (!userInstitution.user)
         return <></>;
     return (

@@ -1,10 +1,10 @@
 "use client";
 
-import {UserInstitutionDto} from "types";
 import i18n from "@/locales/i18n";
 import UserModal from "@/app/(institution)/institutions/[institutionId]/users/userModal";
 import {useContext, useState} from "react";
 import InstitutionContext from "@/app/(institution)/institutions/[institutionId]/contexts/InstitutionContext";
+import {UserInstitutionDto} from "types/src/dtos";
 
 export function UserDisplay({userInstitution}: { userInstitution: UserInstitutionDto }) {
     const { role } = useContext(InstitutionContext);

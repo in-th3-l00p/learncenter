@@ -1,11 +1,11 @@
 "use client";
 
-import {UserInstitutionDto} from "types";
 import i18n from "@/locales/i18n";
 import React, {useState} from "react";
 import {constants} from "@/utils/constants";
 import Cookie from "js-cookie";
 import {useRouter} from "next/navigation";
+import {UserInstitutionDto} from "types/src/dtos";
 
 export function InstitutionInvite({invitation}: { invitation: UserInstitutionDto }) {
     const router = useRouter();

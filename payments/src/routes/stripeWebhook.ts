@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import {prisma} from "../utils/objects";
 import {validateRequest} from "middleware";
 import logger from "logger";
-import {CheckoutType, PackageDto} from "types";
+import {CheckoutType} from "types";
 
 const router = express.Router();
 

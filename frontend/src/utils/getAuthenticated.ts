@@ -1,7 +1,7 @@
-import {UserDto} from "types";
 import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
 import {cookies} from "next/headers";
+import {UserDto} from "types/src/dtos";
 
 export interface UserProps {
     user?: UserDto;

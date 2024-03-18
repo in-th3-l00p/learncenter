@@ -2,7 +2,7 @@ import express from "express";
 import {prisma} from "../utils/objects";
 import logger from "logger";
 import {authenticate} from "middleware";
-import {handleServiceError, UserDto, UserRequest} from "types";
+import {handleServiceError, UserRequest} from "types";
 import {matchedData, param, query, validationResult} from "express-validator";
 import {
     institutionAccess,
@@ -12,6 +12,7 @@ import {
 } from "../middleware/institutionAccess";
 import {UserRole} from "@prisma/client";
 import userInstitutionService from "../services/UserInstitutionService";
+import {UserDto} from "types/src/dtos";
 
 const router = express.Router();
 
@@ -34,8 +35,13 @@ router.get(
 
 router.get(
     "/:institutionId",
-    param("institutionId").notEmpty().isInt({min: 1}),
-    query("userId").optional(),
+    param("institutionId")
+        .notEmpty()
+        .isInt({min: 1})
+        .isLength({ max: 255 }),
+    query("userId")
+        .optional()
+        .isLength({ max: 255 }),
     authenticate(prisma, logger),
     institutionAccess,
     async (req: InstitutionRequest<UserDto>, res) => {
@@ -54,7 +60,10 @@ router.get(
 
 router.post(
     "/:institutionId",
-    param("institutionId").notEmpty().isInt({min: 1}),
+    param("institutionId")
+        .notEmpty()
+        .isInt({ min: 1 })
+        .isLength({ max: 255 }),
     query("userId").notEmpty().isInt(),
     authenticate(prisma, logger),
     institutionAdminAccess,
@@ -99,7 +108,10 @@ router.post(
 
 router.delete(
     "/:institutionId",
-    query("userId").notEmpty().isInt(),
+    query("userId")
+        .notEmpty()
+        .isInt()
+        .isLength({ max: 255 }),
     authenticate(prisma, logger),
     institutionAdminAccess,
     async (req: InstitutionRequest<UserDto>, res) => {
