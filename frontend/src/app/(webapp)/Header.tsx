@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {HeaderLink} from "@/app/(webapp)/HeaderLink";
 import ProfileDropdown from "@/app/(webapp)/ProfileDropdown";
+import i18n from "@/locales/i18n";
 
 export async function Header() {
     return (
@@ -20,8 +21,8 @@ export async function Header() {
                 <h2 className={"text-2xl"}>Learn<span className={"text-mid-blue font-bold"}>Center</span></h2>
             </Link>
             <div className={"flex items-center gap-4 me-auto"}>
-                <HeaderLink href={"/dashboard"}>Dashboard</HeaderLink>
-                <HeaderLink href={"/institutions"}>Institutions</HeaderLink>
+                <HeaderLink href={"/dashboard"}>{i18n.t("Dashboard")}</HeaderLink>
+                <HeaderLink href={"/institutions"}>{i18n.t("Institutions")}</HeaderLink>
             </div>
 
             <div className={"flex items-center gap-4"}>

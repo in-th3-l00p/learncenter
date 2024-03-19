@@ -5,6 +5,7 @@ import * as Icon from "react-feather";
 import React, {useContext, useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import AuthContext from "@/app/contexts/AuthContext";
+import i18n from "@/locales/i18n";
 
 function DropdownLink({ icon, iconAlt, href, children, top = false, bottom = false }: {
     icon: string;
@@ -67,7 +68,7 @@ function Dropdown({ togglerRef, setOpened }: {
                 href={"/profile"}
                 top
             >
-                Profile
+                {i18n.t("Profile")}
             </DropdownLink>
 
             <DropdownLink
@@ -76,7 +77,7 @@ function Dropdown({ togglerRef, setOpened }: {
                 href={"/logout"}
                 bottom
             >
-                Logout
+                {i18n.t("Logout")}
             </DropdownLink>
         </div>
     );
@@ -103,7 +104,11 @@ export default function ProfileDropdown() {
                     height={40}
                 />
 
-                <div>{user?.username}</div>
+                {user === undefined ? (
+                    <div className={"w-20 h-4 bg-zinc-300 animate-pulse rounded-md"} />
+                ): (
+                    <div>{user?.username}</div>
+                )}
 
                 {opened ? <Icon.ChevronUp /> : <Icon.ChevronDown />}
             </button>
