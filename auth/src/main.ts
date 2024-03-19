@@ -10,6 +10,7 @@ import cors from "cors";
 import RegisterRouter from "./routes/register";
 import LoginRouter from "./routes/login";
 import UserRouter from "./routes/users";
+import UpdateRouter from "./routes/update";
 import Amqp from "streaming";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(RegisterRouter);
 app.use(LoginRouter);
 app.use(UserRouter);
+app.use(UpdateRouter);
 
 (async () => {
     await Amqp.initializeFromEnv(logger);

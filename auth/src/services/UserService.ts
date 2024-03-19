@@ -103,8 +103,6 @@ class UserService implements IUserService {
     async updateUser(
         id: number,
         username: string,
-        email: string,
-        password: string,
         firstName: string,
         lastName: string,
         phone: string
@@ -112,13 +110,34 @@ class UserService implements IUserService {
         const user = await prisma.user.update({
             where: {id},
             data: {
-                username, email, phone, firstName, lastName,
-                password: bcrypt.hashSync(password, 10)
+                username, phone, firstName, lastName
             }
         });
         if (!user)
             throw new ServiceError(404, ["User not found"]);
         return this.userToUserDto(user);
+    }
+
+    async changePassword(
+        id: number,
+        currentPassword: string,
+        password: string
+    ) {
+        const user = await prisma.user.findUnique({
+            where: { id },
+            select: { password: true }
+        });
+        if (!user)
+            throw new ServiceError(404, ["User not found"]);
+        if (!bcrypt.compareSync(currentPassword, user.password))
+            throw new ServiceError(400, ["Incorrect current password"]);
+
+        await prisma.user.update({
+            where: { id },
+            data: {
+                password: bcrypt.hashSync(password, 10)
+            }
+        });
     }
 
     userToUserDto(user: User): UserDto {
