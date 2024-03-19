@@ -9,13 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "types": "file:../shared/types",
     "i18next": "^23.8.2",
     "js-cookie": "^3.0.5",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "swr": "^2.2.4"
+    "react-feather": "^2.0.10",
+    "swr": "^2.2.4",
+    "types": "file:../shared/types"
   },
   "devDependencies": {
     "@types/i18next": "^13.0.0",

@@ -1,9 +1,9 @@
 "use client";
 
-import Loading from "@/components/Loading";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import Cookie from "js-cookie";
 import {constants} from "@/utils/constants";
+import LoadingPage from "@/app/loading";
 
 export default function Logout() {
     useEffect(() => {
@@ -12,6 +12,6 @@ export default function Logout() {
     }, []);
 
     return (
-        <Loading />
+        <LoadingPage />
     );
 }
