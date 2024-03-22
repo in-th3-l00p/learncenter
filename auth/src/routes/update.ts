@@ -14,10 +14,6 @@ router.put(
     "/api/auth/update",
     body("username")
         .notEmpty()
-        .custom(async username => {
-            if (await prisma.user.count({ where: { username } }))
-                throw new Error("Username already exists.");
-        })
         .isLength({ max: 255 }),
     body("firstName")
         .isString()

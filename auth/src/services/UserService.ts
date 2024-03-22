@@ -107,10 +107,21 @@ class UserService implements IUserService {
         lastName: string,
         phone: string
     ): Promise<UserDto> {
+        const currentUser = await prisma.user.findUnique({
+            where: { id }
+        });
+        if (!currentUser)
+            throw new ServiceError(404, ["User not found"]);
+        if (currentUser.username !== username) {
+            if (await prisma.user.count({ where: { username } }))
+                throw new ServiceError(400, ["Username already exists."]);
+        }
         const user = await prisma.user.update({
             where: {id},
             data: {
-                username, phone, firstName, lastName
+                phone, firstName, lastName,
+                username: currentUser.username === username ?
+                    undefined : username
             }
         });
         if (!user)
