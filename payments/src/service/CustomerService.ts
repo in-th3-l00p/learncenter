@@ -119,9 +119,9 @@ class CustomerService {
             customerId
         );
         if (!customer)
-            throw new ServiceError(404, ["Customer doesn't exist"]);
+            throw new ServiceError(404, [{msg: "Customer doesn't exist"}]);
         if (customer.deleted)
-            throw new ServiceError(400, ["Deleted customer"]);
+            throw new ServiceError(400, [{msg: "Deleted customer"}]);
         return stripeCustomerToDto(customer);
     }
 
@@ -133,11 +133,10 @@ class CustomerService {
                 data: customerParamsToPrisma(customerParams)
             });
             logger.info(`Customer ${stripeCustomer.id} updated!`);
-            const dto = stripeCustomerToDto(stripeCustomer);
-            return dto;
+            return stripeCustomerToDto(stripeCustomer);
         } catch (err: any) {
             logger.error("Error updating customer: " + err);
-            throw new ServiceError(500, ["Internal Server Error"]);
+            throw new ServiceError(500, [{msg: "Internal Server Error"}]);
         }
     }
 
@@ -155,7 +154,7 @@ class CustomerService {
             logger.info(`Customer ${customerId} deleted.`);
         } catch (err: any) {
             logger.error("Error deleting customer: " + err);
-            throw new ServiceError(500, ["Internal Server Error"]);
+            throw new ServiceError(500, [{msg: "Internal Server Error"}]);
         }
     }
 }

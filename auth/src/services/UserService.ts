@@ -48,7 +48,7 @@ class UserService implements IUserService {
             }
         })
         if (!user)
-            throw new ServiceError(500, ["Failed to create user."]);
+            throw new ServiceError(500, [{msg: "Failed to create user."}]);
         const userDto: UserDto = this.userToUserDto(user);
         (async () => {
             logger.info("Created user: " + JSON.stringify(userDto));
@@ -65,7 +65,7 @@ class UserService implements IUserService {
 
     async deleteUser(id: number): Promise<void> {
         if (await prisma.user.count({where: {id}}) === 0)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
         await prisma.user.delete({where: {id}});
     }
 
@@ -74,7 +74,7 @@ class UserService implements IUserService {
             {where: {email}}
         );
         if (!user)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
         return this.userToUserDto(user);
     }
 
@@ -83,7 +83,7 @@ class UserService implements IUserService {
             where: { id }
         });
         if (!user)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
         return this.userToUserDto(user);
     }
 
@@ -111,10 +111,13 @@ class UserService implements IUserService {
             where: { id }
         });
         if (!currentUser)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
         if (currentUser.username !== username) {
             if (await prisma.user.count({ where: { username } }))
-                throw new ServiceError(400, ["Username already exists."]);
+                throw new ServiceError(400, [{
+                    path: "username",
+                    msg: "Username already exists."
+                }]);
         }
         const user = await prisma.user.update({
             where: {id},
@@ -125,7 +128,17 @@ class UserService implements IUserService {
             }
         });
         if (!user)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
+        (async () => {
+            logger.info("Updated user: " + JSON.stringify(user));
+
+            Amqp.getInstance().publish({
+                type: EventType.USER_UPDATED,
+                data: this.userToUserDto(user)
+            });
+        })()
+            .catch(err => logger.error("Failed to publish user created event: " + err));
+
         return this.userToUserDto(user);
     }
 
@@ -139,10 +152,14 @@ class UserService implements IUserService {
             select: { password: true }
         });
         if (!user)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
         if (!bcrypt.compareSync(currentPassword, user.password))
-            throw new ServiceError(400, ["Incorrect current password"]);
+            throw new ServiceError(400, [{
+                path: "currentPassword",
+                msg: "Incorrect current password"
+            }]);
 
+        logger.info("Changing password for user: " + id);
         await prisma.user.update({
             where: { id },
             data: {

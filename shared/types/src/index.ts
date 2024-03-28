@@ -8,19 +8,20 @@ export interface UserRequest<T> extends Request {
 
 export type UserInstitutionRole = "ADMIN" | "USER" | "PENDING" | "BANNED" | "DELETED";
 
+type ErrorBody = {
+    path?: string;
+    msg: string;
+};
+
 export class ServiceError extends Error {
-    private readonly _body: {
-        msg: string;
-    }[];
+    private readonly _body: ErrorBody[];
 
     constructor(
         private _status: number,
-        errors: string[]
+        errors: ErrorBody[]
     ) {
         super();
-        this._body = errors.map(error => ({
-            msg: error
-        }));
+        this._body = errors;
     }
 
     get status(): number {

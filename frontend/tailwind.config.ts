@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         "dark-blue": "#0a2239",
         "light-blue": "#53a2be",
+        "lighter-blue": "#a0d6ea",
         "mid-blue": "#1d84b5",
         "green-blue": "#132e32",
         "last-blue": "#176087"

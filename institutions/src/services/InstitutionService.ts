@@ -11,7 +11,7 @@ class InstitutionService {
             where: { id }
         });
         if (!institution)
-            throw new ServiceError(404, ["Institution not found"]);
+            throw new ServiceError(404, [{msg: "Institution not found"}]);
         await userInstitutionService
             .checkUserInInstitution(userId, institution.id);
         return institution;
@@ -87,7 +87,7 @@ class InstitutionService {
             data: {name, description}
         });
         if (!institution)
-            throw new ServiceError(404, ["Institution not found"]);
+            throw new ServiceError(404, [{msg: "Institution not found"}]);
 
         Amqp.getInstance().publish({
             type: EventType.INSTITUTION_UPDATED,
@@ -105,7 +105,7 @@ class InstitutionService {
                     some: {id: userId}
                 }
             }}) === 0)
-            throw new ServiceError(404, ["Institution not found"]);
+            throw new ServiceError(404, [{msg: "Institution not found"}]);
 
         await prisma.institution.delete({
             where: {

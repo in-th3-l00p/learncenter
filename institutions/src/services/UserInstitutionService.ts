@@ -22,7 +22,7 @@ class UserInstitutionService {
                 }
             }
         }) === 0)
-            throw new ServiceError(403, ["User not in institution"]);
+            throw new ServiceError(403, [{msg: "User not in institution"}]);
     }
 
     public async inviteUser(
@@ -33,13 +33,13 @@ class UserInstitutionService {
             where: {id: userId}
         });
         if (!user)
-            throw new ServiceError(404, ["User not found"]);
+            throw new ServiceError(404, [{msg: "User not found"}]);
 
         const institution = await prisma.institution.findUnique({
             where: {id: institutionId}
         });
         if (!institution)
-            throw new ServiceError(404, ["Institution not found"]);
+            throw new ServiceError(404, [{msg: "Institution not found"}]);
 
         if (await prisma.usersOnInstitutions.count({
             where: {
@@ -61,7 +61,7 @@ class UserInstitutionService {
                     }
                 });
             } else {
-                throw new ServiceError(400, ["User already in institution"]);
+                throw new ServiceError(400, [{msg: "User already in institution"}]);
             }
         } else {
             await prisma.usersOnInstitutions.create({
@@ -101,7 +101,7 @@ class UserInstitutionService {
         });
 
         if (relation.count === 0)
-            throw new ServiceError(404, ["Invitation not found"]);
+            throw new ServiceError(404, [{msg: "Invitation not found"}]);
 
         Amqp.getInstance().publish({
             type: EventType.USER_JOINED_INSTITUTION,
@@ -144,7 +144,7 @@ class UserInstitutionService {
                 }
             }
         }) === 0)
-            throw new ServiceError(404, ["User not in institution"]);
+            throw new ServiceError(404, [{msg: "User not in institution"}]);
 
         const userInstitution = await prisma.usersOnInstitutions.findFirst({
             where: {
@@ -153,9 +153,9 @@ class UserInstitutionService {
             }
         });
         if (!userInstitution)
-            throw new ServiceError(404, ["User not in institution"]);
+            throw new ServiceError(404, [{msg: "User not in institution"}]);
         if (DELETED_ROLES.find(role => role === userInstitution.role))
-            throw new ServiceError(400, ["User already removed"]);
+            throw new ServiceError(400, [{msg: "User already removed"}]);
 
         if (userInstitution.role === "PENDING") {
             await prisma.usersOnInstitutions.delete({
