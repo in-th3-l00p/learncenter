@@ -1,7 +1,8 @@
-import { IUser } from "@/lib/models/User";
-import stripe from "@/lib/stripe";
 import { Link } from "@nextui-org/link";
 import { Button } from "@nextui-org/button";
+
+import { IUser } from "@/models/User";
+import stripe from "@/lib/stripe";
 
 // @ts-ignore
 export async function SubscriptionDisplay({ user }: { user: IUser }): any {

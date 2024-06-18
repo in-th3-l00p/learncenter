@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 
 import { title } from "@/components/primitives";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import User from "@/lib/models/User";
+import User from "@/models/User";
 
 declare global {
   namespace JSX {

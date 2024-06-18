@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
-import User, { IUser } from "@/lib/models/User";
+import User, { IUser } from "@/models/User";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SubscriptionDisplay } from "@/app/profile/subscriptionDisplay";
 

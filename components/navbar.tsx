@@ -40,40 +40,45 @@ const NavbarAccount = () => {
     );
 
   return (
-    <NavbarItem>
-      <Dropdown placement="bottom-start">
-        <DropdownTrigger>
-          <User
-            as="button"
-            avatarProps={{
-              isBordered: true,
-              src: session.data?.user.image || "",
-            }}
-            className="transition-transform"
-            name={session.data?.user.name || ""}
-          />
-        </DropdownTrigger>
-        <DropdownMenu aria-label="User Actions" variant="flat">
-          <DropdownItem key="profile" className="h-14 gap-2">
-            <p className="font-bold">Signed in as</p>
-            <p className="font-bold">{session.data?.user.name}</p>
-          </DropdownItem>
-          <DropdownItem key="profile" href={"/profile"}>
-            Profile
-          </DropdownItem>
-          <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
-            Log Out
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </NavbarItem>
+    <>
+      <NavbarItem className={"me-4"}>
+        <NextLink href={"/dashboard"}>Dashboard</NextLink>
+      </NavbarItem>
+      <NavbarItem>
+        <Dropdown placement="bottom-start">
+          <DropdownTrigger>
+            <User
+              as="button"
+              avatarProps={{
+                isBordered: true,
+                src: session.data?.user.image || "",
+              }}
+              className="transition-transform"
+              name={session.data?.user.name || ""}
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-bold">Signed in as</p>
+              <p className="font-bold">{session.data?.user.name}</p>
+            </DropdownItem>
+            <DropdownItem key="profile" href={"/profile"}>
+              Profile
+            </DropdownItem>
+            <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </NavbarItem>
+    </>
   );
 };
 
 const DesktopNavbarContent = () => {
   return (
     <>
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+      <NavbarContent className="basis-1/5 lg:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
@@ -99,12 +104,12 @@ const DesktopNavbarContent = () => {
       </NavbarContent>
 
       <NavbarContent
-        className="hidden sm:flex items-center basis-1/5 sm:basis-full"
+        className="hidden lg:flex items-center basis-1/5 lg:basis-full"
         justify="end"
       >
         <NavbarAccount />
 
-        <NavbarItem className="hidden sm:block">
+        <NavbarItem className="hidden lg:block">
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
@@ -127,7 +132,12 @@ const MobileNavbarAccount = () => {
 
   return (
     <>
-      <NavbarMenuItem className={"mt-8"}>
+      <NavbarMenuItem className={"pt-4 mb-4 mt-auto border-t"}>
+        <Link color={"primary"} href={"/dashboard"} size="lg">
+          Dashboard
+        </Link>
+      </NavbarMenuItem>
+      <NavbarMenuItem>
         <User
           as="button"
           avatarProps={{
@@ -144,7 +154,7 @@ const MobileNavbarAccount = () => {
           Profile
         </Link>
       </NavbarMenuItem>
-      <NavbarMenuItem>
+      <NavbarMenuItem className={"mb-8"}>
         <Link color={"primary"} href="#" size="lg" onClick={() => signOut()}>
           Logout
         </Link>
@@ -154,17 +164,15 @@ const MobileNavbarAccount = () => {
 };
 
 const MobileNavbarContent = () => {
-  const session = useSession();
-
   return (
     <>
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+      <NavbarContent className="lg:hidden basis-1 pl-4" justify="end">
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>
-        <div className="mx-4 mt-8 flex flex-col gap-2">
+        <div className="mx-4 mt-8 flex flex-col gap-2 h-full">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link

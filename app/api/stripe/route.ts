@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import stripe from "stripe";
 
-import User from "@/lib/models/User";
+import User from "@/models/User";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 
