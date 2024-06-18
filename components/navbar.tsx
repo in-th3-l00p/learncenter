@@ -9,6 +9,13 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@nextui-org/navbar";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/dropdown";
+import { User } from "@nextui-org/user";
 import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
@@ -19,11 +26,53 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "@/components/icons";
 
-export const Navbar = () => {
+const NavbarAccount = () => {
   const session = useSession();
 
+  if (session.status === "loading") return <></>;
+  if (session.status === "unauthenticated")
+    return (
+      <NavbarItem>
+        <NextLink href={"#"} onClick={() => signIn()}>
+          Login
+        </NextLink>
+      </NavbarItem>
+    );
+
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NavbarItem>
+      <Dropdown placement="bottom-start">
+        <DropdownTrigger>
+          <User
+            as="button"
+            avatarProps={{
+              isBordered: true,
+              src: session.data?.user.image || "",
+            }}
+            className="transition-transform"
+            name={session.data?.user.name || ""}
+          />
+        </DropdownTrigger>
+        <DropdownMenu aria-label="User Actions" variant="flat">
+          <DropdownItem key="profile" className="h-14 gap-2">
+            <p className="font-bold">Signed in as</p>
+            <p className="font-bold">{session.data?.user.name}</p>
+          </DropdownItem>
+          <DropdownItem key="profile" href={"/profile"}>
+            Profile
+          </DropdownItem>
+          <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
+            Log Out
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </NavbarItem>
+  );
+};
+
+const DesktopNavbarContent = () => {
+  return (
+    <>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -50,42 +99,72 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
+        className="hidden sm:flex items-center basis-1/5 sm:basis-full"
         justify="end"
       >
-        {session.status !== "loading" && (
-          <>
-            {session.status === "authenticated" && (
-              <NavbarItem>
-                <NextLink href={"#"} onClick={() => signOut()}>
-                  Logout
-                </NextLink>
-              </NavbarItem>
-            )}
-            {session.status === "unauthenticated" && (
-              <>
-                <NavbarItem>
-                  <NextLink href={"#"} onClick={() => signIn()}>
-                    Login
-                  </NextLink>
-                </NavbarItem>
-              </>
-            )}
-          </>
-        )}
+        <NavbarAccount />
 
         <NavbarItem className="hidden sm:block">
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
+    </>
+  );
+};
 
+const MobileNavbarAccount = () => {
+  const session = useSession();
+
+  if (session.status === "loading") return <></>;
+  if (session.status === "unauthenticated")
+    return (
+      <NavbarMenuItem>
+        <Link color={"primary"} href="#" size="lg" onClick={() => signIn()}>
+          Login
+        </Link>
+      </NavbarMenuItem>
+    );
+
+  return (
+    <>
+      <NavbarMenuItem className={"mt-8"}>
+        <User
+          as="button"
+          avatarProps={{
+            isBordered: true,
+            src: session.data?.user.image || "",
+          }}
+          className="transition-transform"
+          disabled={true}
+          name={session.data?.user.name || ""}
+        />
+      </NavbarMenuItem>
+      <NavbarMenuItem>
+        <Link color={"primary"} href={"/profile"} size="lg">
+          Profile
+        </Link>
+      </NavbarMenuItem>
+      <NavbarMenuItem>
+        <Link color={"primary"} href="#" size="lg" onClick={() => signOut()}>
+          Logout
+        </Link>
+      </NavbarMenuItem>
+    </>
+  );
+};
+
+const MobileNavbarContent = () => {
+  const session = useSession();
+
+  return (
+    <>
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>
-        <div className="mx-4 mt-2 flex flex-col gap-2">
+        <div className="mx-4 mt-8 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
@@ -104,36 +183,18 @@ export const Navbar = () => {
             </NavbarMenuItem>
           ))}
 
-          {session.status !== "loading" && (
-            <>
-              {session.status === "authenticated" && (
-                <NavbarMenuItem>
-                  <Link
-                    color={"primary"}
-                    href="#"
-                    size="lg"
-                    onClick={() => signOut()}
-                  >
-                    Logout
-                  </Link>
-                </NavbarMenuItem>
-              )}
-              {session.status === "unauthenticated" && (
-                <NavbarMenuItem>
-                  <Link
-                    color={"primary"}
-                    href="#"
-                    size="lg"
-                    onClick={() => signIn()}
-                  >
-                    Login
-                  </Link>
-                </NavbarMenuItem>
-              )}
-            </>
-          )}
+          <MobileNavbarAccount />
         </div>
       </NavbarMenu>
+    </>
+  );
+};
+
+export const Navbar = () => {
+  return (
+    <NextUINavbar className={"py-4"} maxWidth="xl" position="sticky">
+      <DesktopNavbarContent />
+      <MobileNavbarContent />
     </NextUINavbar>
   );
 };
