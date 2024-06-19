@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 import { redirect } from "next/navigation";
 import { Link } from "@nextui-org/link";
+import { signIn } from "next-auth/react";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
@@ -32,11 +33,11 @@ export default async function Dashboard() {
 
   const session = await getServerSession(authOptions);
 
-  if (!session) return <div>Access Denied</div>;
+  if (!session) return redirect("/api/auth/signin");
 
   const user = await User.findById(session?.user?.id);
 
-  if (!user) return <div>Access Denied</div>;
+  if (!user) return redirect("/api/auth/signin");
 
   const notes = await Note.find({ "users.userId": user._id });
 
@@ -56,7 +57,7 @@ export default async function Dashboard() {
               key={index}
               as={Link}
               className={"aspect-video"}
-              href={`/note/${note._id}`}
+              href={`/notes/${note._id}`}
             >
               <CardHeader>
                 <h3 className={"text-lg"}>{note.title}</h3>

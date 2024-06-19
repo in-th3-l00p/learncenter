@@ -1,19 +1,21 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { signIn } from "next-auth/react";
 
 import User, { IUser } from "@/models/User";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SubscriptionDisplay } from "@/app/profile/subscriptionDisplay";
+import { redirect } from "next/navigation";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
 
-  if (!session) return <div>Access Denied</div>;
+  if (!session) return redirect("/api/auth/signin");
 
   const user = await User.findById(session?.user?.id);
 
-  if (!user) return <div>Access Denied</div>;
+  if (!user) return redirect("/api/auth/signin");
 
   return (
     <section className={"flex flex-col gap-8"}>
