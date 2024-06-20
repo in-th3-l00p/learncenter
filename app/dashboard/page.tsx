@@ -9,8 +9,58 @@ import { subtitle, title } from "@/components/primitives";
 import Note, { INote } from "@/models/Note";
 import Node from "@/models/Node";
 import { List, ListCard } from "@/app/dashboard/list";
+import Quiz from "@/models/Quiz";
 
-export default async function Dashboard() {
+function DashboardList({
+  title,
+  items,
+  href,
+  create,
+}: {
+  title: string;
+  items: any[];
+  href: string;
+  create: () => Promise<any>;
+}) {
+  return (
+    <div>
+      <form
+        action={create}
+        className={"w-full flex gap-8 justify-between mb-4"}
+      >
+        <h2 className={"text-3xl self-end"}>{title}</h2>
+        <Button isIconOnly type={"submit"}>
+          <span className={"text-2xl"}>+</span>
+        </Button>
+      </form>
+
+      <List>
+        {items.map((item: any, index) => (
+          <ListCard
+            key={index}
+            description={""}
+            href={href + item._id}
+            title={item.title}
+          />
+        ))}
+
+        <form action={create}>
+          <Card
+            as={Button}
+            className={"w-[300px] min-w-[300px] h-48"}
+            type={"submit"}
+          >
+            <CardBody className={"flex justify-center items-center"}>
+              <h3 className={"text-3xl"}>+</h3>
+            </CardBody>
+          </Card>
+        </form>
+      </List>
+    </div>
+  );
+}
+
+function NotesList({ notes }: { notes: INote[] }) {
   async function create() {
     "use server";
 
@@ -39,6 +89,17 @@ export default async function Dashboard() {
     return redirect(`/notes/${note._id}`);
   }
 
+  return (
+    <DashboardList
+      create={create}
+      href={"/notes/"}
+      items={notes}
+      title={"Notes"}
+    />
+  );
+}
+
+export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session) return redirect("/api/auth/signin");
@@ -53,6 +114,12 @@ export default async function Dashboard() {
     })
   ).reverse();
 
+  const quizes = (
+    await Quiz.find({ "users.userId": user._id }).sort({
+      createdAt: "asc",
+    })
+  ).reverse();
+
   return (
     <section>
       <div className="mb-8">
@@ -60,40 +127,7 @@ export default async function Dashboard() {
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
       </div>
 
-      <div>
-        <form
-          action={create}
-          className={"w-full flex gap-8 justify-between mb-4"}
-        >
-          <h2 className={"text-3xl self-end"}>Notes</h2>
-          <Button isIconOnly type={"submit"}>
-            <span className={"text-2xl"}>+</span>
-          </Button>
-        </form>
-
-        <List>
-          {notes.map((note: INote, index) => (
-            <ListCard
-              key={index}
-              description={""}
-              href={`/notes/${note._id}`}
-              title={note.title}
-            />
-          ))}
-
-          <form action={create}>
-            <Card
-              as={Button}
-              className={"w-[300px] min-w-[300px] h-48"}
-              type={"submit"}
-            >
-              <CardBody className={"flex justify-center items-center"}>
-                <h3 className={"text-3xl"}>+</h3>
-              </CardBody>
-            </Card>
-          </form>
-        </List>
-      </div>
+      <NotesList notes={notes} />
     </section>
   );
 }
