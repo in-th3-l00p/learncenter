@@ -3,12 +3,54 @@ import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 import { redirect } from "next/navigation";
 import { Link } from "@nextui-org/link";
+import clsx from "clsx";
+import { tv } from "tailwind-variants";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
 import { subtitle, title } from "@/components/primitives";
 import Note, { INote } from "@/models/Note";
 import Node from "@/models/Node";
+
+const list = tv({
+  base: clsx(
+    "flex gap-8 overflow-x-scroll no-scrollbar",
+    "bg-content2 p-8 rounded-xl",
+  ),
+});
+
+const listCard = tv({
+  base: "w-[300px] min-w-[300px] h-48",
+});
+
+const listCardTitle = tv({
+  base: "text-lg",
+});
+
+function ListCard({
+  title,
+  description,
+  href,
+}: {
+  title: string;
+  description: string;
+  href: string;
+}) {
+  return (
+    <Card as={Link} className={listCard()} href={href}>
+      <CardHeader>
+        <h3 className={listCardTitle()}>{title}</h3>
+      </CardHeader>
+      <CardBody>
+        <p>
+          {description.length > 0
+            ? description
+            : "There is nothing written yet."}
+        </p>
+      </CardBody>
+    </Card>
+  );
+}
 
 export default async function Dashboard() {
   async function create() {
@@ -47,9 +89,11 @@ export default async function Dashboard() {
 
   if (!user) return redirect("/api/auth/signin");
 
-  const notes = await Note
-    .find({ "users.userId": user._id })
-    .sort({ createdAt: "asc" });
+  const notes = (
+    await Note.find({ "users.userId": user._id }).sort({
+      createdAt: "asc",
+    })
+  ).reverse();
 
   return (
     <section>
@@ -59,31 +103,28 @@ export default async function Dashboard() {
       </div>
 
       <div>
-        <h2 className={subtitle()}>Notes</h2>
+        <form
+          action={create}
+          className={"w-full flex gap-8 justify-between mb-4"}
+        >
+          <h2 className={"text-3xl self-end"}>Notes</h2>
+          <Button isIconOnly type={"submit"}>
+            <span className={"text-2xl"}>+</span>
+          </Button>
+        </form>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className={list()}>
           {notes.map((note: INote, index) => (
-            <Card
+            <ListCard
               key={index}
-              as={Link}
-              className={"aspect-video"}
+              description={""}
               href={`/notes/${note._id}`}
-            >
-              <CardHeader>
-                <h3 className={"text-lg"}>{note.title}</h3>
-              </CardHeader>
-              <CardBody>
-                <p>
-                  {note.content.length > 0
-                    ? note.content.substring(0, 200)
-                    : "There is nothing written yet."}
-                </p>
-              </CardBody>
-            </Card>
+              title={note.title}
+            />
           ))}
 
-          <form action={create} className={"block w-full aspect-video"}>
-            <Card as={Button} className={"w-full h-full"} type={"submit"}>
+          <form action={create}>
+            <Card as={Button} className={listCard()} type={"submit"}>
               <CardBody className={"flex justify-center items-center"}>
                 <h3 className={"text-3xl"}>+</h3>
               </CardBody>

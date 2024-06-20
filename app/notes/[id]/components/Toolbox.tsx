@@ -10,7 +10,7 @@ export default function Toolbox() {
   const { toolboxState, setToolboxState } = useContext(EditorContext);
 
   return (
-    <div className={clsx("w-full rounded-md bg-content2 mb-8 p-2")}>
+    <div className={clsx("w-full rounded-xl bg-content2 mb-8 p-3")}>
       <h2 className={"text-small mb-2"}>Toolbox</h2>
       <div className={"flex flex-wrap gap-2"}>
         <Button
