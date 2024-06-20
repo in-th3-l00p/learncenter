@@ -24,6 +24,12 @@ export function List({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={list()}
+      onMouseEnter={() => {
+        document.body.style.overflow = "hidden";
+      }}
+      onMouseLeave={() => {
+        document.body.style.overflow = "";
+      }}
       onWheel={(e) => {
         e.preventDefault();
         e.currentTarget.scrollLeft += e.deltaX;

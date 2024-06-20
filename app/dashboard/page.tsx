@@ -23,7 +23,7 @@ function DashboardList({
   create: () => Promise<any>;
 }) {
   return (
-    <div>
+    <div className={"mb-16"}>
       <form
         action={create}
         className={"w-full flex gap-8 justify-between mb-4"}
@@ -99,6 +99,23 @@ function NotesList({ notes }: { notes: INote[] }) {
   );
 }
 
+function Quizzes({ quizzes }: { quizzes: any[] }) {
+  async function create() {
+    "use server";
+
+    return redirect(`/quizes/new`);
+  }
+
+  return (
+    <DashboardList
+      create={create}
+      href={"/quizes/"}
+      items={quizzes}
+      title={"Quizes"}
+    />
+  );
+}
+
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
@@ -122,12 +139,13 @@ export default async function Dashboard() {
 
   return (
     <section>
-      <div className="mb-8">
+      <div className="mb-16">
         <h1 className={title()}>Dashboard</h1>
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
       </div>
 
       <NotesList notes={notes} />
+      <Quizzes quizzes={quizes} />
     </section>
   );
 }
