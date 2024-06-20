@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
-import { INote } from "@/models/Note";
 import NoteContext from "@/app/notes/[id]/NoteContext";
+import { INode } from "@/models/Node";
 
 export default function NoteContextProvider({
   note,
@@ -12,9 +12,23 @@ export default function NoteContextProvider({
   note: string;
   children: React.ReactNode;
 }) {
+  const [statefulNote, setStatefulNote] = useState(JSON.parse(note));
+  const [rootNode, setRootNode] = useState<INode | null>({
+    _id: "0",
+    type: "div",
+    children: [],
+    attributes: [],
+  });
 
   return (
-    <NoteContext.Provider value={{ note: JSON.parse(note) }}>
+    <NoteContext.Provider
+      value={{
+        note: statefulNote,
+        setNote: setStatefulNote,
+        rootNode,
+        setRootNode,
+      }}
+    >
       {children}
     </NoteContext.Provider>
   );

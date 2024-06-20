@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// fix objectid vs string
 export interface INote {
   _id: string;
   title: string;
@@ -10,6 +11,7 @@ export interface INote {
       role: string;
     },
   ];
+  rootNode: string;
   createdAt: Date;
 }
 
@@ -29,6 +31,10 @@ const NoteSchema = new mongoose.Schema({
       },
     },
   ],
+  rootNode: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Node",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
