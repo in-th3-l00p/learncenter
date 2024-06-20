@@ -103,15 +103,15 @@ function Quizzes({ quizzes }: { quizzes: any[] }) {
   async function create() {
     "use server";
 
-    return redirect(`/quizes/new`);
+    return redirect(`/quizzes/new`);
   }
 
   return (
     <DashboardList
       create={create}
-      href={"/quizes/"}
+      href={"/quizzes/"}
       items={quizzes}
-      title={"Quizes"}
+      title={"Quizzes"}
     />
   );
 }
@@ -131,7 +131,7 @@ export default async function Dashboard() {
     })
   ).reverse();
 
-  const quizes = (
+  const quizzes = (
     await Quiz.find({ "users.userId": user._id }).sort({
       createdAt: "asc",
     })
@@ -145,7 +145,7 @@ export default async function Dashboard() {
       </div>
 
       <NotesList notes={notes} />
-      <Quizzes quizzes={quizes} />
+      <Quizzes quizzes={quizzes} />
     </section>
   );
 }
