@@ -1,9 +1,10 @@
 import { useContext, useEffect, useRef } from "react";
-import { Input } from "@nextui-org/input";
+import { Textarea } from "@nextui-org/input";
 
 import { INode } from "@/models/Node";
 import EditorContext from "@/app/notes/[id]/context/EditorContext";
 import { useNodeUtilities } from "@/app/notes/[id]/hooks/useNodeUtilities";
+import useSelectAdded from "@/app/notes/[id]/hooks/useSelectAdded";
 
 function ParagraphDisplay({ node }: { node: INode }) {
   const { updateNode } = useNodeUtilities();
@@ -11,29 +12,23 @@ function ParagraphDisplay({ node }: { node: INode }) {
   if (node.type !== "paragraph") return <></>;
 
   return (
-    <Input
+    <Textarea
       type={"text"}
       value={node.children[0].attributes[0].value}
       onChange={(e) => {
         node.children[0].attributes[0].value = e.target.value;
         updateNode(node);
       }}
-    />
+      minRows={1}
+      maxRows={100000}
+    >
+      {node.children[0].attributes[0].value}
+    </Textarea>
   );
 }
 
-export function DivDisplay({ node }: { node: INode }) {
-  const { nodeAdded, setNodeAdded } = useContext(EditorContext);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!nodeAdded || node.type !== "div" || node.children.length === 0) return;
-
-    containerRef.current?.children[containerRef.current?.children.length - 1]
-      .querySelector("input")
-      ?.focus();
-    setNodeAdded(false);
-  }, [nodeAdded]);
+export function RootDisplay({ node }: { node: INode }) {
+  const { containerRef } = useSelectAdded(node);
 
   if (node.type !== "div") return <></>;
 

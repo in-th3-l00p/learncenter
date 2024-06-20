@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
+export type Attribute = {
+  key: string;
+  value: string;
+};
+
+
 export interface INode {
   _id: string;
   parent?: string;
   type: "div" | "paragraph" | "text" | "image" | "video";
-  attributes: {
-    key: string;
-    value: string;
-  }[];
+  attributes: Attribute[];
   children: INode[];
 }
 

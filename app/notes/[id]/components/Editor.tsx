@@ -5,7 +5,7 @@ import EditorContext, {
   ToolboxState,
 } from "@/app/notes/[id]/context/EditorContext";
 import { EditorInput } from "@/app/notes/[id]/components/EditorInput";
-import { DivDisplay } from "@/app/notes/[id]/components/Displays";
+import { RootDisplay } from "@/app/notes/[id]/components/Displays";
 import Toolbox from "@/app/notes/[id]/components/Toolbox";
 
 export default function Editor() {
@@ -25,7 +25,7 @@ export default function Editor() {
       value={{ nodeAdded, setNodeAdded, toolboxState, setToolboxState }}
     >
       <Toolbox />
-      <DivDisplay node={rootNode} />
+      <RootDisplay node={rootNode} />
       <EditorInput />
     </EditorContext.Provider>
   );
