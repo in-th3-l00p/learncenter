@@ -3,14 +3,14 @@
 import React, { createContext } from "react";
 
 import { INote } from "@/models/Note";
-import { ITNode } from "@/models/Node";
+import { INode } from "@/models/Node";
 
 interface INoteContext {
   note: INote;
   setNote: React.Dispatch<React.SetStateAction<INote>>;
 
-  rootNode: ITNode | null;
-  setRootNode: React.Dispatch<React.SetStateAction<ITNode | null>>;
+  rootNode: INode | null;
+  setRootNode: React.Dispatch<React.SetStateAction<INode | null>>;
 }
 
 const NoteContext = createContext<INoteContext>({} as INoteContext);

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import NoteContext from "@/app/notes/[id]/NoteContext";
+import NoteContext from "@/app/notes/[id]/context/NoteContext";
 import { INode } from "@/models/Node";
 
 export default function NoteContextProvider({
