@@ -1,8 +1,6 @@
-import { useContext, useEffect, useRef } from "react";
 import { Textarea } from "@nextui-org/input";
 
 import { INode } from "@/models/Node";
-import EditorContext from "@/app/notes/[id]/context/EditorContext";
 import { useNodeUtilities } from "@/app/notes/[id]/hooks/useNodeUtilities";
 import useSelectAdded from "@/app/notes/[id]/hooks/useSelectAdded";
 
@@ -13,14 +11,14 @@ function ParagraphDisplay({ node }: { node: INode }) {
 
   return (
     <Textarea
+      maxRows={100000}
+      minRows={1}
       type={"text"}
       value={node.children[0].attributes[0].value}
       onChange={(e) => {
         node.children[0].attributes[0].value = e.target.value;
         updateNode(node);
       }}
-      minRows={1}
-      maxRows={100000}
     >
       {node.children[0].attributes[0].value}
     </Textarea>
