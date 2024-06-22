@@ -9,6 +9,7 @@ import NoteContext from "@/app/notes/[id]/context/NoteContext";
 import Editor from "@/app/notes/[id]/components/Editor";
 import { INote } from "@/models/Note";
 import { IUser } from "@/models/User";
+import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 
 function OwnerName() {
   const { note } = useContext(NoteContext);
@@ -35,6 +36,15 @@ export default function NoteEditor() {
   return (
     <section>
       <div className={"mb-8 pb-4 border-b"}>
+        <PageBreadcrumbs
+          back={"/dashboard"}
+          path={[
+            { title: "Dashboard", href: "/dashboard" },
+            { title: "Notes", href: "/dashboard#notes" },
+            { title: `Note "${note.title}"` },
+          ]}
+        />
+
         <h1 className={title()}>Note: {note.title}</h1>
         <h2 className={subtitle()}>
           Created at: {new Date(note.createdAt).toLocaleDateString()}

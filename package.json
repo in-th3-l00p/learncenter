@@ -11,6 +11,7 @@
 	"dependencies": {
 		"@auth/mongodb-adapter": "^3.2.0",
 		"@nextui-org/avatar": "^2.0.30",
+		"@nextui-org/breadcrumbs": "^2.0.10",
 		"@nextui-org/button": "2.0.33",
 		"@nextui-org/card": "^2.0.31",
 		"@nextui-org/checkbox": "^2.1.2",

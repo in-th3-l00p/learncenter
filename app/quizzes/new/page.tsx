@@ -13,6 +13,7 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { Select, SelectItem } from "@nextui-org/select";
 
 import { subtitle, title } from "@/components/primitives";
+import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 
 function DesktopAnswerSelector() {
   return (
@@ -103,6 +104,14 @@ export default function NewQuiz() {
   return (
     <section>
       <div className={"mb-16"}>
+        <PageBreadcrumbs
+          back={"/dashboard"}
+          path={[
+            { title: "Dashboard", href: "/dashboard" },
+            { title: "Quizzes", href: "/dashboard#quizzes" },
+            { title: "New quiz" },
+          ]}
+        />
         <h1 className={title()}>Create a new quiz</h1>
       </div>
 

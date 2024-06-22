@@ -16,14 +16,16 @@ function DashboardList({
   items,
   href,
   create,
+  id,
 }: {
   title: string;
   items: any[];
   href: string;
   create: () => Promise<any>;
+  id: string;
 }) {
   return (
-    <div className={"mb-16"}>
+    <div className={"mb-16"} id={id}>
       <form
         action={create}
         className={"w-full flex gap-8 justify-between mb-4"}
@@ -93,6 +95,7 @@ function NotesList({ notes }: { notes: INote[] }) {
     <DashboardList
       create={create}
       href={"/notes/"}
+      id={"notes"}
       items={notes}
       title={"Notes"}
     />
@@ -110,6 +113,7 @@ function Quizzes({ quizzes }: { quizzes: any[] }) {
     <DashboardList
       create={create}
       href={"/quizzes/"}
+      id={"quizzes"}
       items={quizzes}
       title={"Quizzes"}
     />
