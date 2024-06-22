@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
+import { z } from "zod";
 
-export interface IQuiz {
-  title: string;
-  description?: string;
-  questions: {
-    question: string;
-    options: {
-      option: string;
-      isCorrect: boolean;
-    }[];
-  }[];
-  owner: mongoose.Schema.Types.ObjectId;
-  createdAt: Date;
-}
+export const zQuizSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  questions: z.array(
+    z.object({
+      question: z.string(),
+      options: z.array(
+        z.object({
+          option: z.string(),
+          isCorrect: z.boolean(),
+        }),
+      ),
+    }),
+  ),
+  visibility: z.enum(["public", "private"]),
+  owner: z.string(),
+  createdAt: z.date().optional(),
+});
+
+export type QuizType = z.infer<typeof zQuizSchema>;
 
 const QuizSchema = new mongoose.Schema({
   title: {
@@ -42,6 +50,11 @@ const QuizSchema = new mongoose.Schema({
       ],
     },
   ],
+  visibility: {
+    type: String,
+    enum: ["public", "private"],
+    required: true,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

@@ -1,10 +1,11 @@
 import { Select, SelectItem } from "@nextui-org/select";
 
 import { subtitle } from "@/components/primitives";
+import { spacing } from "@/app/quizzes/new/components/primitives";
 
 export function QuizVisibility() {
   return (
-    <div className={"mb-16"}>
+    <div className={spacing()}>
       <h2 className={subtitle()}>Quiz settings:</h2>
       <Select
         defaultSelectedKeys={["public"]}

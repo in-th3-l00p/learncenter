@@ -1,13 +1,14 @@
 import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 
-import { AnswersDisplay } from "@/app/quizzes/new/answersDisplay";
+import { Options } from "@/app/quizzes/new/components/options";
 import { subtitle } from "@/components/primitives";
-import { DropdownSelector } from "@/app/quizzes/new/dropdownSelector";
+import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
+import { spacing } from "@/app/quizzes/new/components/primitives";
 
 function QuestionDisplay() {
   return (
-    <div className={"mb-16"}>
+    <div className={"mb-8"}>
       <Input
         className={"mb-4"}
         label={"Question"}
@@ -21,20 +22,15 @@ function QuestionDisplay() {
         type={"text"}
       />
 
-      <div className={"mb-8"}>
-        <h3 className={"text-xl my-2"}>Correct answers:</h3>
-
-        <div className="flex flex-wrap gap-4">
-          <Button size={"sm"}>Answer 1</Button>
-          <Button size={"sm"}>Answer 2</Button>
-          <Button size={"sm"}>Answer 3</Button>
-          <Button size={"sm"}>Answer 4</Button>
-        </div>
-      </div>
-
       <div>
         <h3 className={"text-xl my-2"}>Answers:</h3>
-        <AnswersDisplay />
+
+        <div className="flex flex-wrap gap-4">
+          <Button size={"sm"}>Option 1</Button>
+          <Button size={"sm"}>Option 2</Button>
+          <Button size={"sm"}>Option 3</Button>
+          <Button size={"sm"}>Option 4</Button>
+        </div>
       </div>
     </div>
   );
@@ -42,7 +38,7 @@ function QuestionDisplay() {
 
 export function Questions() {
   return (
-    <div>
+    <div className={spacing()}>
       <h2 className={subtitle()}>Enter the quiz questions:</h2>
 
       <DropdownSelector
@@ -56,6 +52,8 @@ export function Questions() {
       />
 
       <QuestionDisplay />
+
+      <Options />
     </div>
   );
 }
