@@ -8,7 +8,7 @@ import clsx from "clsx";
 const list = tv({
   base: clsx(
     "flex gap-8 overflow-x-scroll no-scrollbar",
-    "bg-content2 p-8 rounded-xl",
+    "bg-content2 p-8 rounded-2xl",
   ),
 });
 
