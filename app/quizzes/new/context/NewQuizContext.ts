@@ -9,6 +9,8 @@ export interface INewQuizContext {
   setQuiz: (quiz: NewQuizType) => void;
 }
 
-const NewQuizContext = React.createContext<INewQuizContext | null>(null);
+const NewQuizContext = React.createContext<INewQuizContext>(
+  {} as INewQuizContext,
+);
 
 export default NewQuizContext;
