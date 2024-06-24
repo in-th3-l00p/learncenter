@@ -100,11 +100,11 @@ export function Questions() {
           const updatedQuestions = [...quiz.questions];
 
           updatedQuestions.push({
-            question: `Question ${quiz.questions.length + 1}`,
+            question: ``,
             description: "",
             options: [
               {
-                option: "Option 1",
+                option: "",
                 isCorrect: false,
               },
             ],

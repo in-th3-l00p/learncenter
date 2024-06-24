@@ -12,24 +12,29 @@ import NewQuizContext, {
 } from "@/app/quizzes/new/context/NewQuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 
+const defaultQuiz: NewQuizType = {
+  title: "",
+  description: "",
+  questions: [
+    {
+      question: "",
+      description: "",
+      options: [
+        {
+          option: "",
+          isCorrect: false,
+        },
+      ],
+    },
+  ],
+  visibility: "public",
+};
+
 export default function NewQuiz() {
-  const [quiz, setQuiz] = useLocalStorageState<NewQuizType>("new-quiz", {
-    title: "",
-    description: "",
-    questions: [
-      {
-        question: "Question 1",
-        description: "",
-        options: [
-          {
-            option: "Option 1",
-            isCorrect: false,
-          },
-        ],
-      },
-    ],
-    visibility: "public",
-  });
+  const [quiz, setQuiz] = useLocalStorageState<NewQuizType>(
+    "new-quiz",
+    defaultQuiz,
+  );
   const [selectedQuestionIndex, setSelectedQuestionIndex] =
     useLocalStorageState<number>("selected-question-index", 0);
   const [selectedOptionIndex, setSelectedOptionIndex] =

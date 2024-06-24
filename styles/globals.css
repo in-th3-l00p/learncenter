@@ -7,6 +7,18 @@ html {
     overflow: auto;
 }
 
+::-webkit-scrollbar {
+    @apply w-[6px] bg-content1 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-content2 rounded-full;
+
+    &:hover {
+        @apply bg-content3;
+    }
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
