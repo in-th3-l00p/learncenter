@@ -18,15 +18,34 @@ export default function NewQuiz() {
     description: "",
     questions: [
       {
-        question: "First question",
-        options: [],
+        question: "Question 1",
+        description: "",
+        options: [
+          {
+            option: "Option 1",
+            isCorrect: false,
+          },
+        ],
       },
     ],
     visibility: "public",
   });
+  const [selectedQuestionIndex, setSelectedQuestionIndex] =
+    useLocalStorageState<number>("selected-question-index", 0);
+  const [selectedOptionIndex, setSelectedOptionIndex] =
+    useLocalStorageState<number>("selected-option-index", 0);
 
   return (
-    <NewQuizContext.Provider value={{ quiz, setQuiz }}>
+    <NewQuizContext.Provider
+      value={{
+        quiz,
+        setQuiz,
+        selectedQuestionIndex,
+        setSelectedQuestionIndex,
+        selectedOptionIndex,
+        setSelectedOptionIndex,
+      }}
+    >
       <section>
         <div className={"mb-16"}>
           <PageBreadcrumbs

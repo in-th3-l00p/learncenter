@@ -12,24 +12,44 @@ import { useEffect, useState } from "react";
 export function DropdownSelector({
   backButtonTitle,
   nextButtonTitle,
-  onChange,
   className,
   items,
+  value,
+  onChange,
+  newOption,
+  onNewOption,
 }: {
   backButtonTitle?: string;
   nextButtonTitle?: string;
   className?: string;
-  onChange: (id: string) => void;
-  items: {
-    id: string;
-    name: string;
-  }[];
+  items: string[];
+  value?: number;
+  onChange: (index: number) => void;
+  newOption?: boolean;
+  onNewOption?: () => void;
 }) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(value || 0);
 
   useEffect(() => {
-    onChange(items[selected].id);
+    onChange(selected);
   }, [selected]);
+
+  const dropdownItems = items.map((item, index) => (
+    <DropdownItem key={index}>{item}</DropdownItem>
+  ));
+
+  if (newOption)
+    dropdownItems.push(
+      <DropdownItem
+        key={items.length}
+        onClick={() => {
+          if (!onNewOption) return;
+          onNewOption();
+        }}
+      >
+        Add new
+      </DropdownItem>,
+    );
 
   return (
     <div className={"flex gap-4 " + className}>
@@ -51,7 +71,7 @@ export function DropdownSelector({
             title={"Select question"}
             variant={"bordered"}
           >
-            {items[selected].name}
+            {items[value || selected]}
           </Button>
         </DropdownTrigger>
         <DropdownMenu
@@ -61,12 +81,13 @@ export function DropdownSelector({
           variant={"flat"}
           onSelectionChange={(selection) => {
             if (!(selection instanceof Set)) return;
-            setSelected(selection.values().next().value);
+            const selected = selection.values().next().value;
+
+            if (selected >= items.length) return;
+            setSelected(selected);
           }}
         >
-          {items.map((item, index) => (
-            <DropdownItem key={index}>{item.name}</DropdownItem>
-          ))}
+          {dropdownItems}
         </DropdownMenu>
       </Dropdown>
 

@@ -7,6 +7,7 @@ export const zQuizSchema = z.object({
   questions: z.array(
     z.object({
       question: z.string(),
+      description: z.string().optional(),
       options: z.array(
         z.object({
           option: z.string(),
@@ -35,6 +36,9 @@ const QuizSchema = new mongoose.Schema({
       question: {
         type: String,
         required: true,
+      },
+      description: {
+        type: String,
       },
       options: [
         {

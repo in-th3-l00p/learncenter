@@ -2,10 +2,20 @@ import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Checkbox } from "@nextui-org/checkbox";
+import { useContext } from "react";
 
 import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
+import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
 
 function DesktopOptionSelector() {
+  const {
+    quiz,
+    setQuiz,
+    selectedQuestionIndex,
+    selectedOptionIndex,
+    setSelectedOptionIndex,
+  } = useContext(NewQuizContext);
+
   return (
     <div
       className={"hidden sm:block rounded-2xl border-small border-content1 p-2"}
@@ -13,31 +23,54 @@ function DesktopOptionSelector() {
       <Listbox
         aria-label={"Options"}
         topContent={
-          <Button className={"w-full mb-2"} title={"Add option"}>
+          <Button
+            className={"w-full mb-2"}
+            title={"Add option"}
+            onClick={() => {
+              const newQuestions = [...quiz.questions];
+
+              newQuestions[selectedQuestionIndex].options.push({
+                option: "",
+                isCorrect: false,
+              });
+
+              setQuiz({ ...quiz, questions: newQuestions });
+            }}
+          >
             <span className="text-lg">+</span>
           </Button>
         }
       >
-        <ListboxItem key={1}>Option 1</ListboxItem>
-        <ListboxItem key={2}>Option 2</ListboxItem>
-        <ListboxItem key={3}>Option 3</ListboxItem>
-        <ListboxItem key={4}>Option 4</ListboxItem>
-        <ListboxItem key={5}>Option 5</ListboxItem>
+        {quiz.questions[selectedQuestionIndex].options.map((option, index) => (
+          <ListboxItem
+            key={index}
+            className={selectedOptionIndex === index ? "bg-content1" : ""}
+            onClick={() => setSelectedOptionIndex(index)}
+          >
+            {option.option}
+          </ListboxItem>
+        ))}
       </Listbox>
     </div>
   );
 }
 
 function MobileOptionSelector() {
+  const {
+    quiz,
+    selectedQuestionIndex,
+    selectedOptionIndex,
+    setSelectedOptionIndex,
+  } = useContext(NewQuizContext);
+
   return (
     <DropdownSelector
       className={"sm:hidden"}
-      items={[
-        { id: "1", name: "Option 1" },
-        { id: "2", name: "Option 2" },
-        { id: "3", name: "Option 3" },
-      ]}
-      onChange={console.log}
+      items={quiz.questions[selectedQuestionIndex].options.map(
+        (option) => option.option,
+      )}
+      value={selectedOptionIndex}
+      onChange={setSelectedOptionIndex}
     />
   );
 }
