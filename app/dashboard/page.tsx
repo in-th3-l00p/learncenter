@@ -40,7 +40,7 @@ function DashboardList({
         {items.map((item: any, index) => (
           <ListCard
             key={index}
-            description={""}
+            description={item.description || ""}
             href={href + item._id}
             title={item.title}
           />
@@ -136,7 +136,7 @@ export default async function Dashboard() {
   ).reverse();
 
   const quizzes = (
-    await Quiz.find({ "users.userId": user._id }).sort({
+    await Quiz.find({ owner: user._id }).sort({
       createdAt: "asc",
     })
   ).reverse();
