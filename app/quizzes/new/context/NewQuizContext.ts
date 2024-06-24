@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 
 import { QuizType } from "@/models/Quiz";
 
-export type NewQuizType = Omit<QuizType, "owner" | "createdAt">;
+export type NewQuizType = Omit<QuizType, "owner" | "createdAt" | "_id">;
 
 export interface INewQuizContext {
   quiz: NewQuizType;

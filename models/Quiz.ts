@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 export const zQuizSchema = z.object({
+  _id: z.string(),
   title: z.string().min(1).max(255),
   description: z.string().max(1000).optional(),
   questions: z.array(

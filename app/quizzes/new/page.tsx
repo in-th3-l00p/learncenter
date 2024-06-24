@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import { ZodError } from "zod";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { title } from "@/components/primitives";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
@@ -35,6 +36,7 @@ const defaultQuiz: NewQuizType = {
 };
 
 export default function NewQuiz() {
+  const session = useSession();
   const router = useRouter();
   const [quiz, setQuiz, quizLoading] = useLocalStorageState<NewQuizType>(
     "new-quiz",
@@ -48,9 +50,20 @@ export default function NewQuiz() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (quizLoading || questionLoading || optionLoading) return;
+    if (
+      session.status === "loading" ||
+      quizLoading ||
+      questionLoading ||
+      optionLoading
+    )
+      return;
+    if (session.status === "unauthenticated") {
+      router.push("/api/auth/signin");
+
+      return;
+    }
     setLoading(false);
-  }, [quizLoading, questionLoading, optionLoading]);
+  }, [session, quizLoading, questionLoading, optionLoading]);
 
   if (loading) return <LoadingPage />;
 
