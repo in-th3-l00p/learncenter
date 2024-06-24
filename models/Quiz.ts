@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 export const zQuizSchema = z.object({
-  title: z.string(),
-  description: z.string().optional(),
+  title: z.string().min(1).max(255),
+  description: z.string().max(1000).optional(),
   questions: z.array(
     z.object({
-      question: z.string(),
-      description: z.string().optional(),
+      question: z.string().min(1).max(500),
+      description: z.string().max(1000).optional(),
       options: z.array(
         z.object({
-          option: z.string(),
+          option: z.string().min(1).max(500),
           isCorrect: z.boolean(),
         }),
       ),

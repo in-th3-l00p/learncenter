@@ -7,6 +7,33 @@ import clsx from "clsx";
 
 import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
 import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import ZodErrorParagraph from "@/components/ZodErrorParagraph";
+
+export function Answers() {
+  const { quiz, selectedQuestionIndex } = useContext(NewQuizContext);
+  const answers = quiz.questions[selectedQuestionIndex].options
+    .map((option, index) => ({
+      index: index + 1,
+      option,
+    }))
+    .filter((answer) => answer.option.isCorrect);
+
+  return (
+    <div>
+      <h3 className={"text-xl my-2"}>Answers:</h3>
+
+      <div className="flex flex-wrap gap-4">
+        {answers.map((answer, index) => (
+          <Button key={index} size={"sm"}>{`Option ${answer.index}`}</Button>
+        ))}
+
+        {answers.length === 0 && (
+          <span className={"text-gray-500"}>No answers</span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function useCreateOption() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedOptionIndex } =
@@ -122,13 +149,8 @@ export function Options({}) {
     setSelectedOptionIndex,
   } = useContext(NewQuizContext);
 
-  console.log(
-    quiz.questions[selectedQuestionIndex].options[selectedOptionIndex]
-      .isCorrect,
-  );
-
   return (
-    <div>
+    <div className={"mb-8"}>
       <h3 className={"text-xl my-2"}>Options:</h3>
       <div className="flex flex-col sm:flex-row items-stretch gap-4">
         <DesktopOptionSelector />
@@ -136,6 +158,15 @@ export function Options({}) {
 
         <div className="flex-grow flex flex-col justify-between">
           <div>
+            <ZodErrorParagraph
+              path={[
+                `questions`,
+                selectedQuestionIndex,
+                `options`,
+                selectedOptionIndex,
+                `option`,
+              ]}
+            />
             <Input
               className={"mb-4"}
               label={"Text"}

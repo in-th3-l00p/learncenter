@@ -2,11 +2,12 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useContext } from "react";
 
-import { Options } from "@/app/quizzes/new/components/options";
+import { Answers, Options } from "@/app/quizzes/new/components/options";
 import { subtitle } from "@/components/primitives";
 import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
 import { spacing } from "@/app/quizzes/new/components/primitives";
 import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 function QuestionDisplay() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedQuestionIndex } =
@@ -14,6 +15,9 @@ function QuestionDisplay() {
 
   return (
     <div className={"mb-8"}>
+      <ZodErrorParagraph
+        path={[`questions`, selectedQuestionIndex, "question"]}
+      />
       <Input
         className={"mb-4"}
         label={"Question"}
@@ -26,6 +30,10 @@ function QuestionDisplay() {
           updatedQuestions[selectedQuestionIndex].question = e.target.value;
           setQuiz({ ...quiz, questions: updatedQuestions });
         }}
+      />
+
+      <ZodErrorParagraph
+        path={[`questions`, selectedQuestionIndex, "description"]}
       />
       <Textarea
         className={"mb-4"}
@@ -42,7 +50,6 @@ function QuestionDisplay() {
       />
 
       <Button
-        className={"mb-8"}
         color={"danger"}
         disabled={quiz.questions.length <= 1}
         type={"button"}
@@ -59,17 +66,6 @@ function QuestionDisplay() {
       >
         Delete
       </Button>
-
-      <div>
-        <h3 className={"text-xl my-2"}>Answers:</h3>
-
-        <div className="flex flex-wrap gap-4">
-          <Button size={"sm"}>Option 1</Button>
-          <Button size={"sm"}>Option 2</Button>
-          <Button size={"sm"}>Option 3</Button>
-          <Button size={"sm"}>Option 4</Button>
-        </div>
-      </div>
     </div>
   );
 }
@@ -117,8 +113,8 @@ export function Questions() {
       />
 
       <QuestionDisplay />
-
       <Options />
+      <Answers />
     </div>
   );
 }

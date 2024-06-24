@@ -1,4 +1,5 @@
 import React from "react";
+import { ZodError } from "zod";
 
 import { QuizType } from "@/models/Quiz";
 
@@ -13,6 +14,9 @@ export interface INewQuizContext {
 
   selectedOptionIndex: number;
   setSelectedOptionIndex: (index: number) => void;
+
+  error: ZodError | null;
+  setError: (error: ZodError | null) => void;
 }
 
 const NewQuizContext = React.createContext<INewQuizContext>(

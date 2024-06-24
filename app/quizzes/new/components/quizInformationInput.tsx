@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/app/quizzes/new/components/primitives";
 import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 export function QuizInformationInput() {
   const { quiz, setQuiz } = useContext(NewQuizContext);
@@ -11,6 +12,8 @@ export function QuizInformationInput() {
   return (
     <div className={spacing()}>
       <h2 className={subtitle()}>Tell us about the quiz:</h2>
+
+      <ZodErrorParagraph path={["title"]} />
       <Input
         className={"mb-4"}
         label={"Title"}
@@ -19,6 +22,8 @@ export function QuizInformationInput() {
         value={quiz.title}
         onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
       />
+
+      <ZodErrorParagraph path={["description"]} />
       <Textarea
         label={"Description"}
         placeholder={"Describe your quiz"}
