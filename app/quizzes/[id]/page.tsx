@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Button } from "@nextui-org/button";
+import { Link } from "@nextui-org/link";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Quiz from "@/models/Quiz";
@@ -52,7 +53,9 @@ export default async function QuizDisplay({
         <h2 className={subtitle()}>Start learning</h2>
 
         <div className={"flex justify-around"}>
-          <Button type={"button"}>Free practice</Button>
+          <Button as={Link} href={`/quizzes/${quiz._id}/practice`}>
+            Practice
+          </Button>
           <Button type={"button"}>Test your knowledge</Button>
         </div>
       </div>

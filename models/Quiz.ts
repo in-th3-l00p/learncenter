@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { z } from "zod";
 
-export const zQuizSchema = z.object({
-  _id: z.string(),
+const quizShape = {
   title: z.string().min(1).max(255),
   description: z.string().max(1000).optional(),
   questions: z.array(
@@ -20,6 +19,13 @@ export const zQuizSchema = z.object({
   visibility: z.enum(["public", "private"]),
   owner: z.string(),
   createdAt: z.date().optional(),
+};
+
+export const zNewQuizSchema = z.object(quizShape);
+
+export const zQuizSchema = z.object({
+  _id: z.string(),
+  ...quizShape,
 });
 
 export type QuizType = z.infer<typeof zQuizSchema>;

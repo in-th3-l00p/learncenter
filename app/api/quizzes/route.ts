@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 import User from "@/models/User";
-import Quiz, { zQuizSchema } from "@/models/Quiz";
+import Quiz, { zNewQuizSchema } from "@/models/Quiz";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
@@ -16,7 +16,10 @@ export async function POST(req: Request) {
 
   // validate request
   const body = await req.json();
-  const quiz = zQuizSchema.safeParse({ ...body, owner: user._id.toString() });
+  const quiz = zNewQuizSchema.safeParse({
+    ...body,
+    owner: user._id.toString(),
+  });
 
   if (quiz.error) return NextResponse.json(quiz.error, { status: 400 });
 
