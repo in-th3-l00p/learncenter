@@ -7,15 +7,14 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-import { useEffect, useState } from "react";
 
 export function DropdownSelector({
   backButtonTitle,
   nextButtonTitle,
   className,
   items,
-  value,
-  onChange,
+  selected,
+  setSelected,
   newOption,
   onNewOption,
 }: {
@@ -23,17 +22,11 @@ export function DropdownSelector({
   nextButtonTitle?: string;
   className?: string;
   items: string[];
-  value?: number;
-  onChange: (index: number) => void;
+  selected: number;
+  setSelected: (index: number) => void;
   newOption?: boolean;
   onNewOption?: () => void;
 }) {
-  const [selected, setSelected] = useState(value || 0);
-
-  useEffect(() => {
-    onChange(selected);
-  }, [selected]);
-
   const dropdownItems = items.map((item, index) => (
     <DropdownItem key={index}>{item}</DropdownItem>
   ));
@@ -71,7 +64,7 @@ export function DropdownSelector({
             title={"Select question"}
             variant={"bordered"}
           >
-            {items[value || selected]}
+            {items[selected || selected]}
           </Button>
         </DropdownTrigger>
         <DropdownMenu

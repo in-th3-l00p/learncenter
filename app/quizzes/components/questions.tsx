@@ -6,12 +6,18 @@ import { Answers, Options } from "@/app/quizzes/components/options";
 import { subtitle } from "@/components/primitives";
 import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
 import { spacing } from "@/app/quizzes/components/primitives";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext, {
+  IQuizContext,
+  NewQuizType,
+} from "@/app/quizzes/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 function QuestionDisplay() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedQuestionIndex } =
-    useContext(QuizContext);
+    useContext(QuizContext) as IQuizContext & {
+      quiz: NewQuizType;
+      setQuiz: (quiz: NewQuizType) => void;
+    };
 
   return (
     <div className={"mb-8"}>
@@ -77,7 +83,10 @@ export function Questions() {
     selectedQuestionIndex,
     setSelectedQuestionIndex,
     setSelectedOptionIndex,
-  } = useContext(QuizContext);
+  } = useContext(QuizContext) as IQuizContext & {
+    quiz: NewQuizType;
+    setQuiz: (quiz: NewQuizType) => void;
+  };
 
   return (
     <div className={spacing()}>
@@ -87,11 +96,8 @@ export function Questions() {
         className={"mb-4"}
         items={quiz.questions.map((_, i) => `Question ${i + 1}`)}
         newOption={true}
-        value={selectedQuestionIndex}
-        onChange={(index) => {
-          setSelectedOptionIndex(0);
-          setSelectedQuestionIndex(index);
-        }}
+        selected={selectedQuestionIndex}
+        setSelected={(index) => setSelectedQuestionIndex(index)}
         onNewOption={() => {
           const updatedQuestions = [...quiz.questions];
 

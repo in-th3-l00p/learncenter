@@ -3,11 +3,14 @@ import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/app/quizzes/components/primitives";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 export function QuizInformationInput() {
-  const { quiz, setQuiz } = useContext(QuizContext);
+  const { quiz, setQuiz } = useContext(QuizContext) as {
+    quiz: NewQuizType;
+    setQuiz: (quiz: NewQuizType) => void;
+  };
 
   return (
     <div className={spacing()}>

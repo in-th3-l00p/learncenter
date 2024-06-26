@@ -6,7 +6,10 @@ import { useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
 
 import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext, {
+  IQuizContext,
+  NewQuizType,
+} from "@/app/quizzes/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 export function Answers() {
@@ -37,7 +40,10 @@ export function Answers() {
 
 function useCreateOption() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedOptionIndex } =
-    useContext(QuizContext);
+    useContext(QuizContext) as IQuizContext & {
+      quiz: NewQuizType;
+      setQuiz: (quiz: NewQuizType) => void;
+    };
 
   return () => {
     const newQuestions = [...quiz.questions];
@@ -133,8 +139,8 @@ function MobileOptionSelector() {
         (_, index) => `Option ${index}`,
       )}
       newOption={true}
-      value={selectedOptionIndex}
-      onChange={setSelectedOptionIndex}
+      selected={selectedOptionIndex}
+      setSelected={setSelectedOptionIndex}
       onNewOption={createOption}
     />
   );
@@ -147,7 +153,10 @@ export function Options({}) {
     selectedQuestionIndex,
     selectedOptionIndex,
     setSelectedOptionIndex,
-  } = useContext(QuizContext);
+  } = useContext(QuizContext) as IQuizContext & {
+    quiz: NewQuizType;
+    setQuiz: (quiz: NewQuizType) => void;
+  };
 
   return (
     <div className={"mb-8"}>
