@@ -14,7 +14,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd ~/learncenter
-          git pull origin release
+          git pull
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh  
           npm run build
