@@ -180,9 +180,9 @@ export const Navbar = () => {
             <Image
               alt={"Logo"}
               className={"invert dark:invert-0"}
-              height={75}
+              height={45}
               src={"/logo.png"}
-              width={75}
+              width={45}
             />
           </NextLink>
         </NavbarBrand>

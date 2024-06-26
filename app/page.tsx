@@ -23,10 +23,10 @@ export default async function Home() {
           >
             <Image
               alt={"Logo"}
-              className={"mx-auto invert dark:invert-0"}
-              height={300}
+              className={"mx-auto mb-16 invert dark:invert-0"}
+              height={200}
               src={"/logo.png"}
-              width={300}
+              width={200}
             />
             <h1 className={title()}>LearnCenter</h1>
             <h2 className={clsx(subtitle(), "mb-8")}>The best way to learn</h2>
@@ -61,6 +61,7 @@ export default async function Home() {
 
         <div className={"w-[80%] md:w-1/6 h-[30px] relative mx-auto"}>
           <svg
+            className={"invert dark:invert-0 antialiased"}
             preserveAspectRatio="none"
             style={{
               width: "100%",
