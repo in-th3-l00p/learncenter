@@ -1,56 +1,102 @@
+import Image from "next/image";
+import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
+import clsx from "clsx";
+import { getServerSession } from "next-auth";
 
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+import { subtitle, title } from "@/components/primitives";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        <h1 className={title()}>Make&nbsp;</h1>
-        <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-        <br />
-        <h1 className={title()}>
-          websites regardless of your design experience.
-        </h1>
-        <h2 className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </h2>
-      </div>
-
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-          href={siteConfig.links.docs}
+    <main>
+      <section className="mb-16">
+        <div
+          className={
+            "grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-16 mb-24"
+          }
         >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
-      </div>
+          <div
+            className={"text-center justify-self-center md:justify-self-start"}
+          >
+            <Image
+              alt={"Logo"}
+              className={"mx-auto invert dark:invert-0"}
+              height={300}
+              src={"/logo.png"}
+              width={300}
+            />
+            <h1 className={title()}>LearnCenter</h1>
+            <h2 className={clsx(subtitle(), "mb-8")}>The best way to learn</h2>
 
-      <div className="mt-8">
-        <Snippet hideCopyButton hideSymbol variant="flat">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
-      </div>
-    </section>
+            <div className="flex gap-4 justify-center">
+              {!session && (
+                <Button as={Link} href={"/api/auth/signin"}>
+                  Login
+                </Button>
+              )}
+
+              {session !== null && (
+                <Button as={Link} href={"/dashboard"}>
+                  Dashboard
+                </Button>
+              )}
+
+              <Button as={Link} href={"#about"}>
+                Find more
+              </Button>
+            </div>
+          </div>
+
+          <Image
+            alt={"phone screenshot"}
+            className={"justify-self-center md:justify-self-end"}
+            height={424}
+            src={"/home/Phoneq.png"}
+            width={211}
+          />
+        </div>
+
+        <div className={"w-[80%] md:w-1/6 h-[30px] relative mx-auto"}>
+          <svg
+            preserveAspectRatio="none"
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+            viewBox="0 0 100 100"
+          >
+            <polyline
+              points="0,0 50,100 100,0"
+              style={{ fill: "none", stroke: "white", strokeWidth: "2" }}
+            />
+          </svg>
+        </div>
+      </section>
+
+      <section className={"w-full"} id={"about"}>
+        <div className="mb-16">
+          <h2 className={title()}>About</h2>
+          <p className={subtitle()}>
+            LearnCenter is a platform that allows you to create quizzes and
+            share them with your friends. You can also take quizzes created by
+            other users.
+          </p>
+        </div>
+
+        <Image
+          alt={"pc screenshot"}
+          className={"mx-auto"}
+          height={620 * 0.8}
+          src={"/home/Pcq.png"}
+          width={877 * 0.8}
+        />
+      </section>
+    </main>
   );
 }

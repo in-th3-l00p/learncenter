@@ -39,9 +39,12 @@ function StartButton({
         {children}
 
         <div
-          className={
-            "w-full h-full absolute z-10 top-0 left-0 rounded-lg bg-black bg-opacity-75 flex justify-center items-center text-xl font-bold"
-          }
+          className={clsx(
+            "w-full h-full absolute z-10 top-0 left-0",
+            "rounded-lg bg-white dark:bg-black bg-opacity-75",
+            "flex justify-center items-center",
+            "text-xl font-bold",
+          )}
         >
           Soon...
         </div>
