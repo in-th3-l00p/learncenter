@@ -8,19 +8,11 @@ export const siteConfig = {
       label: "Home",
       href: "/",
     },
-    {
-      label: "Pricing",
-      href: "/pricing",
-    },
   ],
   navMenuItems: [
     {
       label: "Home",
       href: "/",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
     },
   ],
   links: {

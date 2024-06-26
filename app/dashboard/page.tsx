@@ -6,8 +6,6 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
 import { subtitle, title } from "@/components/primitives";
-import Note, { INote } from "@/models/Note";
-import Node from "@/models/Node";
 import { List, ListCard } from "@/app/dashboard/list";
 import Quiz from "@/models/Quiz";
 
@@ -62,46 +60,6 @@ function DashboardList({
   );
 }
 
-function NotesList({ notes }: { notes: INote[] }) {
-  async function create() {
-    "use server";
-
-    const session = await getServerSession(authOptions);
-
-    if (!session) return;
-
-    const rootNode = await Node.create({
-      type: "div",
-      parent: null,
-      attributes: [],
-      children: [],
-    });
-
-    const note = await Note.create({
-      title: `Note #${(await Note.countDocuments()) + 1}`,
-      content: "",
-      users: [
-        {
-          userId: session?.user.id,
-        },
-      ],
-      rootNode: rootNode._id,
-    });
-
-    return redirect(`/notes/${note._id}`);
-  }
-
-  return (
-    <DashboardList
-      create={create}
-      href={"/notes/"}
-      id={"notes"}
-      items={notes}
-      title={"Notes"}
-    />
-  );
-}
-
 function Quizzes({ quizzes }: { quizzes: any[] }) {
   async function create() {
     "use server";
@@ -129,12 +87,6 @@ export default async function Dashboard() {
 
   if (!user) return redirect("/api/auth/signin");
 
-  const notes = (
-    await Note.find({ "users.userId": user._id }).sort({
-      createdAt: "asc",
-    })
-  ).reverse();
-
   const quizzes = (
     await Quiz.find({ owner: user._id }).sort({
       createdAt: "asc",
@@ -148,7 +100,6 @@ export default async function Dashboard() {
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
       </div>
 
-      <NotesList notes={notes} />
       <Quizzes quizzes={quizzes} />
     </section>
   );
