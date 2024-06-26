@@ -21,10 +21,10 @@ import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { Logo } from "@/components/icons";
 
 const NavbarAccount = () => {
   const session = useSession();
@@ -77,43 +77,16 @@ const NavbarAccount = () => {
 
 const DesktopNavbarContent = () => {
   return (
-    <>
-      <NavbarContent className="basis-1/5 lg:basis-full" justify="start">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
-          </NextLink>
-        </NavbarBrand>
-        <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
-        </ul>
-      </NavbarContent>
+    <NavbarContent
+      className="hidden lg:flex items-center basis-1/5 lg:basis-full"
+      justify="end"
+    >
+      <NavbarAccount />
 
-      <NavbarContent
-        className="hidden lg:flex items-center basis-1/5 lg:basis-full"
-        justify="end"
-      >
-        <NavbarAccount />
-
-        <NavbarItem className="hidden lg:block">
-          <ThemeSwitch />
-        </NavbarItem>
-      </NavbarContent>
-    </>
+      <NavbarItem className="hidden lg:block">
+        <ThemeSwitch />
+      </NavbarItem>
+    </NavbarContent>
   );
 };
 
@@ -201,6 +174,30 @@ const MobileNavbarContent = () => {
 export const Navbar = () => {
   return (
     <NextUINavbar className={"py-4"} maxWidth="xl" position="sticky">
+      <NavbarContent className="basis-1/5 lg:basis-full" justify="start">
+        <NavbarBrand as="li" className="gap-3 max-w-fit">
+          <NextLink className="flex justify-start items-center gap-1" href="/">
+            <Image alt={"Logo"} height={75} src={"/logo.png"} width={75} />
+          </NextLink>
+        </NavbarBrand>
+        <ul className="hidden lg:flex gap-4 justify-start ml-2">
+          {siteConfig.navItems.map((item) => (
+            <NavbarItem key={item.href}>
+              <NextLink
+                className={clsx(
+                  linkStyles({ color: "foreground" }),
+                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                )}
+                color="foreground"
+                href={item.href}
+              >
+                {item.label}
+              </NextLink>
+            </NavbarItem>
+          ))}
+        </ul>
+      </NavbarContent>
+
       <DesktopNavbarContent />
       <MobileNavbarContent />
     </NextUINavbar>

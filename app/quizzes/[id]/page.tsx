@@ -12,6 +12,7 @@ import { subtitle } from "@/components/primitives";
 import { QuizUpdate } from "@/app/quizzes/[id]/components/quizUpdate";
 import QuizContextProvider from "@/app/quizzes/[id]/components/quizContextProvider";
 import QuizHeader from "@/app/quizzes/[id]/components/quizHeader";
+import QuizDelete from "@/app/quizzes/[id]/components/quizDelete";
 
 function StartButton({
   icon,
@@ -107,6 +108,8 @@ export default async function QuizDisplay({
 
         <h2 className={clsx(subtitle(), "mb-4")}>Edit quiz</h2>
         <QuizUpdate initialQuiz={JSON.stringify(quiz)} />
+
+        <QuizDelete />
       </section>
     </QuizContextProvider>
   );
