@@ -5,9 +5,9 @@ import { QuizType } from "@/models/Quiz";
 
 export type NewQuizType = Omit<QuizType, "owner" | "createdAt" | "_id">;
 
-export interface INewQuizContext {
-  quiz: NewQuizType;
-  setQuiz: (quiz: NewQuizType) => void;
+export interface IQuizContext {
+  quiz: NewQuizType | QuizType;
+  setQuiz: ((quiz: NewQuizType) => void) | ((quiz: QuizType) => void);
 
   selectedQuestionIndex: number;
   setSelectedQuestionIndex: (index: number) => void;
@@ -19,8 +19,6 @@ export interface INewQuizContext {
   setError: (error: ZodError | null) => void;
 }
 
-const NewQuizContext = React.createContext<INewQuizContext>(
-  {} as INewQuizContext,
-);
+const QuizContext = React.createContext<IQuizContext>({} as IQuizContext);
 
-export default NewQuizContext;
+export default QuizContext;

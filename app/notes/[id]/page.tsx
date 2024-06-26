@@ -37,7 +37,7 @@ export default function NoteEditor() {
     <section>
       <div className={"mb-8 pb-4 border-b"}>
         <PageBreadcrumbs
-          back={"/dashboard"}
+          back={"/dashboard#notes"}
           path={[
             { title: "Dashboard", href: "/dashboard" },
             { title: "Notes", href: "/dashboard#notes" },

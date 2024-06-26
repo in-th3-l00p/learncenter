@@ -31,7 +31,7 @@ export default function Practice({ params }: { params: { id: string } }) {
       <section>
         <div className="mb-16">
           <PageBreadcrumbs
-            back={"/dashboard"}
+            back={`/quizzes/${quiz._id}`}
             path={[
               { title: "Dashboard", href: "/dashboard" },
               { title: "Quizzes", href: "/dashboard#quizzes" },

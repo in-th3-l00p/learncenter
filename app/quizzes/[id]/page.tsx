@@ -2,13 +2,39 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
+import React from "react";
+import clsx from "clsx";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Quiz from "@/models/Quiz";
 import User from "@/models/User";
-import PageBreadcrumbs from "@/components/PageBreadcrumbs";
-import { subtitle, title } from "@/components/primitives";
-import { InformationForm } from "@/app/quizzes/[id]/components/informationForm";
+import { subtitle } from "@/components/primitives";
+import { QuizUpdate } from "@/app/quizzes/[id]/components/quizUpdate";
+import QuizContextProvider from "@/app/quizzes/[id]/components/quizContextProvider";
+import QuizHeader from "@/app/quizzes/[id]/components/quizHeader";
+
+function StartButton({
+  icon,
+  iconAlt,
+  href,
+  children,
+}: {
+  icon: string;
+  iconAlt: string;
+  href: string;
+  children: string;
+}) {
+  return (
+    <Button
+      as={Link}
+      className={"w-64 h-64 flex flex-col justify-center items-center gap-2"}
+      href={href}
+    >
+      <img alt={iconAlt} className={"w-16 h-16 invert"} src={icon} />
+      {children}
+    </Button>
+  );
+}
 
 export default async function QuizDisplay({
   params,
@@ -30,37 +56,34 @@ export default async function QuizDisplay({
   quiz._id = quiz._id.toString();
 
   return (
-    <section>
-      <div className={"mb-16"}>
-        <PageBreadcrumbs
-          back={"/dashboard"}
-          path={[
-            { title: "Dashboard", href: "/dashboard" },
-            { title: "Quizzes", href: "/dashboard#quizzes" },
-            { title: `Quiz: "${quiz.title}"` },
-          ]}
-        />
-        <h1 className={title()}>Quiz: {`"${quiz.title}"`}</h1>
-        <h2 className={subtitle()}>
-          Created at: {new Date(quiz.createdAt).toLocaleDateString()}
-        </h2>
-        {quiz.description && (
-          <h2 className={subtitle()}>Description: {quiz.description}</h2>
-        )}
-      </div>
+    <QuizContextProvider quiz={JSON.stringify(quiz)}>
+      <section>
+        <QuizHeader />
 
-      <div className={"mb-16"}>
-        <h2 className={subtitle()}>Start learning</h2>
+        <div className={"mb-16"}>
+          <h2 className={subtitle()}>Start learning</h2>
 
-        <div className={"flex justify-around"}>
-          <Button as={Link} href={`/quizzes/${quiz._id}/practice`}>
-            Practice
-          </Button>
-          <Button type={"button"}>Test your knowledge</Button>
+          <div className={"flex justify-around"}>
+            <StartButton
+              href={`/quizzes/${quiz._id}/practice`}
+              icon={"/icons/practice.svg"}
+              iconAlt={"Practice"}
+            >
+              Practice
+            </StartButton>
+            <StartButton
+              href={`/quizzes/${quiz._id}/test`}
+              icon={"/icons/test.svg"}
+              iconAlt={"Test"}
+            >
+              Test
+            </StartButton>
+          </div>
         </div>
-      </div>
 
-      <InformationForm quiz={quiz} />
-    </section>
+        <h2 className={clsx(subtitle(), "mb-4")}>Edit quiz</h2>
+        <QuizUpdate />
+      </section>
+    </QuizContextProvider>
   );
 }

@@ -2,16 +2,16 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useContext } from "react";
 
-import { Answers, Options } from "@/app/quizzes/new/components/options";
+import { Answers, Options } from "@/app/quizzes/components/options";
 import { subtitle } from "@/components/primitives";
-import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
-import { spacing } from "@/app/quizzes/new/components/primitives";
-import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
+import { spacing } from "@/app/quizzes/components/primitives";
+import QuizContext from "@/app/quizzes/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 function QuestionDisplay() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedQuestionIndex } =
-    useContext(NewQuizContext);
+    useContext(QuizContext);
 
   return (
     <div className={"mb-8"}>
@@ -77,7 +77,7 @@ export function Questions() {
     selectedQuestionIndex,
     setSelectedQuestionIndex,
     setSelectedOptionIndex,
-  } = useContext(NewQuizContext);
+  } = useContext(QuizContext);
 
   return (
     <div className={spacing()}>

@@ -5,12 +5,12 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
 
-import { DropdownSelector } from "@/app/quizzes/new/components/dropdownSelector";
-import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
+import QuizContext from "@/app/quizzes/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 export function Answers() {
-  const { quiz, selectedQuestionIndex } = useContext(NewQuizContext);
+  const { quiz, selectedQuestionIndex } = useContext(QuizContext);
   const answers = quiz.questions[selectedQuestionIndex].options
     .map((option, index) => ({
       index: index + 1,
@@ -37,7 +37,7 @@ export function Answers() {
 
 function useCreateOption() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedOptionIndex } =
-    useContext(NewQuizContext);
+    useContext(QuizContext);
 
   return () => {
     const newQuestions = [...quiz.questions];
@@ -60,7 +60,7 @@ function DesktopOptionSelector() {
     selectedQuestionIndex,
     selectedOptionIndex,
     setSelectedOptionIndex,
-  } = useContext(NewQuizContext);
+  } = useContext(QuizContext);
   const createOption = useCreateOption();
 
   const listboxRef = useRef<HTMLDivElement | null>(null);
@@ -123,7 +123,7 @@ function MobileOptionSelector() {
     selectedQuestionIndex,
     selectedOptionIndex,
     setSelectedOptionIndex,
-  } = useContext(NewQuizContext);
+  } = useContext(QuizContext);
   const createOption = useCreateOption();
 
   return (
@@ -147,7 +147,7 @@ export function Options({}) {
     selectedQuestionIndex,
     selectedOptionIndex,
     setSelectedOptionIndex,
-  } = useContext(NewQuizContext);
+  } = useContext(QuizContext);
 
   return (
     <div className={"mb-8"}>

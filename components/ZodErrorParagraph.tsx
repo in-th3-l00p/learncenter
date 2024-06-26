@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import clsx from "clsx";
 
-import NewQuizContext from "@/app/quizzes/new/context/NewQuizContext";
+import QuizContext from "@/app/quizzes/context/QuizContext";
 
 export default function ZodErrorParagraph({
   className,
@@ -12,7 +12,7 @@ export default function ZodErrorParagraph({
   className?: string;
   path: (string | number)[];
 }) {
-  const { error } = useContext(NewQuizContext);
+  const { error } = useContext(QuizContext);
 
   if (error === null) return <></>;
 

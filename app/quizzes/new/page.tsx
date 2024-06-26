@@ -8,12 +8,10 @@ import { useSession } from "next-auth/react";
 
 import { title } from "@/components/primitives";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
-import { QuizInformationInput } from "@/app/quizzes/new/components/quizInformationInput";
-import { Questions } from "@/app/quizzes/new/components/questions";
-import { QuizVisibility } from "@/app/quizzes/new/components/quizVisibility";
-import NewQuizContext, {
-  NewQuizType,
-} from "@/app/quizzes/new/context/NewQuizContext";
+import { QuizInformationInput } from "@/app/quizzes/components/quizInformationInput";
+import { Questions } from "@/app/quizzes/components/questions";
+import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
+import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
 
@@ -68,7 +66,7 @@ export default function NewQuiz() {
   if (loading) return <LoadingPage />;
 
   return (
-    <NewQuizContext.Provider
+    <QuizContext.Provider
       value={{
         quiz,
         setQuiz,
@@ -83,7 +81,7 @@ export default function NewQuiz() {
       <section>
         <div className={"mb-16"}>
           <PageBreadcrumbs
-            back={"/dashboard"}
+            back={"/dashboard#quizzes"}
             path={[
               { title: "Dashboard", href: "/dashboard" },
               { title: "Quizzes", href: "/dashboard#quizzes" },
@@ -134,6 +132,6 @@ export default function NewQuiz() {
           </Button>
         </div>
       </section>
-    </NewQuizContext.Provider>
+    </QuizContext.Provider>
   );
 }
