@@ -6,10 +6,7 @@ import { tv } from "tailwind-variants";
 import clsx from "clsx";
 
 const list = tv({
-  base: clsx(
-    "flex gap-8 overflow-x-scroll no-scrollbar",
-    "bg-content2 p-8 rounded-2xl",
-  ),
+  base: clsx("flex gap-8 overflow-x-scroll", "bg-content2 p-8 rounded-2xl"),
 });
 
 const listCard = tv({
@@ -21,18 +18,7 @@ const listCardTitle = tv({
 });
 
 export function List({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className={list()}
-      onWheel={(e) => {
-        e.preventDefault();
-        e.currentTarget.scrollLeft += e.deltaX;
-        e.currentTarget.scrollLeft += e.deltaY;
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className={list()}>{children}</div>;
 }
 
 export function ListCard({
