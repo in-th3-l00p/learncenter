@@ -1,0 +1,21 @@
+name: update deployment
+on: [push]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd ~/learncenter
+          git pull origin release
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh  
+          npm run build
+          pm2 restart learncenter
