@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import User from "@/models/User";
 import Quiz, { zNewQuizSchema } from "@/models/Quiz";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export async function POST(req: Request) {
   // authorize

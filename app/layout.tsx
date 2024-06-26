@@ -12,9 +12,9 @@ import { Navbar } from "@/components/navbar";
 import LayoutProvider from "@/components/layoutProvider";
 
 import "@/lib/mongoose";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
 import UserContextProvider from "@/components/UserContextProvider";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export const metadata: Metadata = {
   title: {

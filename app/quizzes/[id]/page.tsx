@@ -5,7 +5,6 @@ import { Link } from "@nextui-org/link";
 import React from "react";
 import clsx from "clsx";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Quiz from "@/models/Quiz";
 import User from "@/models/User";
 import { subtitle } from "@/components/primitives";
@@ -13,6 +12,7 @@ import { QuizUpdate } from "@/app/quizzes/[id]/components/quizUpdate";
 import QuizContextProvider from "@/app/quizzes/[id]/components/quizContextProvider";
 import QuizHeader from "@/app/quizzes/[id]/components/quizHeader";
 import QuizDelete from "@/app/quizzes/[id]/components/quizDelete";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 function StartButton({
   icon,
