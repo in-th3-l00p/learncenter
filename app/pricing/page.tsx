@@ -2,8 +2,8 @@ import React from "react";
 import { getServerSession } from "next-auth";
 
 import { title } from "@/components/primitives";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 declare global {
   namespace JSX {

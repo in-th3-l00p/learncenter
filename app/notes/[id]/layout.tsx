@@ -3,9 +3,9 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import Note, { INote } from "@/models/Note";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
 import NoteContextProvider from "@/app/notes/[id]/context/NoteContextProvider";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 function isUserAllowed(note: INote, userId: string) {
   for (const user of note.users) {

@@ -3,13 +3,13 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 import { redirect } from "next/navigation";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/models/User";
 import { subtitle, title } from "@/components/primitives";
 import Note, { INote } from "@/models/Note";
 import Node from "@/models/Node";
 import { List, ListCard } from "@/app/dashboard/list";
 import Quiz from "@/models/Quiz";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 function DashboardList({
   title,

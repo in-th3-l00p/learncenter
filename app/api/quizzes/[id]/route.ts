@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 
 import { NotFoundResponse, UnauthorizedResponse } from "@/app/api/utils";
 import Quiz, { zNewQuizSchema } from "@/models/Quiz";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export async function GET(
   req: Request,

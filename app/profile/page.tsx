@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 import User, { IUser } from "@/models/User";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { SubscriptionDisplay } from "@/app/profile/subscriptionDisplay";
-import { redirect } from "next/navigation";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
