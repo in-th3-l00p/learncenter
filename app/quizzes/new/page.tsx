@@ -117,9 +117,9 @@ export default function NewQuiz() {
                   setQuiz(defaultQuiz);
                   setSelectedQuestionIndex(0);
                   setSelectedOptionIndex(0);
-                  // localStorage.removeItem("new-quiz");
-                  // localStorage.removeItem("selected-question-index");
-                  // localStorage.removeItem("selected-option-index");
+                  localStorage.removeItem("new-quiz");
+                  localStorage.removeItem("selected-question-index");
+                  localStorage.removeItem("selected-option-index");
                   setError(null);
                   router.push(`/quizzes/${data._id}`);
                 })

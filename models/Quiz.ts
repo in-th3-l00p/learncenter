@@ -18,13 +18,13 @@ const quizShape = {
   ),
   visibility: z.enum(["public", "private"]),
   owner: z.string(),
-  createdAt: z.date().optional(),
 };
 
 export const zNewQuizSchema = z.object(quizShape);
 
 export const zQuizSchema = z.object({
   _id: z.string(),
+  createdAt: z.date().optional(),
   ...quizShape,
 });
 
