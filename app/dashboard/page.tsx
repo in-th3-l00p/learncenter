@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import User from "@/models/User";
 import { subtitle, title } from "@/components/primitives";
 import Note, { INote } from "@/models/Note";
-import Node from "@/models/Node";
 import { List, ListCard } from "@/app/dashboard/list";
 import Quiz from "@/models/Quiz";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
@@ -70,13 +69,6 @@ function NotesList({ notes }: { notes: INote[] }) {
 
     if (!session) return;
 
-    const rootNode = await Node.create({
-      type: "div",
-      parent: null,
-      attributes: [],
-      children: [],
-    });
-
     const note = await Note.create({
       title: `Note #${(await Note.countDocuments()) + 1}`,
       content: "",
@@ -85,7 +77,6 @@ function NotesList({ notes }: { notes: INote[] }) {
           userId: session?.user.id,
         },
       ],
-      rootNode: rootNode._id,
     });
 
     return redirect(`/notes/${note._id}`);

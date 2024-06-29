@@ -11,7 +11,6 @@ export interface INote {
       role: string;
     },
   ];
-  rootNode: string;
   createdAt: Date;
 }
 
@@ -31,10 +30,6 @@ const NoteSchema = new mongoose.Schema({
       },
     },
   ],
-  rootNode: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Node",
-  },
   createdAt: {
     type: Date,
     default: Date.now,

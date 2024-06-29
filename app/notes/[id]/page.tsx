@@ -6,7 +6,6 @@ import clsx from "clsx";
 
 import { subtitle, title } from "@/components/primitives";
 import NoteContext from "@/app/notes/[id]/context/NoteContext";
-import Editor from "@/app/notes/[id]/components/Editor";
 import { INote } from "@/models/Note";
 import { IUser } from "@/models/User";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
@@ -54,8 +53,6 @@ export default function NoteEditor() {
           <OwnerName />
         </h2>
       </div>
-
-      <Editor />
     </section>
   );
 }
