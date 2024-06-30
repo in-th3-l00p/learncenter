@@ -9,6 +9,7 @@ import NoteContext from "@/app/notes/[id]/context/NoteContext";
 import { INote } from "@/models/Note";
 import { IUser } from "@/models/User";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
+import Editor from "@/app/notes/[id]/components/editor";
 
 function OwnerName() {
   const { note } = useContext(NoteContext);
@@ -53,6 +54,8 @@ export default function NoteEditor() {
           <OwnerName />
         </h2>
       </div>
+
+      <Editor />
     </section>
   );
 }
