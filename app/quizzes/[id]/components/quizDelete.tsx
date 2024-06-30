@@ -15,7 +15,7 @@ import { Spinner } from "@nextui-org/spinner";
 import { useRouter } from "next/navigation";
 
 import { subtitle } from "@/components/primitives";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 import { QuizType } from "@/models/Quiz";
 
 export default function QuizDelete() {

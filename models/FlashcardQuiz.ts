@@ -2,14 +2,15 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 const flashcardQuizShape = {
-  title: z.string(),
-  description: z.string().optional(),
+  title: z.string().min(1).max(255),
+  description: z.string().max(1000).optional(),
   flashcards: z.array(
     z.object({
-      question: z.string(),
-      answer: z.string(),
+      question: z.string().min(1).max(1000),
+      answer: z.string().min(1).max(1000),
     }),
   ),
+  owner: z.string(),
   visibility: z.enum(["public", "private"]),
 };
 
@@ -18,7 +19,6 @@ export const zNewFlashcardQuizSchema = z.object(flashcardQuizShape);
 export const zFlashcardQuizSchema = z.object({
   _id: z.string(),
   createdAt: z.date().optional(),
-  owner: z.string().optional(),
   ...flashcardQuizShape
 });
 

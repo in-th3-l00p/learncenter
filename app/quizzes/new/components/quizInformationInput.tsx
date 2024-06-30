@@ -3,8 +3,8 @@ import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/components/NewForm/primitives";
-import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
-import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
+import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
+import QuizZodErrorParagraph from "@/app/quizzes/new/components/QuizZodErrorParagraph";
 
 export function QuizInformationInput() {
   const { quiz, setQuiz } = useContext(QuizContext) as {

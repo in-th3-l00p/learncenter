@@ -3,14 +3,16 @@
 import { spacing } from "@/components/NewForm/primitives";
 import { subtitle } from "@/components/primitives";
 import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
-import { useContext, useState } from "react";
+import React, { useContext } from "react";
 import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 import { Input } from "@nextui-org/input";
 import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/new/components/QuizZodErrorParagraph";
+import useLocalStorageState from "@/hooks/useLocalStorageState";
+import { Button } from "@nextui-org/button";
 
 export default function FlashcardQuizFlashcards() {
   const { flashcardQuiz, setFlashcardQuiz } = useContext(FlashcardQuizContext);
-  const [selectedFlashcardIndex, setSelectedFlashcardIndex] = useState<number>(0);
+  const [selectedFlashcardIndex, setSelectedFlashcardIndex] = useLocalStorageState<number>("selected-flashcard-index", 0);
 
   return (
     <div className={spacing()}>
@@ -73,6 +75,22 @@ export default function FlashcardQuizFlashcards() {
             setFlashcardQuiz({ ...flashcardQuiz, flashcards: updatedFlashcards });
           }}
         />
+      </div>
+
+      <div>
+        <Button
+          color={"danger"}
+          type={"button"}
+          onClick={() => {
+            const updatedFlashcards = [...flashcardQuiz.flashcards];
+
+            updatedFlashcards.splice(selectedFlashcardIndex, 1);
+            setFlashcardQuiz({ ...flashcardQuiz, flashcards: updatedFlashcards });
+            setSelectedFlashcardIndex(0);
+          }}
+        >
+          Delete
+        </Button>
       </div>
     </div>
   );

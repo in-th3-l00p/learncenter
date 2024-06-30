@@ -9,8 +9,8 @@ import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
 import QuizContext, {
   IQuizContext,
   NewQuizType,
-} from "@/app/quizzes/context/QuizContext";
-import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
+} from "@/app/quizzes/new/context/QuizContext";
+import QuizZodErrorParagraph from "@/app/quizzes/new/components/QuizZodErrorParagraph";
 
 export function Answers() {
   const { quiz, selectedQuestionIndex } = useContext(QuizContext);

@@ -8,10 +8,10 @@ import { useSession } from "next-auth/react";
 
 import { title } from "@/components/primitives";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
-import { QuizInformationInput } from "@/app/quizzes/components/quizInformationInput";
-import { Questions } from "@/app/quizzes/components/questions";
-import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
-import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
+import { QuizInformationInput } from "@/app/quizzes/new/components/quizInformationInput";
+import { Questions } from "@/app/quizzes/new/components/questions";
+import { QuizVisibility } from "@/app/quizzes/new/components/quizVisibility";
+import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
 

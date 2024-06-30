@@ -12,6 +12,7 @@ import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/new/compo
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
 import FlashcardQuizFlashcards from "@/app/flashcard-quizzes/new/components/flashcardQuizFlashcards";
+import { useRouter } from "next/navigation";
 
 const defaultFlashcardQuiz: NewFlashcardQuizType = {
   title: "",
@@ -26,10 +27,12 @@ const defaultFlashcardQuiz: NewFlashcardQuizType = {
 };
 
 export default function NewFlashcardQuiz() {
+  const router = useRouter();
   const [flashcardQuiz, setFlashcardQuiz, flashcardQuizLoading] = useLocalStorageState<NewFlashcardQuizType>("new-flashcard-quiz", defaultFlashcardQuiz);
   const [error, setError] = useState<ZodError | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  if (flashcardQuizLoading)
+  if (loading || flashcardQuizLoading)
     return <LoadingPage />;
   return (
     <FlashcardQuizContext.Provider value={{
@@ -58,6 +61,29 @@ export default function NewFlashcardQuiz() {
             className={"block mx-auto mb-16"}
             type={"button"}
             onClick={() => {
+              setLoading(true);
+              fetch("/api/flashcard-quizzes", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(flashcardQuiz),
+              })
+                .then((res) => {
+                  if (!res.ok) throw res;
+
+                  return res.json();
+                })
+                .then((data) => {
+                  localStorage.removeItem("new-flashcard-quiz");
+                  localStorage.removeItem("selected-flashcard-index");
+                  setError(null);
+                  router.push(`/flashcard-quizzes/${data._id}`);
+                })
+                .catch(async (resp) => {
+                  setError(await resp.json());
+                  setLoading(false);
+                });
             }}
           >
             Create

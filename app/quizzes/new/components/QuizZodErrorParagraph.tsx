@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
 
 export default function QuizZodErrorParagraph({

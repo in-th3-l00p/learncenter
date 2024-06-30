@@ -5,10 +5,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Card, CardBody } from "@nextui-org/card";
 import { Spinner } from "@nextui-org/spinner";
 
-import { QuizInformationInput } from "@/app/quizzes/components/quizInformationInput";
-import { Questions } from "@/app/quizzes/components/questions";
-import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import { QuizInformationInput } from "@/app/quizzes/new/components/quizInformationInput";
+import { Questions } from "@/app/quizzes/new/components/questions";
+import { QuizVisibility } from "@/app/quizzes/new/components/quizVisibility";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 import { QuizType } from "@/models/Quiz";
 
 export function QuizUpdate({ initialQuiz }: { initialQuiz: string }) {

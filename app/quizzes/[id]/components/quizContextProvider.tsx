@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ZodError } from "zod";
 
 import { QuizType } from "@/models/Quiz";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 
 export default function QuizContextProvider({
   quiz,
