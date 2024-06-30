@@ -8,16 +8,29 @@ import { Color } from "@tiptap/extension-color";
 import { TextStyle, TextStyleOptions } from "@tiptap/extension-text-style";
 import { ListItem } from "@tiptap/extension-list-item";
 import "../styles/editor.scss";
+import { useContext } from "react";
+import NoteContext from "@/app/notes/[id]/context/NoteContext";
+import { Placeholder } from "@tiptap/extension-placeholder";
 
 export default function Editor() {
+  const {note, setNote} = useContext(NoteContext);
+
   const editor = useEditor({
     autofocus: true,
+    content: note.content,
+    onUpdate({ editor }) {
+      setNote({
+        ...note,
+        content: editor.getHTML(),
+      });
+    },
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle.configure({
         types: [ListItem.name],
       } as Partial<TextStyleOptions>),
       StarterKit,
+      Placeholder
     ],
     editorProps: {
       attributes: {

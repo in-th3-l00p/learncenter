@@ -1,4 +1,28 @@
 import mongoose from "mongoose";
+import { z } from "zod";
+
+const noteShape = {
+  title: z.string(),
+  content: z.string(),
+  users: z.array(
+    z.object({
+      userId: z.string(),
+      role: z.enum(["reader", "editor", "owner"]),
+    }),
+  )
+};
+
+export const zNewNoteSchema = z.object(noteShape);
+
+export const NewNoteType = z.infer<typeof zNewNoteSchema>;
+
+export const zNoteSchema = z.object({
+  _id: z.string(),
+  createdAt: z.date(),
+  ...noteShape,
+});
+
+export type NoteType = z.infer<typeof zNoteSchema>;
 
 // fix objectid vs string
 export interface INote {

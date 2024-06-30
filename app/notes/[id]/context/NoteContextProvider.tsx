@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import NoteContext from "@/app/notes/[id]/context/NoteContext";
-import { INode } from "@/models/Node";
 
 export default function NoteContextProvider({
   note,
@@ -13,20 +12,30 @@ export default function NoteContextProvider({
   children: React.ReactNode;
 }) {
   const [statefulNote, setStatefulNote] = useState(JSON.parse(note));
-  const [rootNode, setRootNode] = useState<INode | null>({
-    _id: "0",
-    type: "div",
-    children: [],
-    attributes: [],
-  });
+
+  useEffect(() => {
+    fetch(`/api/notes/${statefulNote._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(statefulNote),
+    })
+      .then(r => {
+        if (!r.ok) {
+          throw new Error("Failed to save note");
+        }
+      })
+      .catch(e => {
+        console.error(e);
+      });
+  }, [statefulNote]);
 
   return (
     <NoteContext.Provider
       value={{
         note: statefulNote,
         setNote: setStatefulNote,
-        rootNode,
-        setRootNode,
       }}
     >
       {children}
