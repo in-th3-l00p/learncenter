@@ -97,7 +97,7 @@ export default function NewQuiz() {
           <QuizVisibility />
 
           <Button
-            className={"block mx-auto mb-8"}
+            className={"block mx-auto mb-16"}
             type={"button"}
             onClick={() => {
               setLoading(true);

@@ -2,7 +2,7 @@ import { Input, Textarea } from "@nextui-org/input";
 import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
-import { spacing } from "@/app/quizzes/components/primitives";
+import { spacing } from "@/components/NewForm/primitives";
 import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/new/components/QuizZodErrorParagraph";
 

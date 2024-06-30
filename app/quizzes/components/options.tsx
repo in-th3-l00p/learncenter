@@ -5,7 +5,7 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { useContext, useEffect, useRef } from "react";
 import clsx from "clsx";
 
-import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
+import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
 import QuizContext, {
   IQuizContext,
   NewQuizType,

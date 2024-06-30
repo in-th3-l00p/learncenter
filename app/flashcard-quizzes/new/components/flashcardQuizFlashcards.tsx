@@ -1,8 +1,8 @@
 "use client";
 
-import { spacing } from "@/app/quizzes/components/primitives";
+import { spacing } from "@/components/NewForm/primitives";
 import { subtitle } from "@/components/primitives";
-import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
+import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
 import { useContext, useState } from "react";
 import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 import { Input } from "@nextui-org/input";

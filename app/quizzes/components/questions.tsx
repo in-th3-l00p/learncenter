@@ -4,8 +4,8 @@ import { useContext } from "react";
 
 import { Answers, Options } from "@/app/quizzes/components/options";
 import { subtitle } from "@/components/primitives";
-import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
-import { spacing } from "@/app/quizzes/components/primitives";
+import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
+import { spacing } from "@/components/NewForm/primitives";
 import QuizContext, {
   IQuizContext,
   NewQuizType,

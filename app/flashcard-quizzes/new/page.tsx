@@ -55,7 +55,7 @@ export default function NewFlashcardQuiz() {
           <FlashcardQuizVisibility />
 
           <Button
-            className={"block mx-auto mb-8"}
+            className={"block mx-auto mb-16"}
             type={"button"}
             onClick={() => {
             }}
