@@ -10,7 +10,7 @@ import QuizContext, {
   IQuizContext,
   NewQuizType,
 } from "@/app/quizzes/context/QuizContext";
-import ZodErrorParagraph from "@/components/ZodErrorParagraph";
+import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
 
 export function Answers() {
   const { quiz, selectedQuestionIndex } = useContext(QuizContext);
@@ -167,7 +167,7 @@ export function Options({}) {
 
         <div className="flex-grow flex flex-col justify-between">
           <div>
-            <ZodErrorParagraph
+            <QuizZodErrorParagraph
               path={[
                 `questions`,
                 selectedQuestionIndex,

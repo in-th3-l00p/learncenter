@@ -9,6 +9,7 @@ import Note, { INote } from "@/models/Note";
 import { List, ListCard } from "@/app/dashboard/list";
 import Quiz from "@/models/Quiz";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import FlashcardQuiz, { FlashcardQuizType } from "@/models/FlashcardQuiz";
 
 function DashboardList({
   title,
@@ -61,7 +62,7 @@ function DashboardList({
   );
 }
 
-function NotesList({ notes }: { notes: INote[] }) {
+function Notes({ notes }: { notes: INote[] }) {
   async function create() {
     "use server";
 
@@ -111,6 +112,24 @@ function Quizzes({ quizzes }: { quizzes: any[] }) {
   );
 }
 
+function FlashcardQuizzes({ flashcardQuizzes }: { flashcardQuizzes: FlashcardQuizType[] }) {
+  async function create() {
+    "use server";
+
+    return redirect(`/flashcard-quizzes/new`);
+  }
+
+  return (
+    <DashboardList
+      create={create}
+      href={"/flashcard-quizzes/"}
+      id={"flashcard-quizzes"}
+      items={flashcardQuizzes}
+      title={"Flashcard Quizzes"}
+    />
+  );
+}
+
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
@@ -132,6 +151,12 @@ export default async function Dashboard() {
     })
   ).reverse();
 
+  const flashcardQuizzes = (
+    await FlashcardQuiz.find({ owner: user._id }).sort({
+      createdAt: "asc",
+    })
+  ).reverse();
+
   return (
     <section>
       <div className="mb-16">
@@ -139,8 +164,9 @@ export default async function Dashboard() {
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
       </div>
 
-      <NotesList notes={notes} />
+      <Notes notes={notes} />
       <Quizzes quizzes={quizzes} />
+      <FlashcardQuizzes flashcardQuizzes={flashcardQuizzes} />
     </section>
   );
 }
