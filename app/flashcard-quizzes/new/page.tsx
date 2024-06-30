@@ -11,6 +11,7 @@ import { FlashcardQuizVisibility } from "@/app/flashcard-quizzes/new/components/
 import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/new/components/flashcardQuizInformationInput";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
+import FlashcardQuizFlashcards from "@/app/flashcard-quizzes/new/components/flashcardQuizFlashcards";
 
 const defaultFlashcardQuiz: NewFlashcardQuizType = {
   title: "",
@@ -50,6 +51,7 @@ export default function NewFlashcardQuiz() {
 
         <div className={"max-w-[800px] mx-auto"}>
           <FlashcardQuizInformationInput />
+          <FlashcardQuizFlashcards />
           <FlashcardQuizVisibility />
 
           <Button
