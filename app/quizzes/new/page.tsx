@@ -47,6 +47,8 @@ export default function NewQuiz() {
   const [error, setError] = useState<ZodError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  console.log(quiz);
+
   useEffect(() => {
     if (
       session.status === "loading" ||
@@ -101,6 +103,7 @@ export default function NewQuiz() {
             type={"button"}
             onClick={() => {
               setLoading(true);
+              console.log(quiz);
               fetch("/api/quizzes", {
                 method: "POST",
                 headers: {
@@ -125,6 +128,7 @@ export default function NewQuiz() {
                 })
                 .catch(async (resp) => {
                   setError(await resp.json());
+                  setLoading(false);
                 });
             }}
           >
