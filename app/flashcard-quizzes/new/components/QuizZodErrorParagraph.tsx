@@ -3,7 +3,7 @@
 import { useContext } from "react";
 
 import ZodErrorParagraph from "@/components/ZodErrorParagraph";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/context/FlashcardQuizContext";
+import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 
 export default function FlashcardQuizZodErrorParagraph({
   className,

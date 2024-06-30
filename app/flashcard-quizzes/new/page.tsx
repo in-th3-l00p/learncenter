@@ -3,12 +3,12 @@
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { title } from "@/components/primitives";
 import { NewFlashcardQuizType } from "@/models/FlashcardQuiz";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/context/FlashcardQuizContext";
+import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 import { ZodError } from "zod";
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
-import { FlashcardQuizVisibility } from "@/app/flashcard-quizzes/components/flashcardQuizVisibility";
-import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/components/flashcardQuizInformationInput";
+import { FlashcardQuizVisibility } from "@/app/flashcard-quizzes/new/components/flashcardQuizVisibility";
+import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/new/components/flashcardQuizInformationInput";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
 

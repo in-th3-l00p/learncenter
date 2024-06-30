@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/app/quizzes/components/primitives";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/context/FlashcardQuizContext";
+import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 
 export function FlashcardQuizVisibility() {
   const { flashcardQuiz, setFlashcardQuiz } = useContext(FlashcardQuizContext);
