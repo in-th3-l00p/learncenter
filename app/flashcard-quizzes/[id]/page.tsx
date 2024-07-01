@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { subtitle } from "@/components/primitives";
 import React from "react";
 import FlashcardQuizDelete from "@/app/flashcard-quizzes/[id]/components/flashcardQuizDelete";
+import { StartButton } from "@/app/components/startButton";
 
 export default async function FlashcardQuizDisplay({ params }: {
   params: { id: string }
@@ -35,6 +36,20 @@ export default async function FlashcardQuizDisplay({ params }: {
       <section>
         <FlashcardQuizHeader />
       </section>
+
+      <div className={"mb-16"}>
+        <h2 className={subtitle()}>Start learning:</h2>
+
+        <div className={"flex justify-around"}>
+          <StartButton
+            href={`/flashcard-quizzes/${flashcardQuiz._id}/practice`}
+            icon={"/icons/practice.svg"}
+            iconAlt={"Practice"}
+          >
+            Practice
+          </StartButton>
+        </div>
+      </div>
 
       <h2 className={clsx(subtitle(), "mb-4")}>Edit flashcard quiz:</h2>
       <FlashcardQuizUpdate

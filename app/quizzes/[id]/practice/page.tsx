@@ -7,7 +7,7 @@ import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { QuizType } from "@/models/Quiz";
 import LoadingPage from "@/components/loadingPage";
 import PracticeContext from "@/app/quizzes/[id]/practice/context/PracticeContext";
-import Question from "@/app/quizzes/[id]/components/Question";
+import Question from "@/app/quizzes/[id]/practice/components/Question";
 
 export default function Practice({ params }: { params: { id: string } }) {
   const [quiz, setQuiz] = useState<QuizType | null>(null);
@@ -15,7 +15,9 @@ export default function Practice({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     async function fetchQuiz() {
-      const response = await fetch(`/api/quizzes/${params.id}`);
+      const response = await fetch(`/api/quizzes/${params.id}`, {
+        cache: "no-cache"
+      });
       const data = await response.json();
 
       setQuiz(data);
