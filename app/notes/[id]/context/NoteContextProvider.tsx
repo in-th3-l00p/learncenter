@@ -27,6 +27,7 @@ export default function NoteContextProvider({
         }
       })
       .catch(e => {
+        // todo implement something to show as an error
         console.error(e);
       });
   }, [statefulNote]);

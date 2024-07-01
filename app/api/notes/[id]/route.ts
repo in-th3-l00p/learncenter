@@ -36,3 +36,34 @@ export async function PUT(req: Request, { params }: {
     return NotFoundResponse;
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } },
+) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) return UnauthorizedResponse;
+
+  let note;
+
+  try {
+    note = await Note.findById(params.id);
+
+    if (!note) return NotFoundResponse;
+
+  } catch (e) {
+    return NotFoundResponse;
+  }
+
+  if (note.users[0].userId.toString() !== session.user.id)
+    return UnauthorizedResponse;
+
+  try {
+    await Note.findByIdAndDelete(params.id);
+  } catch (e) {
+    return NotFoundResponse;
+  }
+
+  return NextResponse.json({}, { status: 200 });
+}
