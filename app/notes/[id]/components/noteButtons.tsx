@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/button";
 import { IoSettings } from "react-icons/io5";
 import { RiAiGenerate } from "react-icons/ri";
 import React from "react";
+import GenerateModal from "@/app/notes/[id]/components/generateModal";
 
 export function NoteButtons() {
   const {
@@ -12,11 +13,21 @@ export function NoteButtons() {
     onOpenChange: onSettingsOpenChange
   } = useDisclosure();
 
+  const {
+    isOpen: isGenerateOpen,
+    onOpen: onGenerateOpen,
+    onOpenChange: onGenerateOpenChange
+  } = useDisclosure();
+
   return (
     <div className={"flex flex-col gap-4"}>
       <UpdateModal
         isOpen={isSettingsOpen}
         onOpenChange={onSettingsOpenChange}
+      />
+      <GenerateModal
+        isOpen={isGenerateOpen}
+        onOpenChange={onGenerateOpenChange}
       />
 
       <Button
@@ -32,6 +43,7 @@ export function NoteButtons() {
         title={"Generate"}
         type={"button"}
         isIconOnly
+        onClick={onGenerateOpen}
       >
         <RiAiGenerate />
       </Button>

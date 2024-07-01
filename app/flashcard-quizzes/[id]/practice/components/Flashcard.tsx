@@ -44,7 +44,10 @@ export default function Flashcard() {
         <Button
           type={"button"}
           disabled={selectedFlashcard === 0}
-          onClick={() => setSelectedFlashcard(selectedFlashcard - 1)}
+          onClick={() => {
+            setShowAnswer(false);
+            setSelectedFlashcard(selectedFlashcard - 1)
+          }}
         >
           Previous
         </Button>
@@ -59,6 +62,7 @@ export default function Flashcard() {
         <Button
           type={"button"}
           onClick={() => {
+            setShowAnswer(false);
             if (selectedFlashcard === history.length - 1)
               setHistory([
                 ...history,

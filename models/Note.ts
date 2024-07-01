@@ -14,6 +14,7 @@ const noteShape = {
 
 export const zNewNoteSchema = z.object(noteShape);
 
+// @ts-ignore
 export const NewNoteType = z.infer<typeof zNewNoteSchema>;
 
 export const zNoteSchema = z.object({
