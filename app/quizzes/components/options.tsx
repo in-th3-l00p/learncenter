@@ -10,7 +10,7 @@ import QuizContext, {
   IQuizContext,
   NewQuizType,
 } from "@/app/quizzes/new/context/QuizContext";
-import QuizZodErrorParagraph from "@/app/quizzes/new/components/QuizZodErrorParagraph";
+import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
 
 export function Answers() {
   const { quiz, selectedQuestionIndex } = useContext(QuizContext);

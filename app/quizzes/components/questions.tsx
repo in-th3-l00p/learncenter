@@ -2,7 +2,7 @@ import { Input, Textarea } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useContext } from "react";
 
-import { Answers, Options } from "@/app/quizzes/new/components/options";
+import { Answers, Options } from "@/app/quizzes/components/options";
 import { subtitle } from "@/components/primitives";
 import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
 import { spacing } from "@/components/NewForm/primitives";
@@ -10,7 +10,7 @@ import QuizContext, {
   IQuizContext,
   NewQuizType,
 } from "@/app/quizzes/new/context/QuizContext";
-import QuizZodErrorParagraph from "@/app/quizzes/new/components/QuizZodErrorParagraph";
+import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
 
 function QuestionDisplay() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedQuestionIndex } =

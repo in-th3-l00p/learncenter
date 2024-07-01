@@ -1,19 +1,32 @@
 import { Input, Textarea } from "@nextui-org/input";
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/components/NewForm/primitives";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
-import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/new/components/QuizZodErrorParagraph";
+import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/components/FlashcardQuizZodErrorParagraph";
 
-export function FlashcardQuizInformationInput() {
-  const { flashcardQuiz, setFlashcardQuiz } = useContext(FlashcardQuizContext);
+export function FlashcardQuizInformationInput<T>({ context }: {
+  context: React.Context<T>
+}) {
+  const { flashcardQuiz, setFlashcardQuiz } = useContext(context) as {
+    flashcardQuiz: {
+      title: string,
+      description: string,
+    },
+    setFlashcardQuiz: React.Dispatch<React.SetStateAction<{
+      title: string,
+      description: string,
+    }>>,
+  };
 
   return (
     <div className={spacing()}>
       <h2 className={subtitle()}>Tell us about the flashcard quiz:</h2>
 
-      <FlashcardQuizZodErrorParagraph path={["title"]} />
+      <FlashcardQuizZodErrorParagraph
+        context={context}
+        path={["title"]}
+      />
       <Input
         className={"mb-4"}
         label={"Title"}
@@ -23,7 +36,10 @@ export function FlashcardQuizInformationInput() {
         onChange={(e) => setFlashcardQuiz({ ...flashcardQuiz, title: e.target.value })}
       />
 
-      <FlashcardQuizZodErrorParagraph path={["description"]} />
+      <FlashcardQuizZodErrorParagraph
+        context={context}
+        path={["description"]}
+      />
       <Textarea
         label={"Description"}
         placeholder={"Describe your flashcard quiz"}

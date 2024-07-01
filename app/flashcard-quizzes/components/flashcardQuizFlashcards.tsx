@@ -4,15 +4,34 @@ import { spacing } from "@/components/NewForm/primitives";
 import { subtitle } from "@/components/primitives";
 import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
 import React, { useContext } from "react";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 import { Input } from "@nextui-org/input";
-import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/new/components/QuizZodErrorParagraph";
-import useLocalStorageState from "@/hooks/useLocalStorageState";
+import FlashcardQuizZodErrorParagraph from "@/app/flashcard-quizzes/components/FlashcardQuizZodErrorParagraph";
 import { Button } from "@nextui-org/button";
 
-export default function FlashcardQuizFlashcards() {
-  const { flashcardQuiz, setFlashcardQuiz } = useContext(FlashcardQuizContext);
-  const [selectedFlashcardIndex, setSelectedFlashcardIndex] = useLocalStorageState<number>("selected-flashcard-index", 0);
+export default function FlashcardQuizFlashcards<T>({ context }: {
+  context: React.Context<T>
+}) {
+  const {
+    flashcardQuiz,
+    setFlashcardQuiz,
+    selectedFlashcardIndex,
+    setSelectedFlashcardIndex
+  } = useContext(context) as {
+    flashcardQuiz: {
+      flashcards: {
+        question: string,
+        answer: string
+      }[]
+    },
+    setFlashcardQuiz: React.Dispatch<React.SetStateAction<{
+      flashcards: {
+        question: string,
+        answer: string
+      }[]
+    }>>,
+    selectedFlashcardIndex: number,
+    setSelectedFlashcardIndex: React.Dispatch<React.SetStateAction<number>>
+  };
 
   return (
     <div className={spacing()}>
@@ -43,6 +62,7 @@ export default function FlashcardQuizFlashcards() {
 
       <div>
         <FlashcardQuizZodErrorParagraph
+          context={context}
           path={[`flashcards`, selectedFlashcardIndex, "question"]}
         />
         <Input
@@ -60,6 +80,7 @@ export default function FlashcardQuizFlashcards() {
         />
 
         <FlashcardQuizZodErrorParagraph
+          context={context}
           path={[`flashcards`, selectedFlashcardIndex, "answer"]}
         />
         <Input

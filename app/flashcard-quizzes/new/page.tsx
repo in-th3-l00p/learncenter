@@ -3,15 +3,15 @@
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { title } from "@/components/primitives";
 import { NewFlashcardQuizType } from "@/models/FlashcardQuiz";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
+import NewFlashcardQuizContext from "@/app/flashcard-quizzes/new/context/NewFlashcardQuizContext";
 import { ZodError } from "zod";
 import { useState } from "react";
 import { Button } from "@nextui-org/button";
-import { FlashcardQuizVisibility } from "@/app/flashcard-quizzes/new/components/flashcardQuizVisibility";
-import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/new/components/flashcardQuizInformationInput";
+import { FlashcardQuizVisibility } from "@/app/flashcard-quizzes/components/flashcardQuizVisibility";
+import { FlashcardQuizInformationInput } from "@/app/flashcard-quizzes/components/flashcardQuizInformationInput";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
-import FlashcardQuizFlashcards from "@/app/flashcard-quizzes/new/components/flashcardQuizFlashcards";
+import FlashcardQuizFlashcards from "@/app/flashcard-quizzes/components/flashcardQuizFlashcards";
 import { useRouter } from "next/navigation";
 
 const defaultFlashcardQuiz: NewFlashcardQuizType = {
@@ -23,20 +23,36 @@ const defaultFlashcardQuiz: NewFlashcardQuizType = {
       answer: ""
     }
   ],
-  visibility: "public"
+  visibility: "public",
+  owner: ""
 };
 
 export default function NewFlashcardQuiz() {
   const router = useRouter();
-  const [flashcardQuiz, setFlashcardQuiz, flashcardQuizLoading] = useLocalStorageState<NewFlashcardQuizType>("new-flashcard-quiz", defaultFlashcardQuiz);
+  const [
+    flashcardQuiz,
+    setFlashcardQuiz,
+    flashcardQuizLoading
+  ] = useLocalStorageState<NewFlashcardQuizType>("new-flashcard-quiz", defaultFlashcardQuiz);
+  const [
+    selectedFlashcardIndex,
+    setSelectedFlashcardIndex,
+    selectedFlashcardIndexLoading
+  ] = useLocalStorageState<number>("selected-flashcard-index", 0);
+
   const [error, setError] = useState<ZodError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  if (loading || flashcardQuizLoading)
+  if (
+    loading ||
+    flashcardQuizLoading ||
+    selectedFlashcardIndexLoading
+  )
     return <LoadingPage />;
   return (
-    <FlashcardQuizContext.Provider value={{
+    <NewFlashcardQuizContext.Provider value={{
       flashcardQuiz, setFlashcardQuiz,
+      selectedFlashcardIndex, setSelectedFlashcardIndex,
       error, setError
     }}>
       <section>
@@ -53,9 +69,9 @@ export default function NewFlashcardQuiz() {
         </div>
 
         <div className={"max-w-[800px] mx-auto"}>
-          <FlashcardQuizInformationInput />
-          <FlashcardQuizFlashcards />
-          <FlashcardQuizVisibility />
+          <FlashcardQuizInformationInput context={NewFlashcardQuizContext} />
+          <FlashcardQuizFlashcards context={NewFlashcardQuizContext} />
+          <FlashcardQuizVisibility context={NewFlashcardQuizContext} />
 
           <Button
             className={"block mx-auto mb-16"}
@@ -90,6 +106,6 @@ export default function NewFlashcardQuiz() {
           </Button>
         </div>
       </section>
-    </FlashcardQuizContext.Provider>
+    </NewFlashcardQuizContext.Provider>
   );
 }

@@ -1,12 +1,20 @@
 import { Select, SelectItem } from "@nextui-org/select";
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
 import { spacing } from "@/components/NewForm/primitives";
-import FlashcardQuizContext from "@/app/flashcard-quizzes/new/context/FlashcardQuizContext";
 
-export function FlashcardQuizVisibility() {
-  const { flashcardQuiz, setFlashcardQuiz } = useContext(FlashcardQuizContext);
+export function FlashcardQuizVisibility<T>({ context }: {
+  context: React.Context<T>;
+}) {
+  const { flashcardQuiz, setFlashcardQuiz } = useContext(context) as {
+    flashcardQuiz: {
+      visibility: "public" | "private";
+    };
+    setFlashcardQuiz: React.Dispatch<React.SetStateAction<{
+      visibility: "public" | "private";
+    }>>;
+  };
 
   return (
     <div className={spacing()}>

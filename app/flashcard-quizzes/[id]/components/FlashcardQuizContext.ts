@@ -1,10 +1,13 @@
 import React from "react";
 import { ZodError } from "zod";
-import { NewFlashcardQuizType } from "@/models/FlashcardQuiz";
+import { FlashcardQuizType } from "@/models/FlashcardQuiz";
 
 export interface IFlashcardQuizContext {
-  flashcardQuiz: NewFlashcardQuizType;
-  setFlashcardQuiz: ((quiz: NewFlashcardQuizType) => void);
+  flashcardQuiz: FlashcardQuizType;
+  setFlashcardQuiz: ((quiz: FlashcardQuizType) => void);
+
+  selectedFlashcardIndex: number;
+  setSelectedFlashcardIndex: (index: number) => void;
 
   error: ZodError | null;
   setError: (error: ZodError | null) => void;
