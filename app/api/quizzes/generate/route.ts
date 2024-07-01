@@ -33,11 +33,11 @@ export async function POST(req: Request) {
       {
         role: "system",
         content:
-          "You are a flashcards quiz generator. " +
-          "Please generate a flashcards quiz based on the following note. " +
+          "You are a quiz generator. " +
+          "Please generate a quiz based on the following note. " +
           "You can use an additional query, that will be submitted to you. " +
           "Output should be json, and have the following format: " +
-          "{ \"title\": \"Flashcard quiz title\", \"description\": \"Flashcard quiz description\", \"flashcards\": [ { \"question\": \"Question 1\", \"answer\": \"Answer 1\" }, ] } " +
+          "{ \"title\": \"Quiz title\", \"description\": \"Quiz description\", \"questions\": [ { \"question\": \"Question 1\", \"description\": \"Question 1 description\", \"options\": [{ \"option\": \"Option 1\", isCorrect: true }] }, ] } " +
           "so, the title key should contain the title of the quiz, the description key should contain the description of the quiz, and the flashcards key should contain an array of flashcards, where each flashcard has a question key and an answer key."
       },
       {

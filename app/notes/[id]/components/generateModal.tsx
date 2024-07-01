@@ -15,13 +15,138 @@ import NoteContext from "@/app/notes/[id]/context/NoteContext";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@nextui-org/spinner";
 
+function FlashcardQuizGenerator({ loading, setLoading }: {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}) {
+  const { note } = useContext(NoteContext);
+  const router = useRouter();
+  const [flashcardAdditionalInfo, setFlashcardAdditionalInfo] = useState("");
+  const [selfLoading, setSelfLoading] = useState(false);
+
+  return (
+    <div>
+      <p>Generate a flashcards quiz</p>
+      <Input
+        value={flashcardAdditionalInfo}
+        onChange={(e) => setFlashcardAdditionalInfo(e.target.value)}
+        placeholder={`Additional information (e.g. "each flashcard should have maximum 2 sentences")`}
+        readOnly={loading}
+        className={"mb-2"}
+      />
+
+      <div>
+        <Button
+          disabled={loading}
+          className={"flex justify-center items-center gap-2"}
+          onClick={() => {
+            setLoading(true);
+            setSelfLoading(true);
+            fetch("/api/flashcard-quizzes/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                noteId: note._id,
+                additionalQuery: flashcardAdditionalInfo
+              })
+            })
+              .then((res) => {
+                if (!res.ok) throw res.json();
+                return res.json();
+              })
+              .then((data) => {
+                localStorage.setItem("new-flashcard-quiz", JSON.stringify({
+                  ...data,
+                  visibility: "public"
+                }));
+                router.push(`/flashcard-quizzes/new`);
+              })
+              .catch(async (err) => {
+                // todo better error handling
+                setLoading(false);
+              });
+          }}
+        >
+          {selfLoading && (
+            <Spinner color={"success"} size={"sm"} />
+          )}
+          Generate
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function QuizGenerator({ loading, setLoading }: {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}) {
+  const { note } = useContext(NoteContext);
+  const router = useRouter();
+  const [quizAdditionalInfo, setQuizAdditionalInfo] = useState("");
+  const [selfLoading, setSelfLoading] = useState(false);
+
+  return (
+    <div>
+      <p>Generate a quiz</p>
+      <Input
+        value={quizAdditionalInfo}
+        onChange={(e) => setQuizAdditionalInfo(e.target.value)}
+        placeholder={`Additional information (e.g. "each quiz should have maximum 2 questions")`}
+        readOnly={loading}
+        className={"mb-2"}
+      />
+
+      <div>
+        <Button
+          disabled={loading}
+          className={"flex justify-center items-center gap-2"}
+          onClick={() => {
+            setLoading(true);
+            setSelfLoading(true);
+            fetch("/api/quizzes/generate", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                noteId: note._id,
+                additionalQuery: quizAdditionalInfo
+              })
+            })
+              .then((res) => {
+                if (!res.ok) throw res.json();
+                return res.json();
+              })
+              .then((data) => {
+                localStorage.setItem("new-quiz", JSON.stringify({
+                  ...data,
+                  visibility: "public"
+                }));
+                router.push(`/quizzes/new`);
+              })
+              .catch(async (err) => {
+                // todo better error handling
+                setLoading(false);
+              });
+          }}
+        >
+          {selfLoading && (
+            <Spinner color={"success"} size={"sm"} />
+          )}
+          Generate
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function GenerateModal({ isOpen, onOpenChange }: {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const router = useRouter();
-  const { note } = useContext(NoteContext);
-  const [flashcardAdditionalInfo, setFlashcardAdditionalInfo] = useState("");
   const [loading, setLoading] = useState(false);
 
   return (
@@ -36,52 +161,15 @@ export default function GenerateModal({ isOpen, onOpenChange }: {
             <ModalHeader>Generate</ModalHeader>
             <Divider />
             <ModalBody className={"py-4"}>
-              <p>Generate a flashcards quiz</p>
-              <Input
-                value={flashcardAdditionalInfo}
-                onChange={(e) => setFlashcardAdditionalInfo(e.target.value)}
-                placeholder={`Additional information (e.g. "each flashcard should have maximum 2 sentences")`}
-                readOnly={loading}
+              <QuizGenerator
+                loading={loading}
+                setLoading={setLoading}
               />
-
-              <div>
-                <Button
-                  disabled={loading}
-                  className={"flex justify-center items-center gap-2"}
-                  onClick={() => {
-                    setLoading(true);
-                    fetch("/api/flashcard-quizzes/generate", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        noteId: note._id,
-                      }),
-                    })
-                      .then((res) => {
-                        if (!res.ok) throw res.json();
-                        return res.json();
-                      })
-                      .then((data) => {
-                        localStorage.setItem("new-flashcard-quiz", JSON.stringify({
-                          ...data,
-                          visibility: "public"
-                        }));
-                        router.push(`/flashcard-quizzes/new`);
-                      })
-                      .catch(async (err) => {
-                        // todo better error handling
-                        setLoading(false);
-                      })
-                  }}
-                >
-                  {loading && (
-                    <Spinner color={"success"} size={"sm"} />
-                  )}
-                  Generate
-                </Button>
-              </div>
+              <Divider />
+              <FlashcardQuizGenerator
+                loading={loading}
+                setLoading={setLoading}
+              />
             </ModalBody>
             <Divider />
             <ModalFooter>
