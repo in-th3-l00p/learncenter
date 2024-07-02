@@ -1,0 +1,229 @@
+"use client";
+
+import { Select, SelectItem } from "@nextui-org/select";
+import { Divider } from "@nextui-org/divider";
+import { Button } from "@nextui-org/button";
+import clsx from "clsx";
+import { Editor } from "@tiptap/core";
+import { AlignCenterIcon, AlignJustifyIcon, AlignLeftIcon, AlignRightIcon, StrikethroughIcon } from "lucide-react";
+
+function ContentType({ editor }: { editor: Editor }) {
+  const TYPES: {
+    [key: string]: {
+      title: string;
+      value: string;
+      isActive: () => boolean;
+      setActive: () => void;
+    };
+  } = {
+    "p": {
+      title: "Paragraph",
+      value: "p",
+      isActive: () => editor.isActive("paragraph"),
+      setActive: () => editor.chain().focus().setParagraph().run()
+    },
+    "h1": {
+      title: "Heading 1",
+      value: "h1",
+      isActive: () => editor.isActive("heading", { level: 1 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 1 }).run()
+    },
+    "h2": {
+      title: "Heading 2",
+      value: "h2",
+      isActive: () => editor.isActive("heading", { level: 2 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 2 }).run()
+    },
+    "h3": {
+      title: "Heading 3",
+      value: "h3",
+      isActive: () => editor.isActive("heading", { level: 3 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 3 }).run()
+    },
+    "h4": {
+      title: "Heading 4",
+      value: "h4",
+      isActive: () => editor.isActive("heading", { level: 4 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 4 }).run()
+    },
+    "h5": {
+      title: "Heading 5",
+      value: "h5",
+      isActive: () => editor.isActive("heading", { level: 5 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 5 }).run()
+    },
+    "h6": {
+      title: "Heading 6",
+      value: "h6",
+      isActive: () => editor.isActive("heading", { level: 6 }),
+      setActive: () => editor.chain().focus().setHeading({ level: 6 }).run()
+    },
+    "blockquote": {
+      title: "Blockquote",
+      value: "blockquote",
+      isActive: () => editor.isActive("blockquote"),
+      setActive: () => editor.chain().focus().setBlockquote().run()
+    },
+    "code_block": {
+      title: "Code Block",
+      value: "code_block",
+      isActive: () => editor.isActive("codeBlock"),
+      setActive: () => editor.chain().focus().setCodeBlock().run()
+    }
+  };
+
+  const getActiveType = () => {
+    for (const key in TYPES) {
+      const type = TYPES[key];
+      if (type.isActive()) {
+        return type;
+      }
+    }
+    return TYPES["p"];
+  }
+
+  return (
+    <Select
+      defaultSelectedKeys={["p"]}
+      selectedKeys={[getActiveType().value]}
+      className={"max-w-40"}
+      size={"sm"}
+      onChange={(e) => {
+        const type = TYPES[e.target.value];
+        if (type) {
+          type.setActive();
+        }
+      }}
+    >
+      {Object.keys(TYPES).map((key) => {
+        const type = TYPES[key];
+        return (
+          <SelectItem
+            key={key}
+            value={type.value}
+          >
+            {type.title}
+          </SelectItem>
+        )
+      })}
+    </Select>
+  );
+}
+
+function StyleButtons({ editor }: { editor: Editor }) {
+  return (
+    <>
+      <Button
+        title={"Bold"}
+        isIconOnly
+        className={clsx("font-bold")}
+        size={"sm"}
+        variant={editor?.isActive("bold") ? "flat" : "solid"}
+        onClick={() => editor?.chain().focus().toggleBold().run()}
+      >
+        B
+      </Button>
+      <Button
+        title={"Italic"}
+        onClick={() => editor?.chain().focus().toggleItalic().run()}
+        variant={editor?.isActive("italic") ? "flat" : "solid"}
+        isIconOnly
+        className={"font-italic"}
+        size={"sm"}
+      >
+        I
+      </Button>
+      <Button
+        title={"Underline"}
+        onClick={() => editor?.chain().focus().toggleUnderline().run()}
+        variant={editor?.isActive("underline") ? "flat" : "solid"}
+        isIconOnly
+        className={"underline"}
+        size={"sm"}
+      >
+        U
+      </Button>
+      <Button
+        title={"Strike"}
+        onClick={() => editor?.chain().focus().toggleStrike().run()}
+        variant={editor?.isActive("strike") ? "flat" : "solid"}
+        isIconOnly
+        className={"text-strike"}
+        size={"sm"}
+      >
+        <StrikethroughIcon size={15} />
+      </Button>
+      <Button
+        title={"Inline code"}
+        onClick={() => editor?.chain().focus().toggleCode().run()}
+        variant={editor?.isActive("code") ? "flat" : "solid"}
+        isIconOnly
+        className={"font-mono"}
+        size={"sm"}
+      >
+        {"</>"}
+      </Button>
+    </>
+  );
+}
+
+function AlignmentButtons({ editor }: { editor: Editor }) {
+  return (
+    <>
+      <Button
+        title={"Align Left"}
+        isIconOnly
+        className={"text-left"}
+        size={"sm"}
+        variant={editor?.isActive({ textAlign: "left" }) ? "flat" : "solid"}
+        onClick={() => editor?.chain().focus().setTextAlign("left").run()}
+      >
+        <AlignLeftIcon size={20} />
+      </Button>
+      <Button
+        title={"Align Center"}
+        isIconOnly
+        className={"text-center"}
+        size={"sm"}
+        variant={editor?.isActive({ textAlign: "center" }) ? "flat" : "solid"}
+        onClick={() => editor?.chain().focus().setTextAlign("center").run()}
+      >
+        <AlignCenterIcon size={20} />
+      </Button>
+      <Button
+        title={"Align Right"}
+        isIconOnly
+        className={"text-right"}
+        size={"sm"}
+        variant={editor?.isActive({ textAlign: "right" }) ? "flat" : "solid"}
+        onClick={() => editor?.chain().focus().setTextAlign("right").run()}
+      >
+        <AlignRightIcon size={20} />
+      </Button>
+      <Button
+        title={"Align Justify"}
+        isIconOnly
+        className={"text-justify"}
+        size={"sm"}
+        variant={editor?.isActive({ textAlign: "justify" }) ? "flat" : "solid"}
+        onClick={() => editor?.chain().focus().setTextAlign("justify").run()}
+      >
+        <AlignJustifyIcon size={20} />
+      </Button>
+    </>
+  );
+}
+
+export default function Toolbar({ editor }: { editor: Editor }) {
+  return (
+    <div
+      className={"flex flex-wrap items-center gap-2 bg-content1 border-content1 rounded-lg mb-8 py-1 px-2"}
+    >
+      <ContentType editor={editor} />
+      <Divider orientation={"vertical"} />
+      <StyleButtons editor={editor} />
+      <Divider orientation={"vertical"} />
+      <AlignmentButtons editor={editor} />
+    </div>
+  )
+}
