@@ -11,6 +11,8 @@ import Quiz from "@/models/Quiz";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import FlashcardQuiz, { FlashcardQuizType } from "@/models/FlashcardQuiz";
 
+import { convert } from "html-to-text";
+
 function DashboardList({
   title,
   items,
@@ -88,7 +90,10 @@ function Notes({ notes }: { notes: INote[] }) {
       create={create}
       href={"/notes/"}
       id={"notes"}
-      items={notes}
+      items={notes.map((note: any) => ({
+        ...note._doc,
+        description: convert(note.content).substring(0, 100)
+      }))}
       title={"Notes"}
     />
   );
