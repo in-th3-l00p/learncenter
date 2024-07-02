@@ -10,13 +10,14 @@ const generator = createGenerator(
       question: "Question 1",
       answer: "Answer 1"
     }],
-    visibility: "public"
+    visibility: "public",
+    owner: ""
   },
   "the title key should contain the title of the quiz," +
   " the description key should contain the description of the quiz, " +
   "and the flashcards key should contain an array of flashcards, " +
   "where each flashcard has a question key and an answer key. " +
-  "the \"visibility\" key should always be public.",
+  "the \"visibility\" key should always be public, and the \"owner\" should be an empty string.",
   zNewFlashcardQuizSchema,
 );
 
