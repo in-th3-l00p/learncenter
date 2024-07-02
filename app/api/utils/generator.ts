@@ -59,9 +59,52 @@ export default function createGenerator(
       response_format: { type: "json_object" }
     });
 
-    return NextResponse.json(
-      JSON.parse(completion.choices[0].message.content!),
-      { status: 200 }
-    );
+    let response = zSchema.safeParse(completion.choices[0].message.content);
+    if (!response.success) {
+      const completionFix = await openai.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content:
+              `You are a ${entityName} generator. ` +
+              `You have already generated a ${entityName}, based on a given note. but you received some errors. ` +
+              `Please fix the errors you made, that are given to you. ` +
+              "You can use an additional query, that will be submitted to you. " +
+              "Output should be json, and have the following format: " +
+              JSON.stringify(schema) + ". " +
+              `so, ${additionalSchemaDescription}.`
+          },
+          {
+            role: "user",
+            content:
+              "Here are the errors you made: " +
+              JSON.stringify(response.error) +
+              ". and here's what you generated: " +
+              JSON.stringify(completion.choices[0].message.content) +
+              ". You will receive the note again, and the additional query."
+          },
+          {
+            role: "user",
+            content: `This is the note title "${note.title}", and this is it's content: "${note.content}".`
+          },
+          {
+            role: "user",
+            content: "Here's an additional query: " + body.data.additionalQuery
+          }
+        ],
+        model: "gpt-3.5-turbo",
+        response_format: { type: "json_object" }
+      });
+
+      response = zSchema.safeParse(completionFix.choices[0].message.content);
+      if (!response.success) {
+        return NextResponse.json(
+          JSON.stringify(response.error),
+          { status: 400 }
+        );
+      }
+    }
+
+    return NextResponse.json(response, { status: 200 });
   }
 }
