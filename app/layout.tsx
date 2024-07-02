@@ -15,6 +15,7 @@ import "@/lib/mongoose";
 import User from "@/models/User";
 import UserContextProvider from "@/components/UserContextProvider";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -67,6 +68,7 @@ export default async function RootLayout({
                 </main>
               </div>
             </Providers>
+            <Toaster />
           </body>
         </html>
       </LayoutProvider>

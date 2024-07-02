@@ -14,11 +14,14 @@ import { useContext, useState } from "react";
 import NoteContext from "@/app/notes/[id]/context/NoteContext";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@nextui-org/spinner";
+import { ZodError } from "zod";
+import { useToast } from "@/components/ui/use-toast";
 
 function FlashcardQuizGenerator({ loading, setLoading }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }) {
+  const { toast } = useToast();
   const { note } = useContext(NoteContext);
   const router = useRouter();
   const [flashcardAdditionalInfo, setFlashcardAdditionalInfo] = useState("");
@@ -63,9 +66,13 @@ function FlashcardQuizGenerator({ loading, setLoading }: {
                 }));
                 router.push(`/flashcard-quizzes/new`);
               })
-              .catch(async (err) => {
-                // todo better error handling
+              .catch(async (err: ZodError) => {
                 setLoading(false);
+                setSelfLoading(false);
+                toast({
+                  title: "Error",
+                  description: (await err).issues[0].message,
+                });
               });
           }}
         >
@@ -83,6 +90,7 @@ function QuizGenerator({ loading, setLoading }: {
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }) {
+  const { toast } = useToast();
   const { note } = useContext(NoteContext);
   const router = useRouter();
   const [quizAdditionalInfo, setQuizAdditionalInfo] = useState("");
@@ -127,9 +135,13 @@ function QuizGenerator({ loading, setLoading }: {
                 }));
                 router.push(`/quizzes/new`);
               })
-              .catch(async (err) => {
-                // todo better error handling
+              .catch(async (err: Promise<ZodError>) => {
                 setLoading(false);
+                setSelfLoading(false);
+                toast({
+                  title: "Error",
+                  description: (await err).issues[0].message,
+                });
               });
           }}
         >

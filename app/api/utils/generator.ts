@@ -48,7 +48,7 @@ export default function createGenerator(
       );
     } catch (error) {
       return NextResponse.json(
-        JSON.stringify(error),
+        error,
         { status: 400 }
       );
     }
