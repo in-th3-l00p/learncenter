@@ -2,6 +2,14 @@ import { ZodError, ZodSchema } from "zod";
 import { NoteType } from "@/models/Note";
 import openai from "@/lib/openai";
 
+function countTokens(text: string) {
+  return text.length / 4;
+}
+
+const MAX_TOKENS = 16385;
+const MAX_ADDITIONAL_QUERY_TOKENS = 1000;
+const SAFETY_MARGIN = 1000;
+
 export async function generation(
   note: NoteType,
   entityName: string,
@@ -10,6 +18,30 @@ export async function generation(
   zodSchema: ZodSchema,
   additionalQuery?: string
 ) {
+  const additionalQueryTokens = additionalQuery ? countTokens(additionalQuery) : 0;
+  if (additionalQuery && additionalQueryTokens > MAX_ADDITIONAL_QUERY_TOKENS)
+    throw {
+      issues: [{
+        path: ["additionalQuery"],
+        message: "Additional query is too long."
+      }]
+    };
+
+  const tokens =
+    countTokens(note.title) +
+    countTokens(note.content) +
+    additionalQueryTokens +
+    countTokens(entityName) +
+    countTokens(additionalSchemaDescription) +
+    SAFETY_MARGIN;
+  if (tokens > MAX_TOKENS)
+    throw {
+      issues: [{
+        path: ["note"],
+        message: "Note is too long."
+      }]
+    };
+
   let generation = zodSchema.safeParse(await initialGeneration(
     note.title,
     note.content,
@@ -37,7 +69,7 @@ export async function generation(
   return generation.data;
 }
 
-export async function initialGeneration(
+async function initialGeneration(
   noteTitle: string,
   noteContent: string,
   entityName: string,
@@ -73,7 +105,7 @@ export async function initialGeneration(
   return JSON.parse(generation.choices[0].message.content!);
 }
 
-export async function initialGenerationFix(
+async function initialGenerationFix(
   generation: any,
   errors: ZodError,
   noteTitle: string,
