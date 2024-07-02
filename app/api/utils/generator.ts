@@ -34,16 +34,23 @@ export default function createGenerator(
     if (note.users[0].userId.toString() !== session.user.id)
       return UnauthorizedResponse;
 
-    return NextResponse.json(
-      await generation(
-        note,
-        entityName,
-        schema,
-        additionalSchemaDescription,
-        zodSchema,
-        body.data.additionalQuery
-      ),
-      { status: 200 }
-    );
+    try {
+      return NextResponse.json(
+        await generation(
+          note,
+          entityName,
+          schema,
+          additionalSchemaDescription,
+          zodSchema,
+          body.data.additionalQuery
+        ),
+        { status: 200 }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        JSON.stringify(error),
+        { status: 400 }
+      );
+    }
   }
 }

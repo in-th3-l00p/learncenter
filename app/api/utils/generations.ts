@@ -8,7 +8,7 @@ function countTokens(text: string) {
 
 const MAX_TOKENS = 16385;
 const MAX_ADDITIONAL_QUERY_TOKENS = 1000;
-const SAFETY_MARGIN = 1000;
+const SAFETY_MARGIN = 5000;
 
 export async function generation(
   note: NoteType,
@@ -30,7 +30,7 @@ export async function generation(
   const tokens =
     countTokens(note.title) +
     countTokens(note.content) +
-    additionalQueryTokens +
+    MAX_ADDITIONAL_QUERY_TOKENS +
     countTokens(entityName) +
     countTokens(additionalSchemaDescription) +
     SAFETY_MARGIN;
