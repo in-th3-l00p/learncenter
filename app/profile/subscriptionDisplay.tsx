@@ -7,11 +7,11 @@ import stripe from "@/lib/stripe";
 // @ts-ignore
 export async function SubscriptionDisplay({ user }: { user: IUser }): any {
   const subscription =
-    user && user.subscription !== "false"
-      ? await stripe.subscriptions.retrieve(user.subscription)
+    user && user.subscriptionId !== "false"
+      ? await stripe.subscriptions.retrieve(user.subscriptionId)
       : null;
 
-  if (user.subscription === "false") return <p>Your not subscribed</p>;
+  if (user.subscriptionId === "false") return <p>Your not subscribed</p>;
   const plan = await stripe.plans.retrieve((subscription as any).plan.id);
   const product = await stripe.products.retrieve(plan.product as string);
 
