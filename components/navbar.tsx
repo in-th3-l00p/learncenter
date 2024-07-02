@@ -97,7 +97,12 @@ const MobileNavbarAccount = () => {
   if (session.status === "unauthenticated")
     return (
       <NavbarMenuItem>
-        <Link color={"primary"} href="#" size="lg" onClick={() => signIn()}>
+        <Link
+          color={"foreground"}
+          href="#"
+          size="lg"
+          onClick={() => signIn()}
+        >
           Login
         </Link>
       </NavbarMenuItem>
@@ -106,7 +111,7 @@ const MobileNavbarAccount = () => {
   return (
     <>
       <NavbarMenuItem className={"pt-4 mb-4 mt-auto border-t"}>
-        <Link color={"primary"} href={"/dashboard"} size="lg">
+        <Link color={"foreground"} href={"/dashboard"} size="lg">
           Dashboard
         </Link>
       </NavbarMenuItem>
@@ -123,12 +128,12 @@ const MobileNavbarAccount = () => {
         />
       </NavbarMenuItem>
       <NavbarMenuItem>
-        <Link color={"primary"} href={"/profile"} size="lg">
+        <Link color={"foreground"} href={"/profile"} size="lg">
           Profile
         </Link>
       </NavbarMenuItem>
       <NavbarMenuItem className={"mb-8"}>
-        <Link color={"primary"} href="#" size="lg" onClick={() => signOut()}>
+        <Link color={"foreground"} href="#" size="lg" onClick={() => signOut()}>
           Logout
         </Link>
       </NavbarMenuItem>
@@ -149,14 +154,8 @@ const MobileNavbarContent = () => {
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
+                color={"foreground"}
+                href={item.href}
                 size="lg"
               >
                 {item.label}
