@@ -4,13 +4,13 @@ import { useContext } from "react";
 
 import { Answers, Options } from "@/app/quizzes/components/options";
 import { subtitle } from "@/components/primitives";
-import { DropdownSelector } from "@/app/quizzes/components/dropdownSelector";
-import { spacing } from "@/app/quizzes/components/primitives";
+import { DropdownSelector } from "@/components/NewForm/dropdownSelector";
+import { spacing } from "@/components/NewForm/primitives";
 import QuizContext, {
   IQuizContext,
   NewQuizType,
-} from "@/app/quizzes/context/QuizContext";
-import ZodErrorParagraph from "@/components/ZodErrorParagraph";
+} from "@/app/quizzes/new/context/QuizContext";
+import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
 
 function QuestionDisplay() {
   const { quiz, setQuiz, selectedQuestionIndex, setSelectedQuestionIndex } =
@@ -21,7 +21,7 @@ function QuestionDisplay() {
 
   return (
     <div className={"mb-8"}>
-      <ZodErrorParagraph
+      <QuizZodErrorParagraph
         path={[`questions`, selectedQuestionIndex, "question"]}
       />
       <Input
@@ -38,7 +38,7 @@ function QuestionDisplay() {
         }}
       />
 
-      <ZodErrorParagraph
+      <QuizZodErrorParagraph
         path={[`questions`, selectedQuestionIndex, "description"]}
       />
       <Textarea

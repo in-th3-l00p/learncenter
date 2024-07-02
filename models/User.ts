@@ -5,16 +5,20 @@ export interface IUser {
   name: string;
   email: string;
   image: string;
-  subscription: string;
+  customerId: string;
+  subscriptionId: string;
 }
 
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
   image: String,
-  subscription: {
+  customerId: {
     type: String,
-    default: false,
+    required: false,
+  },
+  subscriptionId: {
+    type: String,
     required: false,
   },
 });

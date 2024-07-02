@@ -5,9 +5,13 @@ import { redirect } from "next/navigation";
 
 import User from "@/models/User";
 import { subtitle, title } from "@/components/primitives";
+import Note, { INote } from "@/models/Note";
 import { List, ListCard } from "@/app/dashboard/list";
 import Quiz from "@/models/Quiz";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import FlashcardQuiz, { FlashcardQuizType } from "@/models/FlashcardQuiz";
+
+import { convert } from "html-to-text";
 
 function DashboardList({
   title,
@@ -60,6 +64,41 @@ function DashboardList({
   );
 }
 
+function Notes({ notes }: { notes: INote[] }) {
+  async function create() {
+    "use server";
+
+    const session = await getServerSession(authOptions);
+
+    if (!session) return;
+
+    const note = await Note.create({
+      title: `Note #${(await Note.countDocuments()) + 1}`,
+      content: "",
+      users: [
+        {
+          userId: session?.user.id,
+        },
+      ],
+    });
+
+    return redirect(`/notes/${note._id}`);
+  }
+
+  return (
+    <DashboardList
+      create={create}
+      href={"/notes/"}
+      id={"notes"}
+      items={notes.map((note: any) => ({
+        ...note._doc,
+        description: convert(note.content).substring(0, 100)
+      }))}
+      title={"Notes"}
+    />
+  );
+}
+
 function Quizzes({ quizzes }: { quizzes: any[] }) {
   async function create() {
     "use server";
@@ -78,6 +117,24 @@ function Quizzes({ quizzes }: { quizzes: any[] }) {
   );
 }
 
+function FlashcardQuizzes({ flashcardQuizzes }: { flashcardQuizzes: FlashcardQuizType[] }) {
+  async function create() {
+    "use server";
+
+    return redirect(`/flashcard-quizzes/new`);
+  }
+
+  return (
+    <DashboardList
+      create={create}
+      href={"/flashcard-quizzes/"}
+      id={"flashcard-quizzes"}
+      items={flashcardQuizzes}
+      title={"Flashcard Quizzes"}
+    />
+  );
+}
+
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
@@ -87,8 +144,20 @@ export default async function Dashboard() {
 
   if (!user) return redirect("/api/auth/signin");
 
+  const notes = (
+    await Note.find({ "users.userId": user._id }).sort({
+      createdAt: "asc",
+    })
+  ).reverse();
+
   const quizzes = (
     await Quiz.find({ owner: user._id }).sort({
+      createdAt: "asc",
+    })
+  ).reverse();
+
+  const flashcardQuizzes = (
+    await FlashcardQuiz.find({ owner: user._id }).sort({
       createdAt: "asc",
     })
   ).reverse();
@@ -100,7 +169,9 @@ export default async function Dashboard() {
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
       </div>
 
+      <Notes notes={notes} />
       <Quizzes quizzes={quizzes} />
+      <FlashcardQuizzes flashcardQuizzes={flashcardQuizzes} />
     </section>
   );
 }

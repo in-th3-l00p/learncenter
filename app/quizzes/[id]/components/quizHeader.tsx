@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { subtitle, title } from "@/components/primitives";
 import { QuizType } from "@/models/Quiz";

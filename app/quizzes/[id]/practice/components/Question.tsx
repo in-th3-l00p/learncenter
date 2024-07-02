@@ -5,7 +5,7 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { Button } from "@nextui-org/button";
 import clsx from "clsx";
 
-import PracticeContext from "@/app/api/quizzes/[id]/context/PracticeContext";
+import PracticeContext from "@/app/quizzes/[id]/practice/context/PracticeContext";
 
 export default function Question() {
   const { quiz } = useContext(PracticeContext);

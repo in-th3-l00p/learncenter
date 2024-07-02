@@ -8,13 +8,16 @@ import { Spinner } from "@nextui-org/spinner";
 import { QuizInformationInput } from "@/app/quizzes/components/quizInformationInput";
 import { Questions } from "@/app/quizzes/components/questions";
 import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import QuizContext from "@/app/quizzes/new/context/QuizContext";
 import { QuizType } from "@/models/Quiz";
+import { useBeforeUnloadHandler } from "@/components/utils/beforeUnloadHandler";
+import { ZodError } from "zod";
 
 export function QuizUpdate({ initialQuiz }: { initialQuiz: string }) {
-  const { quiz, setQuiz } = useContext(QuizContext) as {
+  const { quiz, setQuiz, setError } = useContext(QuizContext) as {
     quiz: QuizType;
     setQuiz: (quiz: QuizType) => void;
+    setError: (error: ZodError | null) => void;
   };
   const savedQuiz = useRef(initialQuiz);
   const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
@@ -25,29 +28,7 @@ export function QuizUpdate({ initialQuiz }: { initialQuiz: string }) {
     setUnsavedChanges(savedQuiz.current !== JSON.stringify(quiz));
   }, [quiz]);
 
-  const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
-    let confirmationMessage =
-      "You have unsaved progress." +
-      "If you leave before saving, your changes will be lost.";
-
-    e.returnValue = confirmationMessage; //Gecko + IE
-
-    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-  };
-
-  useEffect(() => {
-    if (!unsavedChanges) {
-      window.removeEventListener("beforeunload", beforeUnloadHandler);
-
-      return;
-    }
-
-    window.addEventListener("beforeunload", beforeUnloadHandler);
-
-    return () => {
-      window.removeEventListener("beforeunload", beforeUnloadHandler);
-    };
-  }, [unsavedChanges]);
+  useBeforeUnloadHandler(unsavedChanges);
 
   return (
     <div className={"max-w-[800px] mx-auto"}>
@@ -78,14 +59,16 @@ export function QuizUpdate({ initialQuiz }: { initialQuiz: string }) {
             body: JSON.stringify(quiz),
           })
             .then((res) => {
-              if (!res.ok) throw res;
+              if (!res.ok) throw res.json();
 
               return res.json();
             })
             .then((data) => {
               savedQuiz.current = JSON.stringify(data);
               setQuiz(data);
+              setError(null);
             })
+            .catch(async (err: Promise<ZodError>) => setError(await err))
             .finally(() => setSaving(false));
         }}
       >

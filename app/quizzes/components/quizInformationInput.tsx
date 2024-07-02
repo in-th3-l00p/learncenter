@@ -2,9 +2,9 @@ import { Input, Textarea } from "@nextui-org/input";
 import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
-import { spacing } from "@/app/quizzes/components/primitives";
-import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
-import ZodErrorParagraph from "@/components/ZodErrorParagraph";
+import { spacing } from "@/components/NewForm/primitives";
+import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
+import QuizZodErrorParagraph from "@/app/quizzes/components/QuizZodErrorParagraph";
 
 export function QuizInformationInput() {
   const { quiz, setQuiz } = useContext(QuizContext) as {
@@ -16,7 +16,7 @@ export function QuizInformationInput() {
     <div className={spacing()}>
       <h2 className={subtitle()}>Tell us about the quiz:</h2>
 
-      <ZodErrorParagraph path={["title"]} />
+      <QuizZodErrorParagraph path={["title"]} />
       <Input
         className={"mb-4"}
         label={"Title"}
@@ -26,7 +26,7 @@ export function QuizInformationInput() {
         onChange={(e) => setQuiz({ ...quiz, title: e.target.value })}
       />
 
-      <ZodErrorParagraph path={["description"]} />
+      <QuizZodErrorParagraph path={["description"]} />
       <Textarea
         label={"Description"}
         placeholder={"Describe your quiz"}

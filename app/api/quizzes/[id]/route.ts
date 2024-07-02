@@ -40,8 +40,6 @@ export async function PUT(
     quiz = await Quiz.findById(params.id);
 
     if (!quiz) return NotFoundResponse;
-
-    if (quiz.owner.toString() !== session.user.id) return UnauthorizedResponse;
   } catch (e) {
     return NotFoundResponse;
   }

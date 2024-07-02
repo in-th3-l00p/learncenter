@@ -1,19 +1,18 @@
 "use client";
 
-import { useContext } from "react";
 import clsx from "clsx";
 
-import QuizContext from "@/app/quizzes/context/QuizContext";
+import { ZodError } from "zod";
 
 export default function ZodErrorParagraph({
+  error,
   className,
   path,
 }: {
+  error: ZodError | null;
   className?: string;
   path: (string | number)[];
 }) {
-  const { error } = useContext(QuizContext);
-
   if (error === null) return <></>;
 
   const issues = error.issues.filter(

@@ -2,11 +2,11 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { useContext } from "react";
 
 import { subtitle } from "@/components/primitives";
-import { spacing } from "@/app/quizzes/components/primitives";
+import { spacing } from "@/components/NewForm/primitives";
 import QuizContext, {
   IQuizContext,
   NewQuizType,
-} from "@/app/quizzes/context/QuizContext";
+} from "@/app/quizzes/new/context/QuizContext";
 
 export function QuizVisibility() {
   const { quiz, setQuiz } = useContext(QuizContext) as IQuizContext & {

@@ -11,7 +11,7 @@ import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { QuizInformationInput } from "@/app/quizzes/components/quizInformationInput";
 import { Questions } from "@/app/quizzes/components/questions";
 import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
-import QuizContext, { NewQuizType } from "@/app/quizzes/context/QuizContext";
+import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
 
@@ -46,6 +46,8 @@ export default function NewQuiz() {
     useLocalStorageState<number>("selected-option-index", 0);
   const [error, setError] = useState<ZodError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  console.log(quiz);
 
   useEffect(() => {
     if (
@@ -97,10 +99,11 @@ export default function NewQuiz() {
           <QuizVisibility />
 
           <Button
-            className={"block mx-auto mb-8"}
+            className={"block mx-auto mb-16"}
             type={"button"}
             onClick={() => {
               setLoading(true);
+              console.log(quiz);
               fetch("/api/quizzes", {
                 method: "POST",
                 headers: {
@@ -125,6 +128,7 @@ export default function NewQuiz() {
                 })
                 .catch(async (resp) => {
                   setError(await resp.json());
+                  setLoading(false);
                 });
             }}
           >
