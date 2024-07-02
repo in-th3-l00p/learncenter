@@ -1,17 +1,18 @@
-import { Link } from "@nextui-org/link";
 import { Button } from "@nextui-org/button";
 
 import { IUser } from "@/models/User";
 import stripe from "@/lib/stripe";
+import createBillingPortal from "@/lib/serverActions/createBillingPortal";
 
 // @ts-ignore
 export async function SubscriptionDisplay({ user }: { user: IUser }): any {
+
   const subscription =
-    user && user.subscriptionId !== "false"
+    user && user.subscriptionId
       ? await stripe.subscriptions.retrieve(user.subscriptionId)
       : null;
 
-  if (user.subscriptionId === "false") return <p>Your not subscribed</p>;
+  if (!user.subscriptionId) return <p>Your not subscribed</p>;
   const plan = await stripe.plans.retrieve((subscription as any).plan.id);
   const product = await stripe.products.retrieve(plan.product as string);
 
@@ -29,14 +30,16 @@ export async function SubscriptionDisplay({ user }: { user: IUser }): any {
         ).toLocaleDateString()}
       </p>
 
-      <div className={"mt-4"}>
+      <form
+        action={createBillingPortal}
+        className={"mt-4"}
+      >
         <Button
-          as={Link}
-          href={"https://billing.stripe.com/p/login/test_6oEbMtfpA77DdI4fYY"}
+          type={"submit"}
         >
           Manage
         </Button>
-      </div>
+      </form>
     </>
   );
 }

@@ -14,15 +14,29 @@ export async function POST(req: Request) {
     );
 
     switch (event.type) {
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
+        await User.findOneAndUpdate({
+            customerId: event.data.object.customer,
+          }, {
+            subscriptionId: event.data.object.id,
+          });
+
+        break;
+      case "customer.subscription.deleted":
+        await User.findOneAndUpdate({
+            customerId: event.data.object.customer,
+          }, {
+            subscriptionId: null,
+          });
+
+        break;
       case "checkout.session.completed": {
-        await User.findOneAndUpdate(
-          {
-            email: event.data.object.customer_email,
-          },
-          {
-            subscription: event.data.object.subscription,
-          },
-        );
+        await User.findOneAndUpdate( {
+            customerId: event.data.object.customer,
+          }, {
+            subscriptionId: event.data.object.subscription,
+          });
 
         break;
       }
