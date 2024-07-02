@@ -49,9 +49,7 @@ export default async function RootLayout({
     <UserContextProvider jsonUser={user ? JSON.stringify(user) : null}>
       <LayoutProvider>
         <html suppressHydrationWarning lang="en">
-          <head>
-            <script async src="https://js.stripe.com/v3/pricing-table.js" />
-          </head>
+          <head />
           <body
             className={clsx(
               "min-h-screen bg-background font-sans antialiased",
