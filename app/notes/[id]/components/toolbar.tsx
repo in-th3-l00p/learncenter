@@ -5,7 +5,17 @@ import { Divider } from "@nextui-org/divider";
 import { Button } from "@nextui-org/button";
 import clsx from "clsx";
 import { Editor } from "@tiptap/core";
-import { AlignCenterIcon, AlignJustifyIcon, AlignLeftIcon, AlignRightIcon, StrikethroughIcon } from "lucide-react";
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+  LinkIcon,
+  StrikethroughIcon
+} from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
+import { Input } from "@nextui-org/input";
+import { useEffect, useState } from "react";
 
 function ContentType({ editor }: { editor: Editor }) {
   const TYPES: {
@@ -214,6 +224,74 @@ function AlignmentButtons({ editor }: { editor: Editor }) {
   );
 }
 
+function ContentButtons({ editor }: { editor: Editor }) {
+  const [isLinkPopoverOpen, setIsLinkPopoverOpen] = useState(false);
+  const [link, setLink] = useState("");
+
+  useEffect(() => {
+    if (!isLinkPopoverOpen) {
+      setLink("");
+      return;
+    }
+
+    const link = editor?.isActive("link");
+    if (link)
+      setLink(editor.getAttributes("link").href);
+  }, [isLinkPopoverOpen]);
+
+  return (
+    <>
+      <Popover
+        placement={"bottom"}
+        isOpen={isLinkPopoverOpen}
+        onOpenChange={(open) => setIsLinkPopoverOpen(open)}
+      >
+        <PopoverTrigger>
+          <Button
+            title={"Link"}
+            isIconOnly
+            className={"text-link"}
+            size={"sm"}
+            variant={editor?.isActive("link") ? "flat" : "solid"}
+          >
+            <LinkIcon size={15} />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className={"py-2"}>
+          <Input
+            placeholder={"Enter link"}
+            size={"sm"}
+            className={"w-40 mb-2"}
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+          />
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!link) {
+                editor.chain().focus().unsetLink().run();
+                return;
+              }
+              editor.chain().focus().toggleLink({ href: link }).run();
+              setIsLinkPopoverOpen(false);
+            }}
+            className={"w-full"}
+          >
+            <Button
+              title={"Save"}
+              type={"submit"}
+              size={"sm"}
+            >
+              Save
+            </Button>
+          </form>
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+}
+
 export default function Toolbar({ editor }: { editor: Editor }) {
   return (
     <div
@@ -224,6 +302,8 @@ export default function Toolbar({ editor }: { editor: Editor }) {
       <StyleButtons editor={editor} />
       <Divider orientation={"vertical"} />
       <AlignmentButtons editor={editor} />
+      <Divider orientation={"vertical"} />
+      <ContentButtons editor={editor} />
     </div>
   )
 }

@@ -12,6 +12,7 @@ import { Placeholder } from "@tiptap/extension-placeholder";
 import { Underline } from "@tiptap/extension-underline";
 import Toolbar from "@/app/notes/[id]/components/toolbar";
 import { TextAlign } from "@tiptap/extension-text-align";
+import Link from '@tiptap/extension-link'
 
 export default function Editor() {
   const {note, setNote} = useContext(NoteContext);
@@ -35,7 +36,8 @@ export default function Editor() {
       Underline,
       TextAlign.configure({
         types: ["heading", "paragraph"],
-      })
+      }),
+      Link
     ],
     editorProps: {
       attributes: {
