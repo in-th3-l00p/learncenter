@@ -9,13 +9,14 @@ import {
   AlignCenterIcon,
   AlignJustifyIcon,
   AlignLeftIcon,
-  AlignRightIcon,
+  AlignRightIcon, ImageIcon,
   LinkIcon,
   StrikethroughIcon
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { Input } from "@nextui-org/input";
 import { useEffect, useState } from "react";
+import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/modal";
 
 function ContentType({ editor }: { editor: Editor }) {
   const TYPES: {
@@ -224,7 +225,7 @@ function AlignmentButtons({ editor }: { editor: Editor }) {
   );
 }
 
-function ContentButtons({ editor }: { editor: Editor }) {
+function LinkButton({ editor }: { editor: Editor }) {
   const [isLinkPopoverOpen, setIsLinkPopoverOpen] = useState(false);
   const [link, setLink] = useState("");
 
@@ -240,54 +241,92 @@ function ContentButtons({ editor }: { editor: Editor }) {
   }, [isLinkPopoverOpen]);
 
   return (
-    <>
-      <Popover
-        placement={"bottom"}
-        isOpen={isLinkPopoverOpen}
-        onOpenChange={(open) => setIsLinkPopoverOpen(open)}
-      >
-        <PopoverTrigger>
-          <Button
-            title={"Link"}
-            isIconOnly
-            className={"text-link"}
-            size={"sm"}
-            variant={editor?.isActive("link") ? "flat" : "solid"}
-          >
-            <LinkIcon size={15} />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className={"py-2"}>
-          <Input
-            placeholder={"Enter link"}
-            size={"sm"}
-            className={"w-40 mb-2"}
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-          />
+    <Popover
+      placement={"bottom"}
+      isOpen={isLinkPopoverOpen}
+      onOpenChange={(open) => setIsLinkPopoverOpen(open)}
+    >
+      <PopoverTrigger>
+        <Button
+          title={"Link"}
+          isIconOnly
+          className={"text-link"}
+          size={"sm"}
+          variant={editor?.isActive("link") ? "flat" : "solid"}
+        >
+          <LinkIcon size={15} />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className={"py-2"}>
+        <Input
+          placeholder={"Enter link"}
+          size={"sm"}
+          className={"w-40 mb-2"}
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+        />
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!link) {
-                editor.chain().focus().unsetLink().run();
-                return;
-              }
-              editor.chain().focus().toggleLink({ href: link }).run();
-              setIsLinkPopoverOpen(false);
-            }}
-            className={"w-full"}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!link) {
+              editor.chain().focus().unsetLink().run();
+              return;
+            }
+            editor.chain().focus().toggleLink({ href: link }).run();
+            setIsLinkPopoverOpen(false);
+          }}
+          className={"w-full"}
+        >
+          <Button
+            title={"Save"}
+            type={"submit"}
+            size={"sm"}
           >
-            <Button
-              title={"Save"}
-              type={"submit"}
-              size={"sm"}
-            >
-              Save
-            </Button>
-          </form>
-        </PopoverContent>
-      </Popover>
+            Save
+          </Button>
+        </form>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function ImageButton({ editor }: { editor: Editor }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  // todo: implement (too lazy now)
+  return (
+    <>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Upload an image</ModalHeader>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Button
+        title={"Image"}
+        type={"button"}
+        isIconOnly
+        size={"sm"}
+        onClick={() => onOpen()}
+      >
+        <ImageIcon size={15} />
+      </Button>
+    </>
+  );
+}
+
+function ContentButtons({ editor }: { editor: Editor }) {
+  return (
+    <>
+      <LinkButton editor={editor} />
+      <ImageButton editor={editor} />
     </>
   );
 }
