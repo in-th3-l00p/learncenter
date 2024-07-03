@@ -16,7 +16,8 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { Input } from "@nextui-org/input";
 import { useEffect, useState } from "react";
-import { Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/modal";
+import { Modal, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/modal";
+import { HexColorPicker } from "react-colorful";
 
 function ContentType({ editor }: { editor: Editor }) {
   const TYPES: {
@@ -121,6 +122,34 @@ function ContentType({ editor }: { editor: Editor }) {
   );
 }
 
+function TextColorButton({ editor }: { editor: Editor }) {
+  return (
+    <>
+      <Popover
+        placement={"bottom"}
+      >
+        <PopoverTrigger>
+          <Button
+            title={"Text color"}
+            isIconOnly
+            size={"sm"}
+          >
+            <div
+              className="w-3 h-3 rounded-full"
+              style={{ backgroundColor: editor.getAttributes("textStyle").color }}
+            />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <HexColorPicker onChange={(color) => {
+            editor.chain().setColor(color).run();
+          }} />
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+}
+
 function StyleButtons({ editor }: { editor: Editor }) {
   return (
     <>
@@ -174,6 +203,7 @@ function StyleButtons({ editor }: { editor: Editor }) {
       >
         {"</>"}
       </Button>
+      <TextColorButton editor={editor} />
     </>
   );
 }
