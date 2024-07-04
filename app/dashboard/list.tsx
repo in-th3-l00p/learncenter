@@ -35,8 +35,8 @@ export function ListCard({
       <CardHeader>
         <h3 className={listCardTitle()}>{title}</h3>
       </CardHeader>
-      <CardBody>
-        <p>
+      <CardBody className={"overflow-hidden"}>
+        <p className={"overflow-ellipsis"}>
           {description.length > 0
             ? description
             : "There is nothing written yet."}
