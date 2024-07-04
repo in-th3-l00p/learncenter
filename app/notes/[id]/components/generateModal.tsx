@@ -60,6 +60,7 @@ function FlashcardQuizGenerator({ loading, setLoading }: {
                 return res.json();
               })
               .then((data) => {
+                localStorage.setItem("selected-flashcard-index", "0");
                 localStorage.setItem("new-flashcard-quiz", JSON.stringify({
                   ...data,
                   visibility: "public"
@@ -129,6 +130,8 @@ function QuizGenerator({ loading, setLoading }: {
                 return res.json();
               })
               .then((data) => {
+                localStorage.setItem("selected-question-index", "0");
+                localStorage.setItem("selected-option-index", "0");
                 localStorage.setItem("new-quiz", JSON.stringify({
                   ...data,
                   visibility: "public"

@@ -6,7 +6,7 @@ function countTokens(text: string) {
   return text.length / 4;
 }
 
-const MAX_TOKENS = 16385;
+const MAX_TOKENS = 30000;
 const MAX_ADDITIONAL_QUERY_TOKENS = 1000;
 const SAFETY_MARGIN = 5000;
 
@@ -84,6 +84,8 @@ async function initialGeneration(
         content:
           `You are a ${entityName} generator. ` +
           `Please generate a ${entityName} based on the following note. ` +
+          `Create as many ${entityName} as you can, ` +
+          `try creating one for each paragraph, or piece of information. ` +
           "You can use an additional query, that will be submitted to you. " +
           "Output should be json, and have the following format: " +
           JSON.stringify(schema) + ". " +
@@ -98,7 +100,7 @@ async function initialGeneration(
         content: "Here's an additional query: " + additionalQuery
       }
     ],
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o",
     response_format: { type: "json_object" }
   });
 
