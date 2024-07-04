@@ -17,8 +17,7 @@ export default function GenerationAccordion({ entityName, actions }: {
     name: string;
     handler: (
       note: NoteType,
-      selectStart: number,
-      selectEnd: number
+      selection: string
     ) => void;
   }[]
 }) {
@@ -98,15 +97,7 @@ export default function GenerationAccordion({ entityName, actions }: {
                     if (!node || !divElement.contains(node.parentElement))
                       return;
 
-                    let start = selection?.anchorOffset!;
-                    let end = selection?.focusOffset!;
-                    if (start > end) {
-                      const temp = start;
-                      start = end;
-                      end = temp;
-                    }
-
-                    action.handler(note, start, end);
+                    action.handler(note, selection.toString());
                   }}
                 >
                   {action.name}
