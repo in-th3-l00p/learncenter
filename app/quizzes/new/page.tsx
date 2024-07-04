@@ -14,6 +14,7 @@ import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
 import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
+import GenerationAccordion from "@/components/NewForm/generation/GenerationAccordion";
 
 const defaultQuiz: NewQuizType = {
   title: "",
@@ -46,8 +47,6 @@ export default function NewQuiz() {
     useLocalStorageState<number>("selected-option-index", 0);
   const [error, setError] = useState<ZodError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  console.log(quiz);
 
   useEffect(() => {
     if (
@@ -94,6 +93,15 @@ export default function NewQuiz() {
         </div>
 
         <div className={"max-w-[800px] mx-auto"}>
+          <GenerationAccordion
+            entityName={"quiz"}
+            actions={[{
+              name: "Generate questions",
+              handler: (note, selectStart, selectEnd) => {
+                console.log(note, selectStart, selectEnd);
+              }
+            }]}
+          />
           <QuizInformationInput />
           <Questions />
           <QuizVisibility />
@@ -103,7 +111,6 @@ export default function NewQuiz() {
             type={"button"}
             onClick={() => {
               setLoading(true);
-              console.log(quiz);
               fetch("/api/quizzes", {
                 method: "POST",
                 headers: {

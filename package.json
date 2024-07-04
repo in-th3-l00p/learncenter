@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@auth/mongodb-adapter": "^3.2.0",
+		"@nextui-org/accordion": "^2.0.35",
 		"@nextui-org/avatar": "^2.0.30",
 		"@nextui-org/breadcrumbs": "^2.0.10",
 		"@nextui-org/button": "2.0.33",
