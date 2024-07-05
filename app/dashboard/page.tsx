@@ -11,6 +11,8 @@ import { Notes } from "@/app/dashboard/components/notes";
 import { Quizzes } from "@/app/dashboard/components/quizzes";
 import { FlashcardQuizzes } from "@/app/dashboard/components/flashcardQuizzes";
 import ErrorToasts from "@/app/dashboard/components/errorToasts";
+import QuizChart from "@/app/dashboard/components/charts/quizChart";
+import FlashcardQuizChart from "@/app/dashboard/components/charts/flashcardQuizChart";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -44,6 +46,11 @@ export default async function Dashboard() {
       <div className="mb-16">
         <h1 className={title()}>Dashboard</h1>
         <h2 className={subtitle()}>Welcome, {user.name}</h2>
+      </div>
+
+      <div className={"mb-16 flex flex-wrap justify-between gap-16"}>
+        <QuizChart />
+        <FlashcardQuizChart />
       </div>
 
       <Notes notes={notes} />
