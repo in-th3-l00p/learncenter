@@ -1,6 +1,6 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import Note from "@/models/Note";
 import User from "@/models/User";
@@ -31,7 +31,7 @@ export default async function Layout({
       return redirect("/dashboard?unauthorized");
     }
   } catch (e) {
-    return redirect("/dashboard?unauthorized");
+    notFound();
   }
 
   return (

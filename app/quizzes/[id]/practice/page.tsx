@@ -9,11 +9,13 @@ import LoadingPage from "@/components/loadingPage";
 import PracticeContext from "@/app/quizzes/[id]/practice/context/PracticeContext";
 import Question from "@/app/quizzes/[id]/practice/components/Question";
 import { useRouter } from "next/navigation";
+import NotFound from "@/components/notFound";
 
 export default function Practice({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [quiz, setQuiz] = useState<QuizType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchQuiz() {
@@ -21,7 +23,7 @@ export default function Practice({ params }: { params: { id: string } }) {
         cache: "no-cache"
       });
       if (response.status === 404)
-        return router.push("/dashboard"); // todo implement 404 page
+        return setNotFound(true);
       if (response.status === 401)
         return router.push("/dashboard?unauthorized");
       if (!response.ok)
@@ -36,6 +38,7 @@ export default function Practice({ params }: { params: { id: string } }) {
       .then(() => setLoading(false));
   }, []);
 
+  if (notFound) return <NotFound />;
   if (loading || !quiz) return <LoadingPage />;
 
   return (

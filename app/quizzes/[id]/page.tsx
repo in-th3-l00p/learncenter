@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 import clsx from "clsx";
 
@@ -26,11 +26,16 @@ export default async function QuizDisplay({
 
   if (!user) return redirect("/api/auth/signin");
 
-  const quiz = await Quiz.findById(params.id);
+  let quiz;
+  try {
+    quiz = await Quiz.findById(params.id);
 
-  if (!quiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
+    if (!quiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
 
-  quiz._id = quiz._id.toString();
+    quiz._id = quiz._id.toString();
+  } catch (_) {
+    notFound();
+  }
 
   return (
     <QuizContextProvider quiz={JSON.stringify(quiz)}>

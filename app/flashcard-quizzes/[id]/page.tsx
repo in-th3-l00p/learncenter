@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import User from "@/models/User";
 import FlashcardQuizContextProvider from "@/app/flashcard-quizzes/[id]/components/FlashcardQuizContextProvider";
 import FlashcardQuizHeader from "@/app/flashcard-quizzes/[id]/components/flashcardQuizHeader";
@@ -23,9 +23,14 @@ export default async function FlashcardQuizDisplay({ params }: {
 
   if (!user) return redirect("/api/auth/signin");
 
-  const flashcardQuiz = await FlashcardQuiz.findById(params.id);
+  let flashcardQuiz;
+  try {
+    flashcardQuiz = await FlashcardQuiz.findById(params.id);
 
-  if (!flashcardQuiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
+    if (!flashcardQuiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
+  } catch (_) {
+    notFound();
+  }
 
   flashcardQuiz._id = flashcardQuiz._id.toString();
 

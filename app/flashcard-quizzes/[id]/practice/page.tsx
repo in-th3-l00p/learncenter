@@ -8,6 +8,7 @@ import { title } from "@/components/primitives";
 import { FlashcardQuizType } from "@/models/FlashcardQuiz";
 import Flashcard from "@/app/flashcard-quizzes/[id]/practice/components/Flashcard";
 import { useRouter } from "next/navigation";
+import NotFound from "@/components/notFound";
 
 export default async function Practice({ params }: {
   params: { id: string }
@@ -15,6 +16,7 @@ export default async function Practice({ params }: {
   const router = useRouter();
   const [flashcardQuiz, setFlashcardQuiz] = useState<FlashcardQuizType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchFlashcardQuiz() {
@@ -22,7 +24,7 @@ export default async function Practice({ params }: {
         cache: "no-cache"
       });
       if (response.status === 404)
-        return router.push("/dashboard"); // todo implement 404 page
+        return setNotFound(true);
       if (response.status === 401)
         return router.push("/dashboard?unauthorized");
       if (!response.ok)
@@ -36,6 +38,7 @@ export default async function Practice({ params }: {
     fetchFlashcardQuiz().then(() => setLoading(false));
   }, []);
 
+  if (notFound) return <NotFound />;
   if (loading || !flashcardQuiz) return <LoadingPage />;
 
   return (
