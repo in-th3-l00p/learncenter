@@ -18,7 +18,11 @@ const listCardTitle = tv({
 });
 
 export function List({ children }: { children: React.ReactNode }) {
-  return <div className={list()}>{children}</div>;
+  return (
+    <div className="overflow-hidden rounded-2xl">
+      <div className={list()}>{children}</div>
+    </div>
+  );
 }
 
 export function ListCard({

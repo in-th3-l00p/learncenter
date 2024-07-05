@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-gutter: stable;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  @apply w-1.5 bg-content1 rounded-full max-h-1.5;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-content3 rounded-full;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -63,5 +76,16 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
