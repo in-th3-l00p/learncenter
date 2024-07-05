@@ -10,6 +10,7 @@ import FlashcardQuiz from "@/models/FlashcardQuiz";
 import { Notes } from "@/app/dashboard/components/notes";
 import { Quizzes } from "@/app/dashboard/components/quizzes";
 import { FlashcardQuizzes } from "@/app/dashboard/components/flashcardQuizzes";
+import UnauthorizedToast from "@/app/dashboard/components/unauthorizedToast";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -48,6 +49,7 @@ export default async function Dashboard() {
       <Notes notes={notes} />
       <Quizzes quizzes={quizzes} />
       <FlashcardQuizzes flashcardQuizzes={flashcardQuizzes} />
+      <UnauthorizedToast />
     </section>
   );
 }

@@ -28,10 +28,10 @@ export default async function Layout({
     note = await Note.findById(params.id);
 
     if (!note || !note.users[0].userId.equals(user._id)) {
-      return redirect("/dashboard");
+      return redirect("/dashboard?unauthorized");
     }
   } catch (e) {
-    return redirect("/dashboard");
+    return redirect("/dashboard?unauthorized");
   }
 
   return (

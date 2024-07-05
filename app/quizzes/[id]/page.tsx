@@ -28,7 +28,7 @@ export default async function QuizDisplay({
 
   const quiz = await Quiz.findById(params.id);
 
-  if (!quiz.owner.equals(user._id)) return redirect(`/quizzes?unauthorized`);
+  if (!quiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
 
   quiz._id = quiz._id.toString();
 

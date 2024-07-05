@@ -25,7 +25,7 @@ export default async function FlashcardQuizDisplay({ params }: {
 
   const flashcardQuiz = await FlashcardQuiz.findById(params.id);
 
-  if (!flashcardQuiz.owner.equals(user._id)) return redirect(`/quizzes?unauthorized`);
+  if (!flashcardQuiz.owner.equals(user._id)) return redirect(`/dashboard?unauthorized`);
 
   flashcardQuiz._id = flashcardQuiz._id.toString();
 
