@@ -79,6 +79,7 @@ export function DropdownSelector({
             if (selected >= items.length) return;
             setSelected(selected);
           }}
+          className={"max-h-[300px] overflow-y-scroll"}
         >
           {dropdownItems}
         </DropdownMenu>
