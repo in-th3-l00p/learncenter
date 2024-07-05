@@ -22,7 +22,14 @@ export default function LoadingPage() {
 
   return (
     <div className={"w-full h-full flex justify-center items-center"}>
-      <Spinner label={loadingText} size={"lg"} />
+      <Spinner
+        label={loadingText}
+        size={"lg"}
+        classNames={{
+          "circle1": "border-b-white",
+          "circle2": "border-b-zinc-100",
+        }}
+      />
     </div>
   );
 }
