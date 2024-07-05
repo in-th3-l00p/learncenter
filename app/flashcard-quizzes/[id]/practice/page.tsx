@@ -7,10 +7,12 @@ import PageBreadcrumbs from "@/components/PageBreadcrumbs";
 import { title } from "@/components/primitives";
 import { FlashcardQuizType } from "@/models/FlashcardQuiz";
 import Flashcard from "@/app/flashcard-quizzes/[id]/practice/components/Flashcard";
+import { useRouter } from "next/navigation";
 
 export default async function Practice({ params }: {
   params: { id: string }
 }) {
+  const router = useRouter();
   const [flashcardQuiz, setFlashcardQuiz] = useState<FlashcardQuizType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -19,6 +21,13 @@ export default async function Practice({ params }: {
       const response = await fetch(`/api/flashcard-quizzes/${params.id}`, {
         cache: "no-cache"
       });
+      if (response.status === 404)
+        return router.push("/dashboard"); // todo implement 404 page
+      if (response.status === 401)
+        return router.push("/dashboard?unauthorized");
+      if (!response.ok)
+        return router.push("/dashboard?error");
+
       const data = await response.json();
 
       setFlashcardQuiz(data);

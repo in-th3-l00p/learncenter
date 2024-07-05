@@ -8,8 +8,10 @@ import { QuizType } from "@/models/Quiz";
 import LoadingPage from "@/components/loadingPage";
 import PracticeContext from "@/app/quizzes/[id]/practice/context/PracticeContext";
 import Question from "@/app/quizzes/[id]/practice/components/Question";
+import { useRouter } from "next/navigation";
 
 export default function Practice({ params }: { params: { id: string } }) {
+  const router = useRouter();
   const [quiz, setQuiz] = useState<QuizType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -18,12 +20,20 @@ export default function Practice({ params }: { params: { id: string } }) {
       const response = await fetch(`/api/quizzes/${params.id}`, {
         cache: "no-cache"
       });
+      if (response.status === 404)
+        return router.push("/dashboard"); // todo implement 404 page
+      if (response.status === 401)
+        return router.push("/dashboard?unauthorized");
+      if (!response.ok)
+        return router.push("/dashboard?error");
+
       const data = await response.json();
 
       setQuiz(data);
     }
 
-    fetchQuiz().then(() => setLoading(false));
+    fetchQuiz()
+      .then(() => setLoading(false));
   }, []);
 
   if (loading || !quiz) return <LoadingPage />;
