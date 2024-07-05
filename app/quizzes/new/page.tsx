@@ -14,10 +14,7 @@ import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
 import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
-import GenerationAccordion from "@/components/NewForm/generation/GenerationAccordion";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/modal";
-import { NoteType } from "@/models/Note";
-import { Divider } from "@nextui-org/divider";
+import { QuizGenerator } from "@/app/quizzes/new/components/quizGenerator";
 
 const defaultQuiz: NewQuizType = {
   title: "",
@@ -36,63 +33,6 @@ const defaultQuiz: NewQuizType = {
   ],
   visibility: "public",
 };
-
-function QuizGenerator() {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const [note, setNote] = useState<NoteType | null>(null);
-  const [selection, setSelection] = useState<string | null>(null);
-
-  return (
-    <>
-      {note && (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader>Generate from {note?.title}</ModalHeader>
-                <Divider />
-                <ModalBody>
-                  {selection && (
-                    <>
-                      <p>Selection:</p>
-                      <div
-                        className={"max-h-[300px] overflow-y-auto"}
-                      >
-                        {selection}
-                      </div>
-                    </>
-                  )}
-                </ModalBody>
-                <Divider />
-                <ModalFooter>
-                  <Button type={"button"}>Generate</Button>
-                  <Button
-                    type={"button"}
-                    color={"danger"}
-                    onClick={onClose}
-                  >
-                    Close
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      )}
-      <GenerationAccordion
-        entityName={"quiz"}
-        actions={[{
-          name: "Generate questions",
-          handler: (note, selection) => {
-            setSelection(selection);
-            setNote(note);
-            onOpen();
-          }
-        }]}
-      />
-    </>
-  )
-}
 
 export default function NewQuiz() {
   const session = useSession();

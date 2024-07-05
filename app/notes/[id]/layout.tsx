@@ -2,20 +2,10 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-import Note, { INote } from "@/models/Note";
+import Note from "@/models/Note";
 import User from "@/models/User";
 import NoteContextProvider from "@/app/notes/[id]/context/NoteContextProvider";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-
-function isUserAllowed(note: INote, userId: string) {
-  for (const user of note.users) {
-    if (user.userId === userId) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 export default async function Layout({
   params,
@@ -37,7 +27,7 @@ export default async function Layout({
 
     note = await Note.findById(params.id);
 
-    if (!note || isUserAllowed(note, user._id.toString())) {
+    if (!note || !note.users[0].userId.equals(user._id)) {
       return redirect("/dashboard");
     }
   } catch (e) {

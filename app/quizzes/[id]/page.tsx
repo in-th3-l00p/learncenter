@@ -48,14 +48,6 @@ export default async function QuizDisplay({
             >
               Practice
             </StartButton>
-            <StartButton
-              href={`/quizzes/${quiz._id}/test`}
-              icon={"/icons/test.svg"}
-              iconAlt={"Test"}
-              soon={true}
-            >
-              Test
-            </StartButton>
           </div>
         </div>
 
