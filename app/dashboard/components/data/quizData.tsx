@@ -6,7 +6,7 @@ import { Chart } from "chart.js";
 import { subtitle } from "@/components/primitives";
 import clsx from "clsx";
 
-export default function FlashcardQuizChart() {
+export default function QuizData() {
   const DUMMY_DATA = [0, 10, 20, 30, 20, 30, 50];
   const LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -19,7 +19,7 @@ export default function FlashcardQuizChart() {
         labels: LABELS,
         datasets: [
           {
-            label: "Flashcard quiz scores",
+            label: "Quiz scores",
             data: DUMMY_DATA,
             borderColor: "white",
             backgroundColor: "black"
@@ -34,8 +34,25 @@ export default function FlashcardQuizChart() {
   }, []);
 
   return (
-    <div className={"max-w-[500px] w-full flex flex-col justify-center items-center"}>
-      <h2 className={clsx(subtitle(), "text-center")}>Latest flashcard scores:</h2>
+    <div className={clsx(
+      "max-w-[500px] w-full",
+      "flex flex-col justify-center items-center",
+      "text-center"
+    )}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div className="max-w-fit mx-auto mb-16">
+          <h2 className={"text-8xl"}>16</h2>
+          <p className={"break-words mx-auto"}>Questions answered last week</p>
+        </div>
+
+        <div className="max-w-fit mx-auto mb-16">
+          <h2 className={"text-8xl"}>8</h2>
+          <p className={"break-words mx-auto"}>Quizzes created</p>
+        </div>
+      </div>
+
+
+      <h2 className={subtitle()}>Quiz scores chart:</h2>
       <canvas ref={chartRef} />
     </div>
   );

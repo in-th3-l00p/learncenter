@@ -6,7 +6,7 @@ import { Chart } from "chart.js";
 import { subtitle } from "@/components/primitives";
 import clsx from "clsx";
 
-export default function QuizChart() {
+export default function FlashcardQuizData() {
   const DUMMY_DATA = [0, 10, 20, 30, 20, 30, 50];
   const LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -19,7 +19,7 @@ export default function QuizChart() {
         labels: LABELS,
         datasets: [
           {
-            label: "Quiz scores",
+            label: "Flashcard quiz scores",
             data: DUMMY_DATA,
             borderColor: "white",
             backgroundColor: "black"
@@ -34,9 +34,20 @@ export default function QuizChart() {
   }, []);
 
   return (
-    <div className={"max-w-[500px] w-full flex flex-col justify-center items-center"}>
-      <h2 className={clsx(subtitle(), "text-center")}>Latest quiz scores:</h2>
-      <canvas ref={chartRef} />
+    <div className={clsx(
+      "max-w-[500px] w-full",
+      "flex flex-col justify-center items-center",
+      "text-center"
+    )}>
+      <div className="max-w-fit mx-auto mb-16">
+        <h2 className={"text-8xl"}>8</h2>
+        <p className={"break-words mx-auto"}>Flashcards passed last week</p>
+      </div>
+
+      <h2 className={clsx(subtitle(), "text-center")}>Latest flashcard scores:</h2>
+      <div className="w-full invert dark:invert-0">
+        <canvas className={"bg-black"} ref={chartRef} />
+      </div>
     </div>
   );
 }
