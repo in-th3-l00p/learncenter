@@ -42,12 +42,12 @@ export default function EntityData({ data, chartTitle, chartLabel, chartData, ch
     <div className={clsx(
       "max-w-[500px] w-full",
       "flex flex-col justify-center items-center",
-      "text-center"
+      "text-center mb-16"
     )}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 mb-16">
         {data.map(({ label, value }, index) => (
           <div key={index} className={clsx(
-            "max-w-fit mx-auto mb-16",
+            "max-w-fit mx-auto",
             (data.length % 2 === 1 && index === data.length - 1 ? "sm:col-span-2" : "")
           )}>
             <h2 className={"text-8xl"}>{value}</h2>
