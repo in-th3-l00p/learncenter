@@ -1,53 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import "chart.js/auto";
-import { Chart } from "chart.js";
-import { subtitle } from "@/components/primitives";
-import clsx from "clsx";
+import EntityData from "@/app/dashboard/components/data/entityData";
 
 export default function FlashcardQuizData() {
   const DUMMY_DATA = [0, 10, 20, 30, 20, 30, 50];
   const LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-  const chartRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const chart = new Chart(chartRef.current!, {
-      type: "line",
-      data: {
-        labels: LABELS,
-        datasets: [
-          {
-            label: "Flashcard quiz scores",
-            data: DUMMY_DATA,
-            borderColor: "white",
-            backgroundColor: "black"
-          }
-        ]
-      }
-    });
-
-    return () => {
-      chart.destroy();
-    };
-  }, []);
-
   return (
-    <div className={clsx(
-      "max-w-[500px] w-full",
-      "flex flex-col justify-center items-center",
-      "text-center"
-    )}>
-      <div className="max-w-fit mx-auto mb-16">
-        <h2 className={"text-8xl"}>8</h2>
-        <p className={"break-words mx-auto"}>Flashcards passed last week</p>
-      </div>
-
-      <h2 className={clsx(subtitle(), "text-center")}>Latest flashcard scores:</h2>
-      <div className="w-full invert dark:invert-0">
-        <canvas className={"bg-black"} ref={chartRef} />
-      </div>
-    </div>
+    <EntityData
+      data={[
+        {
+          label: "Flashcards passed last week",
+          value: 8
+        }
+      ]}
+      chartTitle={"Latest flashcard scores"}
+      chartLabel={"Score"}
+      chartData={DUMMY_DATA}
+      chartLabels={LABELS}
+    />
   );
 }
