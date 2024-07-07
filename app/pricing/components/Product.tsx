@@ -85,7 +85,7 @@ export async function Product({ name, description, price, productId, currentSubs
         className={"w-full flex items-center"}
         disabled={!!currentSubscription}
       >
-        Subscribe
+        {currentSubscription ? "Subscribed" : "Subscribe"}
         {currentSubscription?.items.data[0].price.id === productPriceId && (
           <span className={"text-xs font-light"}>(Current)</span>
         )}
