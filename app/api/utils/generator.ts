@@ -5,6 +5,8 @@ import { NotFoundResponse, UnauthorizedResponse } from "@/app/api/utils";
 import { NextResponse } from "next/server";
 import Note from "@/models/Note";
 import { generation } from "@/app/api/utils/generations";
+import User from "@/models/User";
+import stripe from "@/lib/stripe";
 
 const requestSchema = z.object({
   noteId: z.string().min(1),
@@ -20,6 +22,16 @@ export default function createGenerator(
   return async (req: Request) => {
     const session = await getServerSession(authOptions);
     if (!session) return UnauthorizedResponse;
+
+    const user = await User.findById(session.user.id);
+    if (!user) return UnauthorizedResponse;
+
+    if (!user.subscriptionId)
+      return UnauthorizedResponse;
+
+    const subscription = await stripe.subscriptions.retrieve(user.subscriptionId);
+    if (!subscription || subscription.status !== "active")
+      return UnauthorizedResponse;
 
     const body = requestSchema.safeParse(await req.json());
     if (!body.success) {

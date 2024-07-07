@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 
 export const NotFoundResponse = NextResponse.json(
   {
-    errors: [
+    issues: [
       {
         path: "id",
-        msg: "Not found",
+        message: "Not found",
       },
     ],
   },
@@ -16,9 +16,9 @@ export const NotFoundResponse = NextResponse.json(
 
 export const UnauthorizedResponse = NextResponse.json(
   {
-    errors: [
+    issues: [
       {
-        msg: "Unauthorized",
+        message: "Unauthorized",
       },
     ],
   },
