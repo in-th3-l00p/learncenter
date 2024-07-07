@@ -19,7 +19,7 @@ export default async function createBillingPortal() {
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: user.customerId,
-    return_url: `${process.env.NEXTAUTH_URL}/account`,
+    return_url: `${process.env.NEXTAUTH_URL}/profile`,
   });
 
   return redirect(portalSession.url);
