@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <main>
-      <section className="mb-16">
+      <section className="mb-24">
         <div
           className={
             "grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-16 mb-24"

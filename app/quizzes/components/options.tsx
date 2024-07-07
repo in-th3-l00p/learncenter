@@ -224,6 +224,7 @@ export function Options({}) {
               }
               title={"Delete option"}
               type={"button"}
+              className={"mt-2 md:mt-0"}
               onClick={() => {
                 if (
                   selectedOptionIndex ===
