@@ -49,7 +49,7 @@ export default function Question() {
   }, [showAnswer]);
 
   return (
-    <div className={"max-w-[800px] mx-auto"}>
+    <section className={"max-w-[800px] mx-auto mb-16"}>
       <h2 className={"text-center text-2xl mb-8"}>
         {quiz.questions[currentQuestion].question}
       </h2>
@@ -92,6 +92,6 @@ export default function Question() {
       >
         Next question
       </Button>
-    </div>
+    </section>
   );
 }

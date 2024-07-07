@@ -8,14 +8,15 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
-import LayoutProvider from "@/components/layoutProvider";
+import { Navbar } from "@/components/layout/navbar";
+import LayoutProvider from "@/components/layout/layoutProvider";
 
 import "@/lib/mongoose";
 import User from "@/models/User";
 import UserContextProvider from "@/components/UserContextProvider";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -64,6 +65,7 @@ export default async function RootLayout({
                 <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
                   {children}
                 </main>
+                <Footer />
               </div>
             </Providers>
             <Toaster />

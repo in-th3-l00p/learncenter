@@ -17,7 +17,7 @@ export default function Flashcard() {
   const [selectedFlashcard, setSelectedFlashcard] = useState<number>(0);
 
   return (
-    <div className={"max-w-[800px] mx-auto"}>
+    <section className={"max-w-[800px] mx-auto mb-16"}>
       <Card className={"mb-16"}>
         <CardHeader>
           <h2 className={"text-lg font-bold"}>Flashcard {history.length}</h2>
@@ -74,6 +74,6 @@ export default function Flashcard() {
           Next
         </Button>
       </div>
-    </div>
+    </section>
   );
 }
