@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 
 import { subtitle, title } from "@/components/primitives";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import SocialSection from "@/components/home/socialSection";
 
 function Feature({ title, subtitle, icon, iconAlt, }: {
   title: string;
@@ -25,33 +26,6 @@ function Feature({ title, subtitle, icon, iconAlt, }: {
       <h3 className={"text-xl font-bold"}>{title}</h3>
       <p>{subtitle}</p>
     </div>
-  );
-}
-
-function Social({ icon, alt, name, href }: {
-  icon: string;
-  alt: string;
-  name: string;
-  href: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={clsx(
-        "flex flex-col items-center gap-2",
-        "text-black dark:text-white",
-        "hover:bg-zinc-200 dark:hover:bg-zinc-800 p-8 rounded-2xl"
-      )}
-    >
-      <Image
-        alt={alt}
-        height={100}
-        src={icon}
-        width={100}
-        className={"dark:invert"}
-      />
-      <p className="text-xl font-bold">{name}</p>
-    </Link>
   );
 }
 
@@ -191,42 +165,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mb-32">
-        <div className="mb-16 text-center">
-          <h2 className={title()}>Connect with Us on Social Media</h2>
-          <p className={subtitle()}>Follow Our Latest Updates and Join the Conversation</p>
-        </div>
-
-        <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16"}>
-          <Social
-            icon={"/home/socials/instagram.svg"}
-            alt={"instagram icon"}
-            name={"Instagram"}
-            href={"https://www.instagram.com/learncenter__"}
-          />
-
-          <Social
-            icon={"/home/socials/facebook.svg"}
-            alt={"facebook icon"}
-            name={"Facebook"}
-            href={"https://www.facebook.com/profile.php?id=61562093695947"}
-          />
-
-          <Social
-            icon={"/home/socials/tiktok.svg"}
-            alt={"tiktok icon"}
-            name={"TikTok"}
-            href={"https://www.tiktok.com/@learncenter"}
-          />
-
-          <Social
-            icon={"/home/socials/discord.svg"}
-            alt={"discord icon"}
-            name={"Discord"}
-            href={"https://discord.gg/DJQASB96"}
-          />
-        </div>
-      </section>
+      <SocialSection />
     </main>
   );
 }
