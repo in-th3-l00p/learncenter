@@ -81,6 +81,7 @@
 		"react-icons": "^5.2.1",
 		"sass": "^1.77.6",
 		"shadcn-ui": "^0.8.0",
+		"sharp": "^0.33.4",
 		"spltjs": "^1.1.0",
 		"strapi-sdk-js": "^2.3.3",
 		"stripe": "^15.11.0",
