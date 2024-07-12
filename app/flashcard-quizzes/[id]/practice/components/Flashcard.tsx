@@ -5,16 +5,13 @@ import PracticeContext from "@/app/flashcard-quizzes/[id]/practice/context/Pract
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { Button } from "@nextui-org/button";
+import useShuffled from "@/hooks/useShuffled";
 
 export default function Flashcard() {
   const { flashcardQuiz } = useContext(PracticeContext);
 
+  const { item, next, prev, canPrev } = useShuffled(flashcardQuiz.flashcards);
   const [showAnswer, setShowAnswer] = useState(false);
-
-  const [history, setHistory] = useState<number[]>([
-    Math.floor(Math.random() * flashcardQuiz.flashcards.length),
-  ]);
-  const [selectedFlashcard, setSelectedFlashcard] = useState<number>(0);
 
   return (
     <section className={"max-w-[800px] mx-auto mb-16"}>
@@ -24,17 +21,13 @@ export default function Flashcard() {
         </CardHeader>
         <Divider />
         <CardBody>
-          <p className={"text-center"}>
-            {flashcardQuiz
-              .flashcards[history[selectedFlashcard]]
-              .question}
-          </p>
+          <p className={"text-center"}>{item.question}</p>
         </CardBody>
         {showAnswer && (
           <>
             <Divider />
             <CardFooter>
-              <p>Answer: {flashcardQuiz.flashcards[history[selectedFlashcard]].answer}</p>
+              <p>Answer: {item.answer}</p>
             </CardFooter>
           </>
         )}
@@ -43,10 +36,10 @@ export default function Flashcard() {
       <div className="flex flex-wrap justify-center gap-8">
         <Button
           type={"button"}
-          disabled={selectedFlashcard === 0}
+          disabled={canPrev()}
           onClick={() => {
             setShowAnswer(false);
-            setSelectedFlashcard(selectedFlashcard - 1)
+            prev();
           }}
         >
           Previous
@@ -63,12 +56,7 @@ export default function Flashcard() {
           type={"button"}
           onClick={() => {
             setShowAnswer(false);
-            if (selectedFlashcard === history.length - 1)
-              setHistory([
-                ...history,
-                Math.floor(Math.random() * flashcardQuiz.flashcards.length)]
-              );
-            setSelectedFlashcard(selectedFlashcard + 1);
+            next();
           }}
         >
           Next
