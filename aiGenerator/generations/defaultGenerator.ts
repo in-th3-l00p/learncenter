@@ -1,5 +1,5 @@
 import openai from "@/lib/openai";
-import { AIGenerator } from "@/app/api/generator/generations/types";
+import { AIGenerator } from "@/aiGenerator/generations/types";
 
 const defaultGenerator: AIGenerator =
   async ({

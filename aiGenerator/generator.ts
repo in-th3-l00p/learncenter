@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { NotFoundResponse, UnauthorizedResponse } from "@/app/api/utils";
 import { NextResponse } from "next/server";
 import Note from "@/models/Note";
-import generate from "@/app/api/generator/generations";
+import generate from "@/aiGenerator/generations";
 import User from "@/models/User";
 import stripe from "@/lib/stripe";
 

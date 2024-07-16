@@ -1,4 +1,4 @@
-import createGenerator from "@/app/api/generator/generator";
+import createGenerator from "@/aiGenerator/generator";
 import { zNewQuizSchema } from "@/models/Quiz";
 
 const generator = createGenerator(
