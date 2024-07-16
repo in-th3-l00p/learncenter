@@ -1,72 +1,59 @@
 import { ZodError, ZodSchema } from "zod";
 import { NoteType } from "@/models/Note";
 import openai from "@/lib/openai";
+import stripe from "@/lib/stripe";
 
-function countTokens(text: string) {
-  return text.length / 4;
-}
+const GPT_TOKENS_METER_EVENT_NAME = "gpt-tokens";
 
-const MAX_TOKENS = 30000;
-const MAX_ADDITIONAL_QUERY_TOKENS = 1000;
-const SAFETY_MARGIN = 5000;
-
-export async function generation(
+export async function generate(
   note: NoteType,
   entityName: string,
   schema: any,
   additionalSchemaDescription: string,
   zodSchema: ZodSchema,
+  customerId: string,
   additionalQuery?: string
 ) {
-  const additionalQueryTokens = additionalQuery ? countTokens(additionalQuery) : 0;
-  if (additionalQuery && additionalQueryTokens > MAX_ADDITIONAL_QUERY_TOKENS)
-    throw {
-      issues: [{
-        path: ["additionalQuery"],
-        message: "Additional query is too long."
-      }]
-    };
-
-  const tokens =
-    countTokens(note.title) +
-    countTokens(note.content) +
-    MAX_ADDITIONAL_QUERY_TOKENS +
-    countTokens(entityName) +
-    countTokens(additionalSchemaDescription) +
-    SAFETY_MARGIN;
-  if (tokens > MAX_TOKENS)
-    throw {
-      issues: [{
-        path: ["note"],
-        message: "Note is too long."
-      }]
-    };
-
-  let generation = zodSchema.safeParse(await initialGeneration(
+  let generation = await initialGeneration(
     note.title,
     note.content,
     entityName,
     schema,
     additionalSchemaDescription,
     additionalQuery
-  ));
-  if (!generation.success) {
-    generation = zodSchema.safeParse(await initialGenerationFix(
-      generation,
-      generation.error,
+  );
+  await stripe.billing.meterEvents.create({
+    event_name: GPT_TOKENS_METER_EVENT_NAME,
+    payload: {
+      value: generation.tokens.toString(),
+      stripe_customer_id: customerId
+    }
+  });
+  let response = zodSchema.safeParse(generation.data);
+  if (!response.success) {
+    generation = await fixGeneration(
+      response,
+      response.error,
       note.title,
       note.content,
       entityName,
       schema,
       additionalSchemaDescription,
       additionalQuery
-    ));
-    if (!generation.success) {
-      throw generation.error
-    }
+    )
+    await stripe.billing.meterEvents.create({
+      event_name: GPT_TOKENS_METER_EVENT_NAME,
+      payload: {
+        value: generation.tokens.toString(),
+        stripe_customer_id: customerId
+      }
+    });
+    response = zodSchema.safeParse(generation.data);
+    if (!response.success)
+      throw response.error
   }
 
-  return generation.data;
+  return response.data;
 }
 
 async function initialGeneration(
@@ -104,10 +91,13 @@ async function initialGeneration(
     response_format: { type: "json_object" }
   });
 
-  return JSON.parse(generation.choices[0].message.content!);
+  return {
+    data: JSON.parse(generation.choices[0].message.content!),
+    tokens: generation.usage?.total_tokens || 0
+  };
 }
 
-async function initialGenerationFix(
+async function fixGeneration(
   generation: any,
   errors: ZodError,
   noteTitle: string,
@@ -152,5 +142,8 @@ async function initialGenerationFix(
     response_format: { type: "json_object" }
   });
 
-  return JSON.parse(generationFix.choices[0].message.content!);
+  return {
+    data: JSON.parse(generationFix.choices[0].message.content!),
+    tokens: generationFix.usage?.total_tokens || 0
+  };
 }
