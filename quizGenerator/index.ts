@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { NotFoundResponse, UnauthorizedResponse } from "@/app/api/utils";
 import { NextResponse } from "next/server";
 import Note from "@/models/Note";
-import generate from "@/aiGenerator/generations";
+import generate from "@/quizGenerator/generate";
 import User from "@/models/User";
 import stripe from "@/lib/stripe";
 
@@ -13,7 +13,7 @@ const requestSchema = z.object({
   additionalQuery: z.string().optional()
 });
 
-export default function createGenerator(
+export function createGenerator(
   entityName: string,
   schema: any,
   additionalSchemaDescription: string,

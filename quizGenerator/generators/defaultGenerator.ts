@@ -1,5 +1,5 @@
 import openai from "@/lib/openai";
-import { AIGenerator } from "@/aiGenerator/generations/types";
+import { AIGenerator } from "@/quizGenerator/types";
 
 const defaultGenerator: AIGenerator =
   async ({

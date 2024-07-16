@@ -1,9 +1,9 @@
 import { ZodSchema } from "zod";
 import { NoteType } from "@/models/Note";
 import stripe from "@/lib/stripe";
-import { AIGenerator, AIGeneratorData } from "@/aiGenerator/generations/types";
-import defaultGenerator from "@/aiGenerator/generations/defaultGenerator";
-import fixGenerator from "@/aiGenerator/generations/fixGenerator";
+import { AIGenerator, AIGeneratorData } from "@/quizGenerator/types";
+import defaultGenerator from "@/quizGenerator/generators/defaultGenerator";
+import fixGenerator from "@/quizGenerator/generators/fixGenerator";
 
 const GPT_TOKENS_METER_EVENT_NAME = "gpt-tokens";
 

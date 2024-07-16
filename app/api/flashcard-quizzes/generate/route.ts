@@ -1,4 +1,4 @@
-import createGenerator from "@/aiGenerator/generator";
+import { createGenerator } from "@/quizGenerator";
 import { zNewFlashcardQuizSchema } from "@/models/FlashcardQuiz";
 
 const generator = createGenerator(
