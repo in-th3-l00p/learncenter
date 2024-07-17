@@ -9,19 +9,21 @@ import { Product } from "@/app/pricing/components/Product";
 
 export default async function PricingTable() {
   const PRODUCTS = {
-    FREE: "prod_QJKQKUAJrhwcQA",
-    BASIC: "prod_QJKQYunCqGX55f",
+    FREE: "prod_QUViRcMEfdZrGo",
+    BASIC: "prod_QUVCICoUHBnXb3",
   }
 
   let subscription = null;
-  const session = await getServerSession(authOptions);
-  if (session) {
-    const user = await User.findById(session.user.id);
-    if (user && user.subscriptionId)
-      subscription = await stripe
-        .subscriptions
-        .retrieve(user.subscriptionId);
-  }
+  try {
+    const session = await getServerSession(authOptions);
+    if (session) {
+      const user = await User.findById(session.user.id);
+      if (user && user.subscriptionId)
+        subscription = await stripe
+          .subscriptions
+          .retrieve(user.subscriptionId);
+    }
+  } catch (_) {}
 
   return (
     <div className="mt-16">
