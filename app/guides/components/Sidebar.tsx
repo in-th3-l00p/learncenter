@@ -16,6 +16,11 @@ export default function Sidebar({ guideSections }: {
             title={guideSection.attributes.name}
           >
             <ul className={"list-disc ps-2"}>
+              {guideSection.attributes.guides.data.length === 0 && (
+                <li>
+                  <p className={"text-sm text-white"}>No guides available.</p>
+                </li>
+              )}
               {guideSection.attributes.guides.data.map(guide => (
                 <li>
                   <Link

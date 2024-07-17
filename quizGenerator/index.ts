@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { NotFoundResponse, UnauthorizedResponse } from "@/app/api/utils";
 import { NextResponse } from "next/server";
 import Note from "@/models/Note";
-import { generation } from "@/app/api/utils/generations";
+import generate from "@/quizGenerator/generate";
 import User from "@/models/User";
 import stripe from "@/lib/stripe";
 
@@ -13,7 +13,7 @@ const requestSchema = z.object({
   additionalQuery: z.string().optional()
 });
 
-export default function createGenerator(
+export function createGenerator(
   entityName: string,
   schema: any,
   additionalSchemaDescription: string,
@@ -29,7 +29,8 @@ export default function createGenerator(
     if (!user.subscriptionId)
       return UnauthorizedResponse;
 
-    const subscription = await stripe.subscriptions.retrieve(user.subscriptionId);
+    const subscription =
+      await stripe.subscriptions.retrieve(user.subscriptionId);
     if (!subscription || subscription.status !== "active")
       return UnauthorizedResponse;
 
@@ -48,12 +49,13 @@ export default function createGenerator(
 
     try {
       return NextResponse.json(
-        await generation(
+        await generate(
           note,
           entityName,
           schema,
           additionalSchemaDescription,
           zodSchema,
+          subscription,
           body.data.additionalQuery
         ),
         { status: 200 }
