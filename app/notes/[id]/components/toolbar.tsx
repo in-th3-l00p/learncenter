@@ -134,7 +134,7 @@ function TextColorButton({ editor }: { editor: Editor }) {
             size={"sm"}
           >
             <div
-              className="w-3 h-3 rounded-full"
+              className="w-3 h-3 rounded-full bg-black dark:bg-white"
               style={{ backgroundColor: editor.getAttributes("textStyle").color }}
             />
           </Button>
@@ -143,6 +143,12 @@ function TextColorButton({ editor }: { editor: Editor }) {
           <HexColorPicker onChange={(color) => {
             editor.chain().setColor(color).run();
           }} />
+          <Button
+            type={"button"}
+            onClick={() => editor.chain().setColor("").run()}
+          >
+            Reset
+          </Button>
         </PopoverContent>
       </Popover>
     </>
@@ -364,7 +370,12 @@ function ContentButtons({ editor }: { editor: Editor }) {
 export default function Toolbar({ editor }: { editor: Editor }) {
   return (
     <div
-      className={"flex flex-wrap items-center gap-2 bg-content1 border-content1 rounded-lg mb-8 py-1 px-2"}
+      className={clsx(
+        "flex flex-wrap items-center gap-2",
+        "dark:bg-content1 dark:border-content1",
+        "bg-content2 dark:border-content3",
+        "rounded-lg mb-8 py-1 px-2"
+      )}
     >
       <ContentType editor={editor} />
       <Divider orientation={"vertical"} />
