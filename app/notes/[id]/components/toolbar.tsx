@@ -9,14 +9,13 @@ import {
   AlignCenterIcon,
   AlignJustifyIcon,
   AlignLeftIcon,
-  AlignRightIcon, ImageIcon,
-  LinkIcon,
+  AlignRightIcon, LinkIcon,
   StrikethroughIcon
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover";
 import { Input } from "@nextui-org/input";
 import { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/modal";
+import { useDisclosure } from "@nextui-org/modal";
 import { HexColorPicker } from "react-colorful";
 
 function ContentType({ editor }: { editor: Editor }) {
@@ -325,31 +324,32 @@ function ImageButton({ editor }: { editor: Editor }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   // todo: implement (too lazy now)
-  return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>Upload an image</ModalHeader>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <Button
-        title={"Image"}
-        type={"button"}
-        isIconOnly
-        size={"sm"}
-        onClick={() => onOpen()}
-      >
-        <ImageIcon size={15} />
-      </Button>
-    </>
-  );
+  return <></>
+  // return (
+  //   <>
+  //     <Modal
+  //       isOpen={isOpen}
+  //       onOpenChange={onOpenChange}
+  //     >
+  //       <ModalContent>
+  //         {(onClose) => (
+  //           <>
+  //             <ModalHeader>Upload an image</ModalHeader>
+  //           </>
+  //         )}
+  //       </ModalContent>
+  //     </Modal>
+  //     <Button
+  //       title={"Image"}
+  //       type={"button"}
+  //       isIconOnly
+  //       size={"sm"}
+  //       onClick={() => onOpen()}
+  //     >
+  //       <ImageIcon size={15} />
+  //     </Button>
+  //   </>
+  // );
 }
 
 function ContentButtons({ editor }: { editor: Editor }) {
