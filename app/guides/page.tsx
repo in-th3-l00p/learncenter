@@ -3,6 +3,7 @@ import strapi from "@/lib/strapi";
 import Sidebar from "@/app/guides/components/Sidebar";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Link } from "@nextui-org/link";
+import { BlocksContent } from "@strapi/blocks-react-renderer";
 
 export type Guide = {
   id: number;
@@ -10,6 +11,7 @@ export type Guide = {
     title: string;
     description: string;
     slug: string;
+    content?: BlocksContent;
   }
 }
 

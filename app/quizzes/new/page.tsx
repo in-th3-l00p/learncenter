@@ -14,7 +14,6 @@ import { QuizVisibility } from "@/app/quizzes/components/quizVisibility";
 import QuizContext, { NewQuizType } from "@/app/quizzes/new/context/QuizContext";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import LoadingPage from "@/components/loadingPage";
-import { QuizGenerator } from "@/app/quizzes/new/components/quizGenerator";
 
 const defaultQuiz: NewQuizType = {
   title: "",
@@ -93,7 +92,7 @@ export default function NewQuiz() {
         </div>
 
         <div className={"max-w-[800px] mx-auto"}>
-          <QuizGenerator />
+          {/*<QuizGenerator />*/}
           <QuizInformationInput />
           <Questions />
           <QuizVisibility />
