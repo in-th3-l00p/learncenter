@@ -1,7 +1,7 @@
 import stripe from "@/lib/stripe";
 import { Stripe } from "stripe";
 
-const mtrId = "mtr_test_61QmcFtEHuUgXrRAk41DprJ3s8dgPCAy";
+const mtrId = "mtr_61Qmu9Z8xLKPVFd8641DprJ3s8dgPOYy";
 
 export default async function getMaxTokens(subscription: Stripe.Subscription) {
   const item = subscription.items.data[0];
