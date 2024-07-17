@@ -1,8 +1,9 @@
 import openai from "@/lib/openai";
-import { AIGenerator } from "@/quizGenerator/types";
+import { AIGenerator } from "@/quizGenerator/utils/types";
+import getMaxTokens from "@/quizGenerator/utils/getMaxTokens";
 
 const defaultGenerator: AIGenerator =
-  async ({
+  async (subscription, {
            noteTitle,
            noteContent,
            entityName,
@@ -34,9 +35,17 @@ const defaultGenerator: AIGenerator =
         }
       ],
       model: "gpt-4o",
-      response_format: { type: "json_object" }
+      response_format: { type: "json_object" },
+      max_tokens: await getMaxTokens(subscription)
     });
 
+    if (generation.choices[0].finish_reason === "length") {
+      throw {
+        issues: [{
+          message: "You've exceeded your subscription limit."
+        }]
+      }
+    }
     return {
       data: JSON.parse(generation.choices[0].message.content!),
       tokens: generation.usage?.total_tokens || 0

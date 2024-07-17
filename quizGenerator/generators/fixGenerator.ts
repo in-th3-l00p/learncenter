@@ -1,8 +1,9 @@
 import openai from "@/lib/openai";
-import { AIGenerator } from "@/quizGenerator/types";
+import { AIGenerator } from "@/quizGenerator/utils/types";
+import getMaxTokens from "@/quizGenerator/utils/getMaxTokens";
 
 const fixGenerator: AIGenerator =
-  async ({
+  async (subscription, {
            noteTitle,
            noteContent,
            entityName,
@@ -12,7 +13,7 @@ const fixGenerator: AIGenerator =
            lastGeneration,
            errors
          }) => {
-    const generationFix = await openai.chat.completions.create({
+    const generation = await openai.chat.completions.create({
       messages: [
         {
           role: "system",
@@ -44,12 +45,20 @@ const fixGenerator: AIGenerator =
         }
       ],
       model: "gpt-3.5-turbo",
-      response_format: { type: "json_object" }
+      response_format: { type: "json_object" },
+      max_tokens: await getMaxTokens(subscription)
     });
+    if (generation.choices[0].finish_reason === "length") {
+      throw {
+        issues: [{
+          message: "You've exceeded your subscription limit."
+        }]
+      }
+    }
 
     return {
-      data: JSON.parse(generationFix.choices[0].message.content!),
-      tokens: generationFix.usage?.total_tokens || 0
+      data: JSON.parse(generation.choices[0].message.content!),
+      tokens: generation.usage?.total_tokens || 0
     };
   };
 

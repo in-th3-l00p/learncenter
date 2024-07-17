@@ -55,7 +55,7 @@ export function createGenerator(
           schema,
           additionalSchemaDescription,
           zodSchema,
-          user.customerId,
+          subscription,
           body.data.additionalQuery
         ),
         { status: 200 }

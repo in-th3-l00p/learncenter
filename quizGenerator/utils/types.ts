@@ -1,3 +1,5 @@
+import { Stripe } from "stripe";
+
 export type AIGeneratorData = {
   noteTitle: string;
   noteContent: string;
@@ -9,7 +11,7 @@ export type AIGeneratorData = {
   errors?: any;
 };
 
-export type AIGenerator = (data: AIGeneratorData) => Promise<{
+export type AIGenerator = (subscription: Stripe.Subscription, data: AIGeneratorData) => Promise<{
   data: any;
   tokens: number;
 }>;
